@@ -216,23 +216,25 @@
   /* Botao pra abrir cena do Shrek */
   .shrek-btn {
     position: absolute;
-    bottom: 50px;
-    left: 30px;
+    bottom: 8px;
+    left: 8px;
     z-index: 20;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, #228B22, #006400);
-    color: #fff;
+    padding: 4px 10px;
+    background: transparent;
+    color: transparent;
     border: none;
-    border-radius: 30px;
-    font-size: 15px;
+    border-radius: 3px;
+    font-size: 10px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0, 100, 0, 0.4);
-    animation: fade-in 2s ease-in forwards;
-    transition: transform 0.2s, box-shadow 0.2s;
+    opacity: 0.15;
+    transition: opacity 0.4s, background 0.4s, color 0.4s;
   }
   .shrek-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0, 100, 0, 0.5);
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 6px 14px;
+    font-size: 12px;
   }
 
   /* Overlay cenario do Shrek */
@@ -240,12 +242,13 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9);
     z-index: 100;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
+    animation: fade-in 0.4s ease forwards;
   }
   .shrek-overlay.ativo { display: flex; }
 
@@ -257,19 +260,40 @@
     text-align: center;
     box-shadow: 0 8px 32px rgba(0,0,0,0.6);
     border: 1px solid rgba(34, 139, 34, 0.3);
-    width: 320px;
+    width: 380px;
+    max-width: 90vw;
   }
   .senha-box h2 {
     color: #2E8B57;
     font-family: 'Courier New', monospace;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     font-size: 20px;
   }
   .senha-box p {
-    color: #8e8e8e;
-    font-size: 12px;
-    margin-bottom: 20px;
+    color: #b0b0b0;
+    font-size: 14px;
+    margin-bottom: 8px;
     font-family: sans-serif;
+    line-height: 1.5;
+  }
+  .netflix-tag {
+    color: #E50914;
+    font-weight: bold;
+    font-size: 15px;
+  }
+  .tempo-tag {
+    color: #2E8B57;
+    font-weight: bold;
+    font-size: 15px;
+  }
+  .senha-box p.nao-netflix {
+    font-size: 13px;
+    color: #8e8e8e;
+    margin-top: 16px;
+    margin-bottom: 20px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 16px;
+    font-style: italic;
   }
   .senha-input {
     width: 100%;
@@ -306,6 +330,39 @@
     transition: transform 0.2s;
   }
   .senha-btn:hover { transform: scale(1.02); }
+  .links-streaming {
+    margin-top: 18px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .link-netflix {
+    display: inline-block;
+    padding: 8px 18px;
+    background: #E50914;
+    color: #fff !important;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: sans-serif;
+    font-weight: bold;
+    transition: transform 0.2s;
+  }
+  .link-netflix:hover { transform: scale(1.05); }
+  .link-youtube {
+    display: inline-block;
+    padding: 8px 18px;
+    background: #FF0000;
+    color: #fff !important;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: sans-serif;
+    font-weight: bold;
+    transition: transform 0.2s;
+  }
+  .link-youtube:hover { transform: scale(1.05); }
 
   /* Player de video */
   .shrek-player {
@@ -420,19 +477,32 @@
   <!-- Texto do Shrek -->
   <div class="shrek-dedo">✦ Shrek 01:04,20</div>
 
-  <!-- Botao pra abrir cena do Shrek protegida -->
-  <button class="shrek-btn" onclick="abrirShrek()">🎬 Ver cena do Shrek</button>
+  <!-- Botao escondido pra abrir cena do Shrek -->
+  <button class="shrek-btn" onclick="abrirShrek()">·</button>
 
   <!-- Overlay cenario do Shrek -->
   <div class="shrek-overlay" id="shrek-overlay">
 
-    <!-- Caixa de senha -->
+    <!-- Caixa de senha + instrucoes -->
     <div class="senha-box" id="senha-box">
-      <h2>🔒 Area protegida</h2>
-      <p>Digite a senha para liberar a cena do Shrek</p>
+      <h2>🌱 Girassol Shrek 01:04,20</h2>
+      <p>Esta cena esta no filme <strong>Shrek</strong> (2001).</p>
+      <p>Assista na <span class="netflix-tag">Netflix</span> no momento
+         <span class="tempo-tag">01:04:20</span>.</p>
+
+      <div class="links-streaming">
+        <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank">▶ Abrir na Netflix</a>
+        <a class="link-youtube" href="https://www.youtube.com/results?search_query=shrek+2001+ponto+1h04min20s" target="_blank">🔍 Procurar no YouTube</a>
+      </div>
+
+      <p class="nao-netflix">
+        Nao consigiu acessar a Netflix ou assistir por outros meios?<br>
+        Digite a senha abaixo e a cena aparece aqui pra voce 👇
+      </p>
+
       <input type="password" class="senha-input" id="senha-input"
              placeholder="SENHA" onkeypress="if(event.key==='Enter')verificarSenha()">
-      <button class="senha-btn" onclick="verificarSenha()">Desbloquear</button>
+      <button class="senha-btn" onclick="verificarSenha()">Desbloquear cena</button>
       <div class="senha-erro" id="senha-erro"></div>
     </div>
 
