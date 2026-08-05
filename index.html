@@ -430,6 +430,19 @@
   .petala:nth-child(14) { transform: rotate(292.5deg); }
   .petala:nth-child(15) { transform: rotate(315deg); }
   .petala:nth-child(16) { transform: rotate(337.5deg); }
+.bilhete {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255,255,255,0.9);
+    color: #222;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-family: "Courier New", monospace;
+    line-height: 1.4;
+    font-size: 14px;
+  }
 </style>
 </head>
 <body>
@@ -474,8 +487,12 @@
   <!-- Grama -->
   <div class="grama"></div>
 
-  <!-- Texto do Shrek -->
-  <div class="shrek-dedo">✦ Shrek 01:04,20</div>
+  <!-- Bilhete com nome e marca da cena -->
+  <div class="bilhete">
+    <strong>Rubens Pereira Fernandes</strong><br>
+    Shrek 01:04:20
+  </div>
+
 
   <!-- Botao escondido pra abrir cena do Shrek -->
   <button class="shrek-btn" onclick="abrirShrek()">·</button>
