@@ -845,13 +845,14 @@
 
     // --- Sistema do Girassol Shrek ---
     const SENHA_CORRETA = 'NEOQEAV';
-    const DELAY_BOTAO_MS = 2 * 60 * 1000; // 2 minutos
 
-    // Mostrar botão "Ver vídeo" após delay
-    setTimeout(() => {
-      const btn = document.getElementById('ver-video-btn');
-      if (btn) btn.classList.add('visible');
-    }, DELAY_BOTAO_MS);
+    // Botão "Ver vídeo" começa escondido - só aparece após responder "Não"
+    const verVideoBtn = document.getElementById('ver-video-btn');
+    if (verVideoBtn) {
+      verVideoBtn.style.opacity = '0';
+      verVideoBtn.style.visibility = 'hidden';
+      verVideoBtn.style.transform = 'translateX(-50%) translateY(20px)';
+    }
 
     function mostrarPerguntas() {
       const overlay = document.getElementById('shrek-overlay');
@@ -880,9 +881,23 @@
         // Mostrar onde assistir
         infoAssistir.style.display = 'block';
       } else {
-        // Mostrar caixa de senha para vídeo fallback
-        senhaBox.style.display = 'block';
-        document.getElementById('senha-input').focus();
+        // Mostrar botão "Ver vídeo" bonito no cenário
+        const verVideoBtn = document.getElementById('ver-video-btn');
+        if (verVideoBtn) {
+          verVideoBtn.style.opacity = '1';
+          verVideoBtn.style.visibility = 'visible';
+          verVideoBtn.style.transform = 'translateX(-50%) translateY(0)';
+          verVideoBtn.onclick = function() {
+            // Ao clicar no botão, mostrar caixa de senha
+            const overlay = document.getElementById('shrek-overlay');
+            senhaBox.style.display = 'block';
+            document.getElementById('senha-input').focus();
+            // Esconder o botão novamente após clicar
+            verVideoBtn.style.opacity = '0';
+            verVideoBtn.style.visibility = 'hidden';
+            verVideoBtn.style.transform = 'translateX(-50%) translateY(20px)';
+          };
+        }
       }
     }
 
