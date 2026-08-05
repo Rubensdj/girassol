@@ -432,19 +432,35 @@
   .petala:nth-child(16) { transform: rotate(337.5deg); }
 .bilhete {
   position: absolute;
--    top: 20px;
--    left: 20px;
-+    top: 20px;
-+    right: 20px;
-  background: rgba(255,255,255,0.9);
-  color: #222;
-  padding: 12px 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  font-family: "Courier New", monospace;
-  line-height: 1.4;
-  font-size: 14px;
+/* Container para girassol + cartão */
+.scene {
+  display: flex;
+  align-items: flex-end; /* alinha a base da planta com o fundo */
+  justify-content: center;
+  gap: 40px;
+  margin-top: 20px; /* espaço do topo da tela */
 }
+
+/* Cartão estilizado ao lado do girassol */
+.bilhete {
+  background: linear-gradient(135deg, #fff, #f0f0f0);
+  color: #111;
+  padding: 20px 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-size: 16px;
+  max-width: 240px;
+  text-align: left;
+}
+.bilhete strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #222;
+}
+
 </style>
 </head>
 <body>
@@ -457,43 +473,46 @@
   <div class="nuvem nuvem2"></div>
   <div class="nuvem nuvem3"></div>
 
-  <!-- Girassol -->
-  <div class="girassol">
-    <div class="caule">
-      <div class="folha folha1"></div>
-      <div class="folha folha2"></div>
-    </div>
-    <div class="cabeca">
-      <div class="petalas">
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
-        <div class="petala"></div>
+  <!-- Scene wrapper (girassol + card) -->
+  <div class="scene">
+    <!-- Girassol -->
+    <div class="girassol">
+      <div class="caule">
+        <div class="folha folha1"></div>
+        <div class="folha folha2"></div>
       </div>
-      <div class="nucleo"></div>
+      <div class="cabeca">
+        <div class="petalas">
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+          <div class="petala"></div>
+        </div>
+        <div class="nucleo"></div>
+      </div>
+    </div>
+
+    <!-- Bilhete ao lado -->
+    <div class="bilhete">
+      <strong>Rubens Pereira Fernandes</strong><br>
+      Shrek 01:04:20
     </div>
   </div>
 
   <!-- Grama -->
   <div class="grama"></div>
-
-  <!-- Bilhete com nome e marca da cena (positioned ao lado do girassol) -->
-  <div class="bilhete">
-    <strong>Rubens Pereira Fernandes</strong><br>
-    Shrek 01:04:20
-  </div>
 
 
   <!-- Botao escondido pra abrir cena do Shrek -->
