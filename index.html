@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Girassol Animado</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;600&family=MedievalSharp&display=swap" rel="stylesheet">
 
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -590,6 +590,379 @@
     to   { transform: rotate(5deg); }
   }
 
+  /* === JARDINEIRO === */
+  .jardineiro {
+    position: absolute;
+    bottom: 40px;
+    left: 15%;
+    z-index: 10;
+    transform: scale(0.8);
+  }
+  .jardineiro-corpo {
+    position: relative;
+    width: 60px;
+    height: 100px;
+  }
+  .jardineiro-chapéu {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 12px;
+    background: #8B4513;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  .jardineiro-chapéu::after {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 16px;
+    background: #8B4513;
+    border-radius: 12px 12px 0 0;
+  }
+  .jardineiro-rosto {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 30px;
+    background: #FDBCB4;
+    border-radius: 50%;
+  }
+  .jardineiro-olho {
+    position: absolute;
+    top: 10px;
+    width: 4px;
+    height: 4px;
+    background: #2D1B1B;
+    border-radius: 50%;
+  }
+  .jardineiro-olho:first-child { left: 8px; }
+  .jardineiro-olho:last-child { right: 8px; }
+  .jardineiro-sorriso {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 6px;
+    border-bottom: 2px solid #2D1B1B;
+    border-radius: 0 0 6px 6px;
+  }
+  .jardineiro-braço-esquerdo,
+  .jardineiro-braço-direito {
+    position: absolute;
+    top: 38px;
+    width: 18px;
+    height: 8px;
+    background: #FDBCB4;
+    border-radius: 4px;
+    transform-origin: inner center;
+  }
+  .jardineiro-braço-esquerdo {
+    left: -16px;
+    transform: rotate(-30deg);
+    animation: regar-braco-esq 4s ease-in-out infinite;
+  }
+  .jardineiro-braço-direito {
+    right: -16px;
+    transform: rotate(30deg);
+  }
+  .jardineiro-corpo-principal {
+    position: absolute;
+    top: 38px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 40px;
+    background: #2E7D32;
+    border-radius: 8px;
+  }
+  .jardineiro-perna-esquerda,
+  .jardineiro-perna-direita {
+    position: absolute;
+    bottom: 0;
+    width: 10px;
+    height: 22px;
+    background: #4A4A4A;
+    border-radius: 4px;
+  }
+  .jardineiro-perna-esquerda { left: 12px; }
+  .jardineiro-perna-direita { right: 12px; }
+
+  /* Regador */
+  .regador {
+    position: absolute;
+    top: 30px;
+    left: -20px;
+    transform: rotate(-25deg);
+    transform-origin: bottom right;
+    animation: regar-balancear 4s ease-in-out infinite;
+  }
+  .regador-corpo {
+    width: 28px;
+    height: 20px;
+    background: #888;
+    border-radius: 50%;
+    border: 3px solid #666;
+  }
+  .regador-bico {
+    position: absolute;
+    right: -18px;
+    top: 8px;
+    width: 20px;
+    height: 6px;
+    background: #888;
+    border-radius: 3px;
+  }
+  .regador-alo {
+    position: absolute;
+    left: -8px;
+    top: 2px;
+    width: 14px;
+    height: 14px;
+    border: 3px solid #888;
+    border-radius: 50%;
+    background: transparent;
+  }
+  .agua {
+    position: absolute;
+    right: -30px;
+    top: 10px;
+    width: 30px;
+    height: 4px;
+    background: rgba(64, 164, 223, 0.6);
+    border-radius: 2px;
+    opacity: 0;
+    animation: agua-jato 4s ease-in-out infinite;
+  }
+  .agua::before,
+  .agua::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(64, 164, 223, 0.8);
+    border-radius: 50%;
+    animation: gota-cair 0.8s ease-in infinite;
+  }
+  .agua::before { top: -2px; right: 5px; animation-delay: 0s; }
+  .agua::after { top: 2px; right: 15px; animation-delay: 0.4s; }
+
+  @keyframes regar-balancear {
+    0%, 100% { transform: rotate(-25deg); }
+    50% { transform: rotate(-45deg); }
+  }
+  @keyframes regar-braco-esq {
+    0%, 100% { transform: rotate(-30deg); }
+    50% { transform: rotate(-55deg); }
+  }
+  @keyframes agua-jato {
+    0%, 100% { opacity: 0; transform: translateX(0) scaleX(0); }
+    30%, 70% { opacity: 0.6; transform: translateX(-10px) scaleX(1); }
+  }
+  @keyframes gota-cair {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(20px); }
+  }
+
+  /* === SHREK === */
+  .shrek-personagem {
+    position: absolute;
+    bottom: 40px;
+    right: 15%;
+    z-index: 10;
+    transform: scale(0.7);
+    animation: shrek-balancar 6s ease-in-out infinite;
+  }
+  @keyframes shrek-balancar {
+    0%, 100% { transform: scale(0.7) rotate(-2deg); }
+    50% { transform: scale(0.7) rotate(2deg); }
+  }
+  .shrek-cabeca {
+    position: relative;
+    width: 80px;
+    height: 70px;
+  }
+  .shrek-orelha {
+    position: absolute;
+    top: 10px;
+    width: 22px;
+    height: 35px;
+    background: #7DB874;
+    border-radius: 50% 50% 40% 60%;
+    box-shadow: inset -3px 0 6px rgba(0,0,0,0.2);
+  }
+  .shrek-orelha.esquerda {
+    left: -8px;
+    transform: rotate(-25deg);
+  }
+  .shrek-orelha.direita {
+    right: -8px;
+    transform: rotate(25deg);
+  }
+  .shrek-rosto {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 55px;
+    background: #7DB874;
+    border-radius: 45% 45% 55% 55%;
+    box-shadow: inset 0 -4px 8px rgba(0,0,0,0.15);
+  }
+  .shrek-olho {
+    position: absolute;
+    top: 14px;
+    width: 14px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+  }
+  .shrek-olho.esquerda { left: 10px; }
+  .shrek-olho.direita { right: 10px; }
+  .shrek-olho::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 6px;
+    height: 6px;
+    background: #1a1a1a;
+    border-radius: 50%;
+  }
+  .shrek-sobrancelha {
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    height: 4px;
+    background: #4A7C43;
+    border-radius: 2px;
+  }
+  .shrek-sobrancelha.esquerda {
+    left: 6px;
+    transform: rotate(-10deg);
+  }
+  .shrek-sobrancelha.direita {
+    right: 6px;
+    transform: rotate(10deg);
+  }
+  .shrek-nariz {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 14px;
+    background: #6BA55F;
+    border-radius: 50% 50% 40% 40%;
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.15);
+  }
+  .shrek-nariz::before,
+  .shrek-nariz::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    width: 4px;
+    height: 3px;
+    background: #4A7C43;
+    border-radius: 50%;
+  }
+  .shrek-nariz::before { left: 3px; }
+  .shrek-nariz::after { right: 3px; }
+  .shrek-boca {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 10px;
+    border-bottom: 3px solid #4A7C43;
+    border-radius: 0 0 20px 20px;
+  }
+  .shrek-dente {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 6px;
+    background: #fff;
+    border-radius: 2px 2px 0 0;
+    box-shadow: inset 0 -1px 2px rgba(0,0,0,0.1);
+  }
+  .shrek-corpo {
+    position: relative;
+    width: 70px;
+    height: 80px;
+    margin-top: -10px;
+  }
+  .shrek-colete {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 55px;
+    height: 60px;
+    background: #8B4513;
+    border-radius: 8px 8px 12px 12px;
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 30% 100%, 0 70%);
+  }
+  .shrek-cinto {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 55px;
+    height: 8px;
+    background: #4A4A4A;
+    border-radius: 2px;
+  }
+  .shrek-calca {
+    position: absolute;
+    top: 58px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 25px;
+    background: #4A4A4A;
+    border-radius: 0 0 12px 12px;
+  }
+  .shrek-braco {
+    position: absolute;
+    top: 10px;
+    width: 14px;
+    height: 40px;
+    background: #7DB874;
+    border-radius: 6px;
+  }
+  .shrek-braco.esquerda {
+    left: -14px;
+    transform: rotate(-20deg);
+  }
+  .shrek-braco.direita {
+    right: -14px;
+    transform: rotate(20deg);
+  }
+  .shrek-perna {
+    position: absolute;
+    bottom: 0;
+    width: 14px;
+    height: 25px;
+    background: #4A4A4A;
+    border-radius: 6px;
+  }
+  .shrek-perna.esquerda { left: 14px; }
+  .shrek-perna.direita { right: 14px; }
+
   /* Pétalas geradas via CSS — 16 pétalas */
   .petala:nth-child(1)  { transform: rotate(0deg); }
   .petala:nth-child(2)  { transform: rotate(22.5deg); }
@@ -635,23 +1008,26 @@
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   backdrop-filter: blur(8px);
-  color: var(--card-color);
+  color: #1B5E20;
   padding: 20px 24px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'MedievalSharp', cursive;
   line-height: 1.5;
-  font-size: 16px;
-  max-width: 240px;
-  text-align: left;
+  font-size: 18px;
+  max-width: 260px;
+  text-align: center;
   opacity: 0;
   animation: fadeIn 0.8s ease-out forwards;
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
 }
 .bilhete strong {
   display: block;
-  font-size: 18px;
+  font-size: 22px;
   margin-bottom: 8px;
-  color: #222;
+  color: #2E7D32;
+  font-family: 'Creepster', cursive;
+  letter-spacing: 1px;
 }
 
 /* Utility hidden class */
@@ -711,7 +1087,56 @@
     </video>
   <div class="grama"></div>
 
-    <!-- Botao escondido pra abrir cena do Shrek -->
+  <!-- Jardineiro -->
+  <div class="jardineiro" id="jardineiro">
+    <div class="jardineiro-corpo">
+      <div class="jardineiro-chapéu"></div>
+      <div class="jardineiro-rosto">
+        <div class="jardineiro-olho"></div>
+        <div class="jardineiro-olho"></div>
+        <div class="jardineiro-sorriso"></div>
+      </div>
+      <div class="jardineiro-braço-esquerdo"></div>
+      <div class="jardineiro-braço-direito"></div>
+      <div class="jardineiro-corpo-principal"></div>
+      <div class="jardineiro-perna-esquerda"></div>
+      <div class="jardineiro-perna-direita"></div>
+    </div>
+    <div class="regador" id="regador">
+      <div class="regador-corpo"></div>
+      <div class="regador-bico"></div>
+      <div class="regador-alo"></div>
+      <div class="agua" id="agua"></div>
+    </div>
+  </div>
+
+  <!-- Shrek -->
+  <div class="shrek-personagem" id="shrek-personagem">
+    <div class="shrek-cabeca">
+      <div class="shrek-orelha esquerda"></div>
+      <div class="shrek-orelha direita"></div>
+      <div class="shrek-rosto">
+        <div class="shrek-olho esquerda"></div>
+        <div class="shrek-olho direita"></div>
+        <div class="shrek-sobrancelha esquerda"></div>
+        <div class="shrek-sobrancelha direita"></div>
+        <div class="shrek-nariz"></div>
+        <div class="shrek-boca"></div>
+        <div class="shrek-dente"></div>
+      </div>
+    </div>
+    <div class="shrek-corpo">
+      <div class="shrek-colete"></div>
+      <div class="shrek-cinto"></div>
+      <div class="shrek-calca"></div>
+      <div class="shrek-braco esquerda"></div>
+      <div class="shrek-braco direita"></div>
+      <div class="shrek-perna esquerda"></div>
+      <div class="shrek-perna direita"></div>
+    </div>
+  </div>
+
+  <!-- Botao escondido pra abrir cena do Shrek -->
     <button class="shrek-btn" onclick="abrirShrek()">·</button>
 
     <!-- Overlay cenario do Shrek -->
