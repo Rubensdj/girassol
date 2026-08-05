@@ -263,6 +263,203 @@
     font-size: 12px;
   }
 
+  /* Botão bonito "Ver vídeo" - aparece após delay/perguntas */
+  .ver-video-btn {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4),
+                0 0 0 4px rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+  }
+  .ver-video-btn.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+  .ver-video-btn:hover {
+    transform: translateX(-50%) translateY(-3px);
+    box-shadow: 0 12px 35px rgba(255, 107, 157, 0.5),
+                0 0 0 6px rgba(255, 255, 255, 0.15);
+  }
+  .ver-video-btn:active {
+    transform: translateX(-50%) translateY(1px);
+  }
+  .ver-video-btn::before {
+    content: '▶ ';
+    margin-right: 8px;
+    font-size: 18px;
+  }
+
+  /* Caixa de perguntas */
+  .perguntas-box {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    padding: 40px 35px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255, 107, 157, 0.3);
+    width: 380px;
+    max-width: 90vw;
+    animation: slide-up 0.5s ease forwards;
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .perguntas-box h2 {
+    color: #ff6b9d;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+  .pergunta {
+    color: #e0e0e0;
+    font-size: 16px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .pergunta strong {
+    color: #ff6b9d;
+  }
+  .btn-resposta {
+    display: inline-block;
+    margin: 8px;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #2E8B57 0%, #1a5c33 100%);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(46, 139, 87, 0.3);
+  }
+  .btn-resposta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46, 139, 87, 0.4);
+  }
+  .btn-resposta.nao {
+    background: linear-gradient(135deg, #c44569 0%, #8b2d4a 100%);
+    box-shadow: 0 4px 15px rgba(196, 69, 105, 0.3);
+  }
+  .btn-resposta.nao:hover {
+    box-shadow: 0 6px 20px rgba(196, 69, 105, 0.4);
+  }
+
+  /* Info de onde assistir */
+  .info-assistir {
+    background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+    padding: 30px;
+    border-radius: 12px;
+    text-align: left;
+    border: 1px solid rgba(0, 149, 246, 0.3);
+    margin-top: 20px;
+    animation: fade-in 0.5s ease forwards;
+  }
+  .info-assistir h3 {
+    color: #0095f6;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+  .info-assistir p {
+    color: #b0b0b0;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .info-assistir .destaque {
+    color: #ff6b9d;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+  }
+  .info-assistir .link-netflix {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #0095f6 0%, #0063b3 100%);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .info-assistir .link-netflix:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 149, 246, 0.4);
+  }
+
+  /* Mensagem final após vídeo */
+  .mensagem-final {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 200;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 40px;
+    animation: fade-in 1s ease forwards;
+  }
+  .mensagem-final.visivel {
+    display: flex;
+  }
+  .mensagem-final .neoqeav {
+    font-family: 'Courier New', monospace;
+    font-size: 28px;
+    font-weight: bold;
+    color: #ff6b9d;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { text-shadow: 0 0 20px rgba(255, 107, 157, 0.5); }
+    50% { text-shadow: 0 0 40px rgba(255, 107, 157, 0.8), 0 0 60px rgba(255, 107, 157, 0.4); }
+  }
+  .mensagem-final .amor {
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    color: #fff;
+    line-height: 1.6;
+    max-width: 600px;
+  }
+  .mensagem-final .amor span {
+    color: #ff6b9d;
+    font-weight: 600;
+  }
+  .mensagem-final .coracao {
+    font-size: 48px;
+    margin-top: 30px;
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    20% { transform: scale(1.2); }
+    40% { transform: scale(1); }
+    60% { transform: scale(1.1); }
+    80% { transform: scale(1); }
+  }
+
   /* Overlay cenario do Shrek */
   .shrek-overlay {
     display: none;
@@ -559,53 +756,78 @@
       Seu navegador não suporta vídeo.
     </video>
   </div>
-
-  <!-- Grama -->
   <div class="grama"></div>
 
 
-  <!-- Botao escondido pra abrir cena do Shrek -->
-  <button class="shrek-btn" onclick="abrirShrek()">·</button>
-  <div style="position:absolute; top:20px; right:20px;">
-    <a href="video.html" class="nav-video" style="font-family:'Inter',sans-serif; color:#0095f6; text-decoration:none; font-weight:600;">Ver vídeo</a>
-  </div>
+    <!-- Botão bonito "Ver vídeo" - aparece após delay/perguntas -->
+    <button class="ver-video-btn" id="ver-video-btn" onclick="mostrarPerguntas()">Ver vídeo</button>
 
-  <!-- Overlay cenario do Shrek -->
-  <div class="shrek-overlay" id="shrek-overlay">
+    <!-- Botao escondido pra abrir cena do Shrek -->
+    <button class="shrek-btn" onclick="abrirShrek()">·</button>
+    <div style="position:absolute; top:20px; right:20px;">
+      <a href="video.html" class="nav-video" style="font-family:'Inter',sans-serif; color:#0095f6; text-decoration:none; font-weight:600;">Ver vídeo</a>
+    </div>
 
-    <!-- Caixa de senha + instrucoes -->
-    <div class="senha-box" id="senha-box">
-      <h2>🌱 Girassol Shrek 01:04,20</h2>
-      <p>Esta cena esta no filme <strong>Shrek</strong> (2001).</p>
-      <p>Assista na <span class="netflix-tag">Netflix</span> no momento
-         <span class="tempo-tag">01:04:20</span>.</p>
+    <!-- Overlay cenario do Shrek -->
+    <div class="shrek-overlay" id="shrek-overlay">
 
-      <div class="links-streaming">
-        <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank">▶ Abrir na Netflix</a>
-        <a class="link-youtube" href="https://www.youtube.com/results?search_query=shrek+2001+ponto+1h04min20s" target="_blank">🔍 Procurar no YouTube</a>
+      <!-- Caixa de perguntas -->
+      <div class="perguntas-box" id="perguntas-box" style="display:none;">
+        <h2>🌻 Girassol</h2>
+        <p class="pergunta">Ei... você tem <strong>Netflix</strong> ou outro jeito de assistir <strong>Shrek</strong>?</p>
+        <button class="btn-resposta" onclick="respostaNetflix(true)">Sim, tenho Netflix</button>
+        <button class="btn-resposta nao" onclick="respostaNetflix(false)">Não tenho / não consigo assistir</button>
       </div>
 
-      <p class="nao-netflix">
-        Nao consigiu acessar a Netflix ou assistir por outros meios?<br>
-        Digite a senha abaixo e a cena aparece aqui pra voce 👇
-      </p>
+      <!-- Info de onde assistir (quando resposta = sim) -->
+      <div class="info-assistir" id="info-assistir" style="display:none;">
+        <h3>📺 Onde assistir</h3>
+        <p>A cena está no filme <span class="destaque">Shrek (2001)</span>.</p>
+        <p>Tempo exato: <span class="destaque">01:04:20</span></p>
+        <p>É a cena onde o Shrek tira a orelha do burro... um clássico! 💚</p>
+        <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank">▶ Abrir Shrek na Netflix</a>
+      </div>
 
-      <input type="password" class="senha-input" id="senha-input"
-             placeholder="SENHA" onkeypress="if(event.key==='Enter')verificarSenha()">
-      <button class="senha-btn" onclick="verificarSenha()">Desbloquear cena</button>
-      <div class="senha-erro" id="senha-erro"></div>
+      <!-- Caixa de senha + instrucoes -->
+      <div class="senha-box" id="senha-box">
+        <h2>🌱 Girassol Shrek 01:04,20</h2>
+        <p>Esta cena esta no filme <strong>Shrek</strong> (2001).</p>
+        <p>Assista na <span class="netflix-tag">Netflix</span> no momento
+           <span class="tempo-tag">01:04:20</span>.</p>
+
+        <div class="links-streaming">
+          <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank">▶ Abrir na Netflix</a>
+          <a class="link-youtube" href="https://www.youtube.com/results?search_query=shrek+2001+ponto+1h04min20s" target="_blank">🔍 Procurar no YouTube</a>
+        </div>
+
+        <p class="nao-netflix">
+          Nao consigiu acessar a Netflix ou assistir por outros meios?<br>
+          Digite a senha abaixo e a cena aparece aqui pra voce 👇
+        </p>
+
+        <input type="password" class="senha-input" id="senha-input"
+               placeholder="SENHA" onkeypress="if(event.key==='Enter')verificarSenha()">
+        <button class="senha-btn" onclick="verificarSenha()">Desbloquear cena</button>
+        <div class="senha-erro" id="senha-erro"></div>
+      </div>
+
+      <!-- Player de video -->
+      <div class="shrek-player" id="shrek-player">
+        <video controls autoplay id="shrek-player-video">
+          <source src="shrek.mp4" type="video/mp4">
+          Seu navegador nao suporta video.
+        </video>
+        <button class="fechar-btn" onclick="fecharShrek()">✕ Fechar</button>
+      </div>
+
     </div>
 
-    <!-- Player de video -->
-    <div class="shrek-player" id="shrek-player">
-      <video controls autoplay>
-        <source src="shrek.mp4" type="video/mp4">
-        Seu navegador nao suporta video.
-      </video>
-      <button class="fechar-btn" onclick="fecharShrek()">✕ Fechar</button>
+    <!-- Mensagem final após vídeo terminar -->
+    <div class="mensagem-final" id="mensagem-final">
+      <div class="neoqeav">NEOQEAV</div>
+      <div class="amor">NUNUNCA ESQUECA O QUANTO EU AMO VOCE <span>💗</span></div>
+      <div class="coracao">♥</div>
     </div>
-
-  </div>
 
   <script>
     // Gerar tufos de grama dinamicamente
@@ -621,31 +843,61 @@
       grama.appendChild(fio);
     }
 
-    // --- Sistema de senha do Shrek ---
+    // --- Sistema do Girassol Shrek ---
     const SENHA_CORRETA = 'NEOQEAV';
+    const DELAY_BOTAO_MS = 2 * 60 * 1000; // 2 minutos
 
-    function abrirShrek() {
+    // Mostrar botão "Ver vídeo" após delay
+    setTimeout(() => {
+      const btn = document.getElementById('ver-video-btn');
+      if (btn) btn.classList.add('visible');
+    }, DELAY_BOTAO_MS);
+
+    function mostrarPerguntas() {
       const overlay = document.getElementById('shrek-overlay');
+      const perguntasBox = document.getElementById('perguntas-box');
+      const senhaBox = document.getElementById('senha-box');
+      const infoAssistir = document.getElementById('info-assistir');
+      const player = document.getElementById('shrek-player');
+      
+      overlay.classList.add('ativo');
+      perguntasBox.style.display = 'block';
+      senhaBox.style.display = 'none';
+      infoAssistir.style.display = 'none';
+      player.classList.remove('ativo');
+    }
+
+    function respostaNetflix(temNetflix) {
+      const perguntasBox = document.getElementById('perguntas-box');
+      const infoAssistir = document.getElementById('info-assistir');
       const senhaBox = document.getElementById('senha-box');
       const player = document.getElementById('shrek-player');
-      overlay.classList.add('ativo');
-      senhaBox.style.display = 'block';
-      player.classList.remove('ativo');
-      document.getElementById('senha-input').value = '';
-      document.getElementById('senha-erro').textContent = '';
-      document.getElementById('senha-input').focus();
+      const video = document.getElementById('shrek-player-video');
+      
+      perguntasBox.style.display = 'none';
+      
+      if (temNetflix) {
+        // Mostrar onde assistir
+        infoAssistir.style.display = 'block';
+      } else {
+        // Mostrar caixa de senha para vídeo fallback
+        senhaBox.style.display = 'block';
+        document.getElementById('senha-input').focus();
+      }
     }
 
     function verificarSenha() {
       const input = document.getElementById('senha-input').value;
       const erro = document.getElementById('senha-erro');
       const senhaBox = document.getElementById('senha-box');
+      const player = document.getElementById('shrek-player');
+      const video = document.getElementById('shrek-player-video');
+      
       if (input.toUpperCase() === SENHA_CORRETA) {
         erro.textContent = '';
         senhaBox.style.display = 'none';
-        const videoElem = document.getElementById('shrek-video');
-        videoElem.style.display = 'block';
-        videoElem.play();
+        player.classList.add('ativo');
+        video.play();
       } else {
         erro.textContent = '❌ Senha incorreta! Tente novamente.';
         document.getElementById('senha-input').value = '';
@@ -656,13 +908,38 @@
     function fecharShrek() {
       const overlay = document.getElementById('shrek-overlay');
       const player = document.getElementById('shrek-player');
-      const video = player.querySelector('video');
+      const video = document.getElementById('shrek-player-video');
+      const mensagemFinal = document.getElementById('mensagem-final');
+      const senhaBox = document.getElementById('senha-box');
+      const perguntasBox = document.getElementById('perguntas-box');
+      const infoAssistir = document.getElementById('info-assistir');
+      
       video.pause();
       video.currentTime = 0;
       overlay.classList.remove('ativo');
       player.classList.remove('ativo');
-      document.getElementById('senha-box').style.display = 'block';
+      mensagemFinal.classList.remove('visivel');
+      senhaBox.style.display = 'block';
+      perguntasBox.style.display = 'none';
+      infoAssistir.style.display = 'none';
     }
+
+    // Detectar fim do vídeo para mostrar mensagem final
+    const videoPlayer = document.getElementById('shrek-player-video');
+    videoPlayer.addEventListener('ended', () => {
+      const mensagemFinal = document.getElementById('mensagem-final');
+      const player = document.getElementById('shrek-player');
+      player.classList.remove('ativo');
+      mensagemFinal.classList.add('visivel');
+    });
+
+    // Também permitir fechar mensagem final clicando nela
+    document.getElementById('mensagem-final').addEventListener('click', () => {
+      const mensagemFinal = document.getElementById('mensagem-final');
+      const overlay = document.getElementById('shrek-overlay');
+      mensagemFinal.classList.remove('visivel');
+      overlay.classList.remove('ativo');
+    });
   </script>
 
 </body>
