@@ -755,18 +755,10 @@
       <source src="shrek.mp4" type="video/mp4">
       Seu navegador não suporta vídeo.
     </video>
-  </div>
   <div class="grama"></div>
-
-
-    <!-- Botão bonito "Ver vídeo" - aparece após delay/perguntas -->
-    <button class="ver-video-btn" id="ver-video-btn" onclick="mostrarPerguntas()">Ver vídeo</button>
 
     <!-- Botao escondido pra abrir cena do Shrek -->
     <button class="shrek-btn" onclick="abrirShrek()">·</button>
-    <div style="position:absolute; top:20px; right:20px;">
-      <a href="video.html" class="nav-video" style="font-family:'Inter',sans-serif; color:#0095f6; text-decoration:none; font-weight:600;">Ver vídeo</a>
-    </div>
 
     <!-- Overlay cenario do Shrek -->
     <div class="shrek-overlay" id="shrek-overlay">
@@ -846,13 +838,10 @@
     // --- Sistema do Girassol Shrek ---
     const SENHA_CORRETA = 'NEOQEAV';
 
-    // Botão "Ver vídeo" começa escondido - só aparece após responder "Não"
-    const verVideoBtn = document.getElementById('ver-video-btn');
-    if (verVideoBtn) {
-      verVideoBtn.style.opacity = '0';
-      verVideoBtn.style.visibility = 'hidden';
-      verVideoBtn.style.transform = 'translateX(-50%) translateY(20px)';
-    }
+    // Mostrar perguntas automaticamente após 10 segundos
+    setTimeout(() => {
+      mostrarPerguntas();
+    }, 10 * 1000);
 
     function mostrarPerguntas() {
       const overlay = document.getElementById('shrek-overlay');
@@ -881,23 +870,9 @@
         // Mostrar onde assistir
         infoAssistir.style.display = 'block';
       } else {
-        // Mostrar botão "Ver vídeo" bonito no cenário
-        const verVideoBtn = document.getElementById('ver-video-btn');
-        if (verVideoBtn) {
-          verVideoBtn.style.opacity = '1';
-          verVideoBtn.style.visibility = 'visible';
-          verVideoBtn.style.transform = 'translateX(-50%) translateY(0)';
-          verVideoBtn.onclick = function() {
-            // Ao clicar no botão, mostrar caixa de senha
-            const overlay = document.getElementById('shrek-overlay');
-            senhaBox.style.display = 'block';
-            document.getElementById('senha-input').focus();
-            // Esconder o botão novamente após clicar
-            verVideoBtn.style.opacity = '0';
-            verVideoBtn.style.visibility = 'hidden';
-            verVideoBtn.style.transform = 'translateX(-50%) translateY(20px)';
-          };
-        }
+        // Mostrar caixa de senha para vídeo fallback
+        senhaBox.style.display = 'block';
+        document.getElementById('senha-input').focus();
       }
     }
 
