@@ -7,237 +7,479 @@
 <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;600&family=MedievalSharp&display=swap" rel="stylesheet">
 
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
   :root {
-    --bg-primary: #87CEEB;
-    --bg-secondary: #228B22;
-    --card-bg: rgba(255,255,255,0.2);
-    --card-border: rgba(255,255,255,0.3);
-    --card-color: #111;
-    --accent: #FFD700;
-  }
+      --bg-primary: #87CEEB;
+      --bg-secondary: #228B22;
+      --card-bg: rgba(255,255,255,0.2);
+      --card-border: rgba(255,255,255,0.3);
+      --card-color: #111;
+      --accent: #FFD700;
+    }
 
-  body {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(180deg, var(--bg-primary) 0%, #B0E0E6 40%, #98FB98 70%, var(--bg-secondary) 100%);
-    overflow: hidden;
-    font-family: 'Inter', sans-serif;
-  }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  /* Sol */
-  .sol {
-    position: absolute;
-    top: 40px;
-    right: 60px;
-    width: 80px;
-    height: 80px;
-    background: radial-gradient(circle, #FFD700, #FFA500);
-    border-radius: 50%;
-    box-shadow: 0 0 60px 20px rgba(255, 215, 0, 0.4);
-    animation: brilho-sol 3s ease-in-out infinite alternate;
-  }
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: 
+        radial-gradient(ellipse at 50% 0%, #4A90D9 0%, #87CEEB 30%, #E0F4FF 60%, #90EE90 100%),
+        linear-gradient(180deg, transparent 60%, rgba(34,139,34,0.15) 100%);
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      perspective: 1000px;
+    }
 
-  @keyframes brilho-sol {
-    from { box-shadow: 0 0 60px 20px rgba(255, 215, 0, 0.4); }
-    to   { box-shadow: 0 0 100px 40px rgba(255, 215, 0, 0.6); }
-  }
+    /* Sky atmosphere */
+    .sky-atmosphere {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 10%, rgba(255,240,200,0.1) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-  /* Raios do sol */
-  .sol::before, .sol::after {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 140px; height: 140px;
-    margin: -70px 0 0 -70px;
-    background:
-      linear-gradient(0deg,  transparent 45%, rgba(255,215,0,0.5) 49%, rgba(255,215,0,0.5) 51%, transparent 55%),
-      linear-gradient(45deg, transparent 45%, rgba(255,215,0,0.4) 49%, rgba(255,215,0,0.4) 51%, transparent 55%),
-      linear-gradient(90deg, transparent 45%, rgba(255,215,0,0.5) 49%, rgba(255,215,0,0.5) 51%, transparent 55%),
-      linear-gradient(135deg,transparent 45%, rgba(255,215,0,0.4) 49%, rgba(255,215,0,0.4) 51%, transparent 55%);
-    animation: girar-raios 20s linear infinite;
-  }
-  .sol::after {
-    width: 110px; height: 110px;
-    margin: -55px 0 0 -55px;
-    animation: girar-raios 15s linear infinite reverse;
-  }
-  @keyframes girar-raios {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
+    /* Sun with realistic glow */
+    .sol {
+      position: absolute;
+      top: 60px;
+      right: 80px;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle at 40% 40%, #FFF8E7 0%, #FFE8A0 30%, #FFD700 60%, #FFB300 100%);
+      border-radius: 50%;
+      box-shadow: 
+        0 0 60px 20px rgba(255, 215, 0, 0.3),
+        0 0 120px 40px rgba(255, 200, 0, 0.15),
+        inset -10px -10px 30px rgba(255,180,0,0.2),
+        inset 10px 10px 20px rgba(255,255,255,0.3);
+      animation: sol-pulsar 8s ease-in-out infinite alternate;
+      z-index: 2;
+    }
 
-  /* Nuvens */
-  .nuvem {
-    position: absolute;
-    background: #fff;
-    border-radius: 50px;
-    opacity: 0.85;
-    animation: mover-nuvem linear infinite;
-  }
-  .nuvem1 { width: 100px; height: 30px; top: 80px;  left: -120px; animation-duration: 25s; }
-  .nuvem2 { width: 140px; height: 40px; top: 140px; left: -160px; animation-duration: 35s; animation-delay: -10s; }
-  .nuvem3 { width: 80px;  height: 25px; top: 200px; left: -100px; animation-duration: 30s; animation-delay: -20s; }
+    @keyframes sol-pulsar {
+      0% { 
+        box-shadow: 
+          0 0 60px 20px rgba(255, 215, 0, 0.3),
+          0 0 120px 40px rgba(255, 200, 0, 0.15),
+          inset -10px -10px 30px rgba(255,180,0,0.2),
+          inset 10px 10px 20px rgba(255,255,255,0.3);
+      }
+      100% { 
+        box-shadow: 
+          0 0 80px 30px rgba(255, 215, 0, 0.4),
+          0 0 160px 60px rgba(255, 200, 0, 0.2),
+          inset -10px -10px 30px rgba(255,180,0,0.2),
+          inset 10px 10px 20px rgba(255,255,255,0.4);
+      }
+    }
 
-  .nuvem::before, .nuvem::after {
-    content: '';
-    position: absolute;
-    background: #fff;
-    border-radius: 50%;
-  }
-  .nuvem::before { width: 40px; height: 40px; top: -18px; left: 15px; }
-  .nuvem::after  { width: 55px; height: 55px; top: -25px; left: 40px; }
+    /* Sun rays */
+    .sol::before, .sol::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 200px; height: 200px;
+      margin: -100px 0 0 -100px;
+      background: 
+        repeating-conic-gradient(
+          from 0deg,
+          rgba(255,255,255,0) 0deg,
+          rgba(255,255,255,0) 1.5deg,
+          rgba(255,255,255,0.03) 1.5deg,
+          rgba(255,255,255,0.03) 3deg
+        );
+      border-radius: 50%;
+      animation: raios-girar 120s linear infinite;
+    }
+    .sol::after {
+      width: 280px; height: 280px;
+      margin: -140px 0 0 -140px;
+      animation: raios-girar 200s linear infinite reverse;
+      opacity: 0.5;
+    }
+    @keyframes raios-girar {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
 
-  @keyframes mover-nuvem {
-    from { left: -160px; }
-    to   { left: calc(100vw + 160px); }
-  }
+    /* Clouds with volume */
+    .nuvem {
+      position: absolute;
+      background: 
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 100%);
+      border-radius: 50px;
+      opacity: 0.85;
+      animation: mover-nuvem linear infinite;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.08));
+      z-index: 1;
+    }
+    .nuvem::before, .nuvem::after {
+      content: '';
+      position: absolute;
+      background: 
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%);
+      border-radius: 50%;
+    }
+    .nuvem::before { width: 50px; height: 50px; top: -25px; left: 20px; }
+    .nuvem::after  { width: 70px; height: 70px; top: -35px; left: 50px; }
+  
+    .nuvem1 { width: 140px; height: 45px; top: 80px;  left: -200px; animation-duration: 40s; }
+    .nuvem2 { width: 180px; height: 55px; top: 150px; left: -220px; animation-duration: 55s; animation-delay: -15s; }
+    .nuvem3 { width: 110px; height: 35px; top: 220px; left: -150px; animation-duration: 48s; animation-delay: -25s; }
 
-  /* Container do girassol */
-  .girassol {
-    position: relative;
-    transform-origin: bottom center;
-    /* Entrada suave + balanço permanente */
-    animation: girassol-enter 0.8s ease-out forwards, balancar 4s ease-in-out infinite alternate 0.8s;
-    margin-bottom: 30px;
-    z-index: 10;
-    box-shadow: 0 0 30px rgba(255,215,0,0.4);
-  }
+    @keyframes mover-nuvem {
+      from { left: -220px; transform: translateY(0); }
+      25% { transform: translateY(-5px); }
+      50% { transform: translateY(0); }
+      75% { transform: translateY(5px); }
+      to { left: calc(100vw + 220px); transform: translateY(0); }
+    }
 
-  @keyframes girassol-enter {
-    0%   { opacity: 0; transform: translateY(120px) scale(0.2) rotate(-15deg); }
-    30%  { opacity: 0.6; transform: translateY(60px) scale(0.5) rotate(-5deg); }
-    70%  { opacity: 0.9; transform: translateY(20px) scale(0.8) rotate(2deg); }
-    100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
-  }
+    /* Floating pollen/dust particles */
+    .particulas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .particula {
+      position: absolute;
+      width: 3px; height: 3px;
+      background: radial-gradient(circle, #FFE8A0 0%, transparent 70%);
+      border-radius: 50%;
+      animation: flutuar 15s ease-in-out infinite;
+    }
+    @keyframes flutuar {
+      0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+      10% { opacity: 0.6; }
+      50% { transform: translateY(-100vh) translateX(50px) scale(0.5); opacity: 0.3; }
+      90% { opacity: 0; }
+    }
 
-  @keyframes balancar {
-    0%   { transform: rotate(-4deg); }
-    100% { transform: rotate(4deg); }
-  }
+    /* Container do girassol */
+    .girassol {
+      position: relative;
+      transform-origin: bottom center;
+      animation: girassol-enter 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards, 
+                 balancar 6s ease-in-out infinite alternate 1.2s,
+                 respirar 4s ease-in-out infinite 1.2s;
+      margin-bottom: 40px;
+      z-index: 10;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
+    }
 
-  /* Fade-in animation */
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+    @keyframes girassol-enter {
+      0%   { opacity: 0; transform: translateY(150px) scale(0.15) rotate(-20deg); filter: blur(10px); }
+      20%  { opacity: 0.3; transform: translateY(100px) scale(0.3) rotate(-10deg); filter: blur(5px); }
+      50%  { opacity: 0.7; transform: translateY(40px) scale(0.65) rotate(-3deg); filter: blur(1px); }
+      80%  { opacity: 0.95; transform: translateY(5px) scale(1.02) rotate(1deg); }
+      100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+    }
 
-  /* Caule */
-  .caule {
-    width: 12px;
-    height: 350px;
-    background: linear-gradient(90deg, #228B22, #2E8B57, #228B22);
-    margin: 0 auto;
-    border-radius: 8px;
-    position: relative;
-    box-shadow: 2px 0 4px rgba(0,0,0,0.1);
-  }
+    @keyframes balancar {
+      0%   { transform: rotate(-3deg) translateX(-2px); }
+      25%  { transform: rotate(-1deg) translateX(1px); }
+      50%  { transform: rotate(2deg) translateX(3px); }
+      75%  { transform: rotate(0deg) translateX(1px); }
+      100% { transform: rotate(-3deg) translateX(-2px); }
+    }
 
-  /* Folhas do caule */
-  .folha {
-    position: absolute;
-    width: 70px;
-    height: 35px;
-    background: linear-gradient(135deg, #2E8B57, #228B22);
-    border-radius: 0 50% 0 50%;
-    left: 12px;
-  }
-  .folha1 { top: 120px;  left: -50px; transform: rotate(-30deg); animation: folha-balancar 3s ease-in-out infinite alternate; }
-  .folha2 { top: 210px;  left: 2px;   transform: rotate(150deg); animation: folha-balancar 3s ease-in-out infinite alternate-reverse; }
+    @keyframes respirar {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.008); }
+    }
 
-  @keyframes folha-balancar {
-    from { transform: rotate(-30deg) scale(1); }
-    to   { transform: rotate(-20deg) scale(1.03); }
-  }
-  .folha2 { animation-name: folha-balancar2; }
-  @keyframes folha-balancar2 {
-    from { transform: rotate(150deg) scale(1); }
-    to   { transform: rotate(140deg) scale(1.03); }
-  }
+    /* Fade-in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-  /* Cabeça do girassol */
-  .cabeca {
-    position: absolute;
-    top: -180px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 200px;
-  }
+    /* Caule - realistic with texture */
+    .caule {
+      width: 16px;
+      height: 400px;
+      background: 
+        linear-gradient(90deg, 
+          #1B5E20 0%, 
+          #2E7D32 15%, 
+          #388E3C 30%, 
+          #4CAF50 45%, 
+          #66BB6A 55%, 
+          #4CAF50 70%, 
+          #388E3C 85%, 
+          #2E7D32 100%
+        );
+      margin: 0 auto;
+      border-radius: 10px;
+      position: relative;
+      box-shadow: 
+        inset 2px 0 8px rgba(255,255,255,0.15),
+        inset -2px 0 8px rgba(0,0,0,0.2),
+        2px 0 6px rgba(0,0,0,0.1);
+    }
 
-  .petalas {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    animation: girar-petalas 30s linear infinite;
-  }
+    /* Caule texture lines */
+    .caule::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        repeating-linear-gradient(90deg,
+          transparent 0px,
+          rgba(255,255,255,0.03) 1px,
+          transparent 3px
+        );
+      border-radius: 10px;
+      pointer-events: none;
+    }
 
-  @keyframes girar-petalas {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
+    /* Caule nodes (nós) */
+    .caule::after {
+      content: '';
+      position: absolute;
+      left: -6px; right: -6px;
+      height: 8px;
+      background: linear-gradient(90deg, #1B5E20, #388E3C, #1B5E20);
+      border-radius: 12px;
+      box-shadow: inset 0 -2px 4px rgba(0,0,0,0.3);
+    }
 
-  .petala {
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 24px;
-    height: 90px;
-    background: linear-gradient(180deg, #FFD700 0%, #FFA500 60%, #FF8C00 100%);
-    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-    transform-origin: center 100px;
-    margin: -100px 0 0 -12px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
+    /* Folhas do caule - realistic */
+    .folha {
+      position: absolute;
+      width: 100px;
+      height: 50px;
+      background: 
+        linear-gradient(135deg, 
+          #1B5E20 0%, 
+          #2E7D32 30%, 
+          #388E3C 50%, 
+          #4CAF50 70%, 
+          #66BB6A 100%
+        );
+      border-radius: 5% 85% 5% 85% / 85% 5% 85% 5%;
+      left: 20px;
+      transform-origin: left center;
+      box-shadow: 
+        2px 4px 12px rgba(0,0,0,0.15),
+        inset 0 0 20px rgba(255,255,255,0.1);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+    .folha::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: 
+        linear-gradient(45deg,
+          transparent 40%,
+          rgba(255,255,255,0.1) 45%,
+          rgba(255,255,255,0.1) 55%,
+          transparent 60%
+        );
+      border-radius: inherit;
+      pointer-events: none;
+    }
+    .folha::after {
+      content: '';
+      position: absolute;
+      left: 10%; top: 10%; width: 80%; height: 80%;
+      background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.05) 100%);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+    .folha1 { top: 140px; left: -70px; transform: rotate(-40deg); animation: folha-balancar 4s ease-in-out infinite alternate; }
+    .folha2 { top: 240px; left: 10px; transform: rotate(140deg); animation: folha-balancar 4.5s ease-in-out infinite alternate-reverse; }
+    .folha3 { top: 300px; left: -55px; transform: rotate(-30deg); animation: folha-balancar 3.8s ease-in-out infinite alternate; }
 
-  /* Núcleo (miolo) */
-  .nucleo {
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 70px; height: 70px;
-    margin: -35px 0 0 -35px;
-    background: radial-gradient(circle, #8B4513 10%, #654321 40%, #3D2314 100%);
-    border-radius: 50%;
-    box-shadow: inset 0 -5px 10px rgba(0,0,0,0.4);
-    z-index: 5;
-  }
+    @keyframes folha-balancar {
+      0% { transform: rotate(-40deg) translateY(0) scale(1); }
+      50% { transform: rotate(-32deg) translateY(-4px) scale(1.02); }
+      100% { transform: rotate(-40deg) translateY(0) scale(1); }
+    }
 
-  .nucleo::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 30% 30%, #3D2314 2px, transparent 3px),
-      radial-gradient(circle at 60% 25%, #3D2314 2px, transparent 3px),
-      radial-gradient(circle at 40% 55%, #3D2314 2px, transparent 3px),
-      radial-gradient(circle at 70% 50%, #3D2314 2px, transparent 3px),
-      radial-gradient(circle at 25% 70%, #3D2314 2px, transparent 3px),
-      radial-gradient(circle at 55% 75%, #3D2314 2px, transparent 3px),
-      radial-gradient(circle at 80% 75%, #3D2314 2px, transparent 3px),
-      radial-gradient(circle at 50% 35%, #3D2314 2px, transparent 3px);
-  }
+    /* Cabeça do girassol */
+    .cabeca {
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 240px;
+      height: 240px;
+    }
 
-  /* Texto do Shrek */
-  .shrek-dedo {
-    position: absolute;
-    bottom: 50px;
-    right: 30px;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    color: rgba(30, 60, 20, 0.7);
-    letter-spacing: 1px;
-    z-index: 20;
-    animation: fade-in 2s ease-in forwards;
-    text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
-  }
+    .petalas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      animation: girar-petalas 60s linear infinite;
+    }
 
-  @keyframes fade-in {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+    @keyframes girar-petalas {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .petala {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 28px;
+      height: 110px;
+      background: 
+        linear-gradient(180deg, 
+          #FFF8DC 0%, 
+          #FFEB9C 15%, 
+          #FFD700 30%, 
+          #FFC800 50%, 
+          #FFB300 70%, 
+          #E6A000 85%, 
+          #CC8800 100%
+        );
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      transform-origin: center 120px;
+      margin: -120px 0 0 -14px;
+      box-shadow: 
+        0 2px 8px rgba(0,0,0,0.15),
+        inset 0 -20px 30px rgba(255,200,0,0.2),
+        inset 0 20px 30px rgba(255,255,255,0.1);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+    .petala::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: 
+        linear-gradient(180deg,
+          rgba(255,255,255,0.3) 0%,
+          transparent 20%,
+          transparent 80%,
+          rgba(0,0,0,0.1) 100%
+        );
+      border-radius: inherit;
+      pointer-events: none;
+    }
+    .petala::after {
+      content: '';
+      position: absolute;
+      left: 30%; top: 10%; width: 40%; height: 60%;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Pétalas geradas via CSS — 16 pétalas */
+    .petala:nth-child(1)  { transform: rotate(0deg); filter: hue-rotate(0deg) brightness(1); }
+    .petala:nth-child(2)  { transform: rotate(22.5deg); filter: hue-rotate(-3deg) brightness(1.02); }
+    .petala:nth-child(3)  { transform: rotate(45deg); filter: hue-rotate(2deg) brightness(0.98); }
+    .petala:nth-child(4)  { transform: rotate(67.5deg); filter: hue-rotate(-5deg) brightness(1.03); }
+    .petala:nth-child(5)  { transform: rotate(90deg); filter: hue-rotate(3deg) brightness(0.99); }
+    .petala:nth-child(6)  { transform: rotate(112.5deg); filter: hue-rotate(-2deg) brightness(1.01); }
+    .petala:nth-child(7)  { transform: rotate(135deg); filter: hue-rotate(4deg) brightness(0.98); }
+    .petala:nth-child(8)  { transform: rotate(157.5deg); filter: hue-rotate(-4deg) brightness(1.02); }
+    .petala:nth-child(9)  { transform: rotate(180deg); filter: hue-rotate(0deg) brightness(1); }
+    .petala:nth-child(10) { transform: rotate(202.5deg); filter: hue-rotate(3deg) brightness(1.01); }
+    .petala:nth-child(11) { transform: rotate(225deg); filter: hue-rotate(-3deg) brightness(0.99); }
+    .petala:nth-child(12) { transform: rotate(247.5deg); filter: hue-rotate(5deg) brightness(1.02); }
+    .petala:nth-child(13) { transform: rotate(270deg); filter: hue-rotate(-2deg) brightness(1); }
+    .petala:nth-child(14) { transform: rotate(292.5deg); filter: hue-rotate(2deg) brightness(1.01); }
+    .petala:nth-child(15) { transform: rotate(315deg); filter: hue-rotate(-3deg) brightness(0.99); }
+    .petala:nth-child(16) { transform: rotate(337.5deg); filter: hue-rotate(4deg) brightness(1.01); }
+
+    /* Camada 2 de pétalas (atrás) - mais escuras para profundidade */
+    .petala-bg {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 26px;
+      height: 100px;
+      background: 
+        linear-gradient(180deg, 
+          #E6C000 0%, 
+          #D4A800 30%, 
+          #B89000 60%, 
+          #907800 100%
+        );
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      transform-origin: center 120px;
+      margin: -120px 0 0 -13px;
+      opacity: 0.7;
+      filter: blur(1px);
+      z-index: -1;
+    }
+    .petala-bg:nth-child(1)  { transform: rotate(11.25deg); }
+    .petala-bg:nth-child(2)  { transform: rotate(33.75deg); }
+    .petala-bg:nth-child(3)  { transform: rotate(56.25deg); }
+    .petala-bg:nth-child(4)  { transform: rotate(78.75deg); }
+    .petala-bg:nth-child(5)  { transform: rotate(101.25deg); }
+    .petala-bg:nth-child(6)  { transform: rotate(123.75deg); }
+    .petala-bg:nth-child(7)  { transform: rotate(146.25deg); }
+    .petala-bg:nth-child(8)  { transform: rotate(168.75deg); }
+    .petala-bg:nth-child(9)  { transform: rotate(191.25deg); }
+    .petala-bg:nth-child(10) { transform: rotate(213.75deg); }
+    .petala-bg:nth-child(11) { transform: rotate(236.25deg); }
+    .petala-bg:nth-child(12) { transform: rotate(258.75deg); }
+    .petala-bg:nth-child(13) { transform: rotate(281.25deg); }
+    .petala-bg:nth-child(14) { transform: rotate(303.75deg); }
+    .petala-bg:nth-child(15) { transform: rotate(326.25deg); }
+    .petala-bg:nth-child(16) { transform: rotate(348.75deg); }
+
+    /* Núcleo (miolo) - hyper realistic */
+    .nucleo {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 84px; height: 84px;
+      margin: -42px 0 0 -42px;
+      background: 
+        radial-gradient(ellipse at 40% 35%, #4A3000 0%, #3D2500 25%, #2D1B00 50%, #1A1000 75%, #0D0800 100%);
+      border-radius: 50%;
+      box-shadow: 
+        0 8px 24px rgba(0,0,0,0.4),
+        inset 0 -6px 20px rgba(0,0,0,0.5),
+        inset 0 4px 10px rgba(139,90,0,0.2),
+        0 0 0 2px rgba(139,90,0,0.1);
+      z-index: 5;
+      overflow: hidden;
+    }
+    .nucleo::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background: 
+        radial-gradient(circle at 35% 30%, #5D4000 2px, transparent 3px),
+        radial-gradient(circle at 60% 25%, #5D4000 2px, transparent 3px),
+        radial-gradient(circle at 40% 55%, #5D4000 2px, transparent 3px),
+        radial-gradient(circle at 70% 50%, #5D4000 2px, transparent 3px),
+        radial-gradient(circle at 25% 70%, #5D4000 2px, transparent 3px),
+        radial-gradient(circle at 55% 75%, #5D4000 2px, transparent 3px),
+        radial-gradient(circle at 80% 75%, #5D4000 2px, transparent 3px),
+        radial-gradient(circle at 50% 35%, #5D4000 2px, transparent 3px),
+        radial-gradient(circle at 30% 60%, #5D4000 2px, transparent 3px),
+        radial-gradient(circle at 75% 30%, #5D4000 2px, transparent 3px);
+      opacity: 0.6;
+    }
+    .nucleo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: 
+        radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 70%, rgba(0,0,0,0.3) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    /* Seeds on the face (sementes individuais) */
+    .semente {
+      position: absolute;
+      width: 4px; height: 4px;
+      background: radial-gradient(circle at 30% 30%, #5D4000, #2D1B00);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
 
   /* Botao pra abrir cena do Shrek */
   .shrek-btn {
@@ -1037,10 +1279,13 @@
 }
 
 /* Utility hidden class */
-.hidden { display: none; }
-</style>
 </head>
 <body>
+  <!-- Sky atmosphere -->
+  <div class="sky-atmosphere"></div>
+
+  <!-- Floating pollen/dust particles -->
+  <div class="particulas" id="particulas"></div>
 
   <!-- Sol -->
   <div class="sol"></div>
@@ -1057,6 +1302,7 @@
       <div class="caule">
         <div class="folha folha1"></div>
         <div class="folha folha2"></div>
+        <div class="folha folha3"></div>
       </div>
       <div class="cabeca">
         <div class="petalas">
@@ -1075,9 +1321,27 @@
           <div class="petala"></div>
           <div class="petala"></div>
           <div class="petala"></div>
-          <div class="petala"></div>
         </div>
-        <div class="nucleo"></div>
+        <!-- Camada 2 de pétalas (atrás) -->
+        <div class="petalas-bg">
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+          <div class="petala-bg"></div>
+        </div>
+        <div class="nucleo" id="nucleo"></div>
       </div>
     </div>
 
@@ -1091,6 +1355,8 @@
       <source src="shrek.mp4" type="video/mp4">
       Seu navegador não suporta vídeo.
     </video>
+  </div>
+
   <div class="grama"></div>
 
   <!-- Jardineiro -->
