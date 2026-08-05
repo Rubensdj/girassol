@@ -472,6 +472,8 @@
   color: #222;
 }
 
+/* Utility hidden class */
+.hidden { display: none; }
 </style>
 </head>
 <body>
@@ -520,6 +522,12 @@
       <strong>Rubens Pereira Fernandes</strong><br>
       Shrek 01:04:20
     </div>
+
+    <!-- Vídeo da cena (invisível até senha) -->
+    <video id="shrek-video" class="hidden" controls style="display:none; max-width:240px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.2); margin-left:20px;">
+      <source src="shrek.mp4" type="video/mp4">
+      Seu navegador não suporta vídeo.
+    </video>
   </div>
 
   <!-- Grama -->
@@ -599,14 +607,12 @@
       const input = document.getElementById('senha-input').value;
       const erro = document.getElementById('senha-erro');
       const senhaBox = document.getElementById('senha-box');
-      const player = document.getElementById('shrek-player');
-
       if (input.toUpperCase() === SENHA_CORRETA) {
         erro.textContent = '';
         senhaBox.style.display = 'none';
-        player.classList.add('ativo');
-        const video = player.querySelector('video');
-        video.play();
+        const videoElem = document.getElementById('shrek-video');
+        videoElem.style.display = 'block';
+        videoElem.play();
       } else {
         erro.textContent = '❌ Senha incorreta! Tente novamente.';
         document.getElementById('senha-input').value = '';
