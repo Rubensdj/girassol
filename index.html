@@ -430,18 +430,29 @@
   .petala:nth-child(14) { transform: rotate(292.5deg); }
   .petala:nth-child(15) { transform: rotate(315deg); }
   .petala:nth-child(16) { transform: rotate(337.5deg); }
-.bilhete {
-  position: absolute;
-/* Container para girassol + cartão */
+
+/* Flex container for girassol + card */
 .scene {
   display: flex;
-  align-items: flex-end; /* alinha a base da planta com o fundo */
+  align-items: flex-end; /* align base of plant with ground */
   justify-content: center;
   gap: 40px;
-  margin-top: 20px; /* espaço do topo da tela */
+  margin-top: 30px;
 }
 
-/* Cartão estilizado ao lado do girassol */
+/* Ensure flex items keep their size */
+.scene > .girassol,
+.scene > .bilhete {
+  flex: 0 0 auto;
+}
+
+/* Ensure flex items keep their size */
+.scene > .girassol,
+.scene > .bilhete {
+  flex: 0 0 auto;
+}
+
+/* Card style */
 .bilhete {
   background: linear-gradient(135deg, #fff, #f0f0f0);
   color: #111;
