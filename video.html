@@ -14,12 +14,13 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    overflow: hidden;
   }
   video {
-    max-width: 90vw;
-    max-height: 80vh;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    background: #000;
   }
 </style>
 </head>
@@ -28,5 +29,30 @@
     <source src="shrek.mp4" type="video/mp4">
     Seu navegador não suporta reprodução de vídeo.
   </video>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const video = document.querySelector('video');
+    // Request fullscreen when video starts playing
+    video.addEventListener('play', function() {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) { /* Safari */
+        video.webkitRequestFullscreen();
+      }
+    });
+    // Also allow click to toggle fullscreen
+    video.addEventListener('click', function() {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        if (video.requestFullscreen) {
+          video.requestFullscreen();
+        } else if (video.webkitRequestFullscreen) {
+          video.webkitRequestFullscreen();
+        }
+      }
+    });
+  });
+</script>
 </body>
 </html>
