@@ -2,73 +2,12 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Girassol Animado – Rubens Fernandes</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Girassol Animado</title>
 <style>
-  :root {
-    --bg-gradient: linear-gradient(180deg, #87CEEB, #B0E0E6);
-    --weather-desc: "";
-    --weather-temp: "";
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
   body {
-    margin:0; padding:0; overflow:hidden; font-family:sans-serif;
-    background: var(--bg-gradient);
-    color:#fff;
-    transition: background 1s ease;
-  }
-  .footer {
-    position:fixed; bottom:0; width:100%; text-align:center; font-size:12px; opacity:0.6; padding:4px 0; background:rgba(0,0,0,0.2);
-  }
-</style>
-<script>
-  // Set background based on local hour (Recife timezone - same as device)
-  const now = new Date();
-  const hour = now.getHours();
-  let gradient;
-  if (hour >= 5 && hour < 9) { // sunrise
-    gradient = 'linear-gradient(180deg, #ffcf33, #ff9a8b)';
-  } else if (hour >= 9 && hour < 17) { // day
-    gradient = 'linear-gradient(180deg, #87CEEB, #B0E0E6)';
-  } else if (hour >= 17 && hour < 20) { // sunset
-    gradient = 'linear-gradient(180deg, #ff9a8b, #ff6f61)';
-  } else { // night
-    gradient = 'linear-gradient(180deg, #0d1b2a, #1e3c72)';
-  }
-  document.documentElement.style.setProperty('--bg-gradient', gradient);
-
-  // Hardcoded weather for Recife (fetched earlier)
-  const weatherDesc = 'Light rain shower';
-  const weatherTemp = '24°C';
-  document.documentElement.style.setProperty('--weather-desc', weatherDesc);
-  document.documentElement.style.setProperty('--weather-temp', weatherTemp);
-
-  // Create scattered love phrases
-  const phrases = [
-    'Eu te amo', 'Eu te amo ❤️', 'Eu te amo 💖', 'Eu te amo 🌹', 'Eu te amo 🌻',
-    'Eu te amo 🎶', 'Eu te amo 🧡', 'Eu te amo ✨'
-  ];
-  function scatterPhrases(){
-    const count = 15;
-    for(let i=0;i<count;i++){
-      const el=document.createElement('div');
-      el.textContent = phrases[Math.floor(Math.random()*phrases.length)];
-      el.style.position='absolute';
-      el.style.left=Math.random()*100+'vw';
-      el.style.top=Math.random()*100+'vh';
-      el.style.fontSize='14px';
-      el.style.opacity=0.4+Math.random()*0.4;
-      el.style.transform='rotate('+(-10+Math.random()*20)+'deg)';
-      el.style.pointerEvents='none';
-      document.body.appendChild(el);
-    }
-  }
-  window.addEventListener('load', scatterPhrases);
-</script>
-</head>
-<body>
-  <meta http-equiv="refresh" content="0;url=girassol.html">
-  <div class="footer">Direitos reservados: RUBENS FERNANDES</div>
-</body>
-</html>
     min-height: 100vh;
     display: flex;
     justify-content: center;
