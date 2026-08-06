@@ -1226,13 +1226,23 @@
       overlay.classList.remove('ativo');
       player.classList.remove('ativo');
       mensagemFinal.classList.remove('visivel');
-      // Resetar para o estado inicial: tudo oculto (as perguntas reaparecem após 8s via setTimeout)
+      // Resetar para o estado inicial: tudo oculto.
+      // As perguntas reaparecem 20s após cada fechamento via setTimeout em fecharShrek().
       senhaBox.style.display = 'none';
       perguntasBox.style.display = 'none';
       infoAssistir.style.display = 'none';
       // Limpar campos de senha
       if (senhaInput) senhaInput.value = '';
       if (senhaErro) senhaErro.textContent = '';
+
+      // Reaparecer as perguntas 20s após fechar, igual à carga inicial
+      setTimeout(() => {
+        // Só reabre se o overlay não estiver ativo (evita reabrir algo que o usuário já abriu manualmente)
+        const overlayState = document.getElementById('shrek-overlay');
+        if (!overlayState.classList.contains('ativo')) {
+          mostrarPerguntas();
+        }
+      }, 20 * 1000);
     }
 
     // Detectar fim do vídeo para mostrar mensagem final
