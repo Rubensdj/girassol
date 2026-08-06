@@ -1,9 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Redirect</title>
-<meta http-equiv="refresh" content="0; url=/" />
+  <meta charset="UTF-8">
+  <title>Redirecionando...</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(180deg, #87CEEB 0%, #E0F4FF 60%, #90EE90 100%);
+      color: #1B5E20;
+    }
+    p {
+      text-align: center;
+      font-size: 18px;
+      opacity: 0.8;
+    }
+  </style>
+  <meta http-equiv="refresh" content="3; url=./">
 </head>
-<body></body>
+<body>
+  <p>🌻 Redirecionando para o girassol...</p>
+  <script>
+    // Fallback caso o meta refresh seja bloqueado
+    setTimeout(function() {
+      window.location.href = './';
+    }, 3000);
+  </script>
+</body>
 </html>
