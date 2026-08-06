@@ -39,10 +39,11 @@
 
     body {
       min-height: 100vh;
+      min-height: 100dvh; /* viewport mobile dinâmico */
       display: flex;
       justify-content: center;
       align-items: center;
-      background: 
+      background:
         radial-gradient(ellipse at 50% 0%, #4A90D9 0%, #87CEEB 30%, #E0F4FF 60%, #90EE90 100%),
         linear-gradient(180deg, transparent 60%, rgba(34,139,34,0.15) 100%);
       overflow: hidden;
@@ -186,7 +187,7 @@
       animation: girassol-enter 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards, 
                  balancar 6s ease-in-out infinite alternate 1.2s,
                  respirar 4s ease-in-out infinite 1.2s;
-      margin-bottom: 40px;
+      margin-bottom: 0;
       z-index: 10;
       filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
     }
@@ -857,379 +858,6 @@
     to   { transform: rotate(5deg); }
   }
 
-  /* === JARDINEIRO === */
-  .jardineiro {
-    position: absolute;
-    bottom: 40px;
-    left: 15%;
-    z-index: 10;
-    transform: scale(0.8);
-  }
-  .jardineiro-corpo {
-    position: relative;
-    width: 60px;
-    height: 100px;
-  }
-  .jardineiro-chapéu {
-    position: absolute;
-    top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 12px;
-    background: #8B4513;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  }
-  .jardineiro-chapéu::after {
-    content: '';
-    position: absolute;
-    top: -14px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 24px;
-    height: 16px;
-    background: #8B4513;
-    border-radius: 12px 12px 0 0;
-  }
-  .jardineiro-rosto {
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 32px;
-    height: 30px;
-    background: #FDBCB4;
-    border-radius: 50%;
-  }
-  .jardineiro-olho {
-    position: absolute;
-    top: 10px;
-    width: 4px;
-    height: 4px;
-    background: #2D1B1B;
-    border-radius: 50%;
-  }
-  .jardineiro-olho:first-child { left: 8px; }
-  .jardineiro-olho:last-child { right: 8px; }
-  .jardineiro-sorriso {
-    position: absolute;
-    bottom: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 12px;
-    height: 6px;
-    border-bottom: 2px solid #2D1B1B;
-    border-radius: 0 0 6px 6px;
-  }
-  .jardineiro-braço-esquerdo,
-  .jardineiro-braço-direito {
-    position: absolute;
-    top: 38px;
-    width: 18px;
-    height: 8px;
-    background: #FDBCB4;
-    border-radius: 4px;
-    transform-origin: inner center;
-  }
-  .jardineiro-braço-esquerdo {
-    left: -16px;
-    transform: rotate(-30deg);
-    animation: regar-braco-esq 4s ease-in-out infinite;
-  }
-  .jardineiro-braço-direito {
-    right: -16px;
-    transform: rotate(30deg);
-  }
-  .jardineiro-corpo-principal {
-    position: absolute;
-    top: 38px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 30px;
-    height: 40px;
-    background: #2E7D32;
-    border-radius: 8px;
-  }
-  .jardineiro-perna-esquerda,
-  .jardineiro-perna-direita {
-    position: absolute;
-    bottom: 0;
-    width: 10px;
-    height: 22px;
-    background: #4A4A4A;
-    border-radius: 4px;
-  }
-  .jardineiro-perna-esquerda { left: 12px; }
-  .jardineiro-perna-direita { right: 12px; }
-
-  /* Regador */
-  .regador {
-    position: absolute;
-    top: 30px;
-    left: -20px;
-    transform: rotate(-25deg);
-    transform-origin: bottom right;
-    animation: regar-balancear 4s ease-in-out infinite;
-  }
-  .regador-corpo {
-    width: 28px;
-    height: 20px;
-    background: #888;
-    border-radius: 50%;
-    border: 3px solid #666;
-  }
-  .regador-bico {
-    position: absolute;
-    right: -18px;
-    top: 8px;
-    width: 20px;
-    height: 6px;
-    background: #888;
-    border-radius: 3px;
-  }
-  .regador-alo {
-    position: absolute;
-    left: -8px;
-    top: 2px;
-    width: 14px;
-    height: 14px;
-    border: 3px solid #888;
-    border-radius: 50%;
-    background: transparent;
-  }
-  .agua {
-    position: absolute;
-    right: -30px;
-    top: 10px;
-    width: 30px;
-    height: 4px;
-    background: rgba(64, 164, 223, 0.6);
-    border-radius: 2px;
-    opacity: 0;
-    animation: agua-jato 4s ease-in-out infinite;
-  }
-  .agua::before,
-  .agua::after {
-    content: '';
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: rgba(64, 164, 223, 0.8);
-    border-radius: 50%;
-    animation: gota-cair 0.8s ease-in infinite;
-  }
-  .agua::before { top: -2px; right: 5px; animation-delay: 0s; }
-  .agua::after { top: 2px; right: 15px; animation-delay: 0.4s; }
-
-  @keyframes regar-balancear {
-    0%, 100% { transform: rotate(-25deg); }
-    50% { transform: rotate(-45deg); }
-  }
-  @keyframes regar-braco-esq {
-    0%, 100% { transform: rotate(-30deg); }
-    50% { transform: rotate(-55deg); }
-  }
-  @keyframes agua-jato {
-    0%, 100% { opacity: 0; transform: translateX(0) scaleX(0); }
-    30%, 70% { opacity: 0.6; transform: translateX(-10px) scaleX(1); }
-  }
-  @keyframes gota-cair {
-    0% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(20px); }
-  }
-
-  /* === SHREK === */
-  .shrek-personagem {
-    position: absolute;
-    bottom: 40px;
-    right: 15%;
-    z-index: 10;
-    transform: scale(0.7);
-    animation: shrek-balancar 6s ease-in-out infinite;
-  }
-  @keyframes shrek-balancar {
-    0%, 100% { transform: scale(0.7) rotate(-2deg); }
-    50% { transform: scale(0.7) rotate(2deg); }
-  }
-  .shrek-cabeca {
-    position: relative;
-    width: 80px;
-    height: 70px;
-  }
-  .shrek-orelha {
-    position: absolute;
-    top: 10px;
-    width: 22px;
-    height: 35px;
-    background: #7DB874;
-    border-radius: 50% 50% 40% 60%;
-    box-shadow: inset -3px 0 6px rgba(0,0,0,0.2);
-  }
-  .shrek-orelha.esquerda {
-    left: -8px;
-    transform: rotate(-25deg);
-  }
-  .shrek-orelha.direita {
-    right: -8px;
-    transform: rotate(25deg);
-  }
-  .shrek-rosto {
-    position: absolute;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 55px;
-    background: #7DB874;
-    border-radius: 45% 45% 55% 55%;
-    box-shadow: inset 0 -4px 8px rgba(0,0,0,0.15);
-  }
-  .shrek-olho {
-    position: absolute;
-    top: 14px;
-    width: 14px;
-    height: 16px;
-    background: #fff;
-    border-radius: 50%;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-  }
-  .shrek-olho.esquerda { left: 10px; }
-  .shrek-olho.direita { right: 10px; }
-  .shrek-olho::after {
-    content: '';
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    width: 6px;
-    height: 6px;
-    background: #1a1a1a;
-    border-radius: 50%;
-  }
-  .shrek-sobrancelha {
-    position: absolute;
-    top: 6px;
-    width: 18px;
-    height: 4px;
-    background: #4A7C43;
-    border-radius: 2px;
-  }
-  .shrek-sobrancelha.esquerda {
-    left: 6px;
-    transform: rotate(-10deg);
-  }
-  .shrek-sobrancelha.direita {
-    right: 6px;
-    transform: rotate(10deg);
-  }
-  .shrek-nariz {
-    position: absolute;
-    top: 32px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 18px;
-    height: 14px;
-    background: #6BA55F;
-    border-radius: 50% 50% 40% 40%;
-    box-shadow: inset 0 -2px 4px rgba(0,0,0,0.15);
-  }
-  .shrek-nariz::before,
-  .shrek-nariz::after {
-    content: '';
-    position: absolute;
-    bottom: 2px;
-    width: 4px;
-    height: 3px;
-    background: #4A7C43;
-    border-radius: 50%;
-  }
-  .shrek-nariz::before { left: 3px; }
-  .shrek-nariz::after { right: 3px; }
-  .shrek-boca {
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 28px;
-    height: 10px;
-    border-bottom: 3px solid #4A7C43;
-    border-radius: 0 0 20px 20px;
-  }
-  .shrek-dente {
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10px;
-    height: 6px;
-    background: #fff;
-    border-radius: 2px 2px 0 0;
-    box-shadow: inset 0 -1px 2px rgba(0,0,0,0.1);
-  }
-  .shrek-corpo {
-    position: relative;
-    width: 70px;
-    height: 80px;
-    margin-top: -10px;
-  }
-  .shrek-colete {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 55px;
-    height: 60px;
-    background: #8B4513;
-    border-radius: 8px 8px 12px 12px;
-    clip-path: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 30% 100%, 0 70%);
-  }
-  .shrek-cinto {
-    position: absolute;
-    top: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 55px;
-    height: 8px;
-    background: #4A4A4A;
-    border-radius: 2px;
-  }
-  .shrek-calca {
-    position: absolute;
-    top: 58px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 25px;
-    background: #4A4A4A;
-    border-radius: 0 0 12px 12px;
-  }
-  .shrek-braco {
-    position: absolute;
-    top: 10px;
-    width: 14px;
-    height: 40px;
-    background: #7DB874;
-    border-radius: 6px;
-  }
-  .shrek-braco.esquerda {
-    left: -14px;
-    transform: rotate(-20deg);
-  }
-  .shrek-braco.direita {
-    right: -14px;
-    transform: rotate(20deg);
-  }
-  .shrek-perna {
-    position: absolute;
-    bottom: 0;
-    width: 14px;
-    height: 25px;
-    background: #4A4A4A;
-    border-radius: 6px;
-  }
-  .shrek-perna.esquerda { left: 14px; }
-  .shrek-perna.direita { right: 14px; }
-
   /* Pétalas geradas via CSS — 16 pétalas */
   .petala:nth-child(1)  { transform: rotate(0deg); }
   .petala:nth-child(2)  { transform: rotate(22.5deg); }
@@ -1251,11 +879,12 @@
 /* Flex container for girassol + card */
 .scene {
   display: flex;
-  align-items: center; /* vertically center elements */
+  align-items: center; /* vertical center dentro da scene */
   justify-content: center;
   gap: 50px;
   position: relative;
   z-index: 10;
+  padding: 20px;
 }
 
 
@@ -1264,6 +893,7 @@
 .scene > .bilhete,
 .scene > video {
   flex: 0 0 auto;
+  align-self: center;
 }
 
 /* Card style */
@@ -1315,10 +945,6 @@
   }
   .girassol { transform: scale(0.65); transform-origin: top center; }
   .bilhete { max-width: 80vw; font-size: 16px; padding: 16px 20px; }
-  .sol { top: 30px; right: 30px; width: 70px; height: 70px; }
-  .jardineiro { left: 5%; transform: scale(0.6); }
-  .shrek-personagem { right: 5%; transform: scale(0.55); }
-  .perguntas-box, .senha-box { width: 90vw; padding: 28px 22px; }
 }
 
 @media (max-width: 480px) {
@@ -1395,6 +1021,7 @@
 
     <!-- Bilhete ao lado -->
     <div class="bilhete">
+      <strong>Eu te amo 💛</strong>
       Shrek 01:04:20
     </div>
 
@@ -1407,53 +1034,9 @@
 
   <div class="grama"></div>
 
-  <!-- Jardineiro -->
-  <div class="jardineiro" id="jardineiro">
-    <div class="jardineiro-corpo">
-      <div class="jardineiro-chapéu"></div>
-      <div class="jardineiro-rosto">
-        <div class="jardineiro-olho"></div>
-        <div class="jardineiro-olho"></div>
-        <div class="jardineiro-sorriso"></div>
-      </div>
-      <div class="jardineiro-braço-esquerdo"></div>
-      <div class="jardineiro-braço-direito"></div>
-      <div class="jardineiro-corpo-principal"></div>
-      <div class="jardineiro-perna-esquerda"></div>
-      <div class="jardineiro-perna-direita"></div>
-    </div>
-    <div class="regador" id="regador">
-      <div class="regador-corpo"></div>
-      <div class="regador-bico"></div>
-      <div class="regador-alo"></div>
-      <div class="agua" id="agua"></div>
-    </div>
-  </div>
-
-  <!-- Shrek -->
-  <div class="shrek-personagem" id="shrek-personagem">
-    <div class="shrek-cabeca">
-      <div class="shrek-orelha esquerda"></div>
-      <div class="shrek-orelha direita"></div>
-      <div class="shrek-rosto">
-        <div class="shrek-olho esquerda"></div>
-        <div class="shrek-olho direita"></div>
-        <div class="shrek-sobrancelha esquerda"></div>
-        <div class="shrek-sobrancelha direita"></div>
-        <div class="shrek-nariz"></div>
-        <div class="shrek-boca"></div>
-        <div class="shrek-dente"></div>
-      </div>
-    </div>
-    <div class="shrek-corpo">
-      <div class="shrek-colete"></div>
-      <div class="shrek-cinto"></div>
-      <div class="shrek-calca"></div>
-      <div class="shrek-braco esquerda"></div>
-      <div class="shrek-braco direita"></div>
-      <div class="shrek-perna esquerda"></div>
-      <div class="shrek-perna direita"></div>
-    </div>
+  <!-- Créditos discretos -->
+  <div style="position:fixed; bottom:8px; right:10px; z-index:20; font-family:'Inter',sans-serif; font-size:11px; color:rgba(27,94,32,0.45); pointer-events:none; user-select:none;">
+    DESENVOLVIDO POR Rubens
   </div>
 
   <!-- Botao escondido pra abrir cena do Shrek -->
@@ -1464,7 +1047,7 @@
 
       <!-- Caixa de perguntas -->
       <div class="perguntas-box" id="perguntas-box" style="display:none;">
-        <h2>🌻 Girassol</h2>
+        <h2>🌻 Eu te amo</h2>
         <p class="pergunta">Ei... você tem <strong>Netflix</strong> ou outro jeito de assistir <strong>Shrek</strong>?</p>
         <button class="btn-resposta" onclick="respostaNetflix(true)">Sim, tenho Netflix</button>
         <button class="btn-resposta nao" onclick="respostaNetflix(false)">Não tenho / não consigo assistir</button>
@@ -1472,19 +1055,21 @@
 
       <!-- Info de onde assistir (quando resposta = sim) -->
       <div class="info-assistir" id="info-assistir" style="display:none;">
-        <h3>📺 Onde assistir</h3>
+        <h3>📺 Onde assistir — Eu te amo 💛</h3>
         <p>A cena está no filme <span class="destaque">Shrek (2001)</span>.</p>
         <p>Tempo exato: <span class="destaque">01:04:20</span></p>
-        <p>É a cena onde o Shrek tira a orelha do burro... um clássico! 💚</p>
+        <p>É a cena onde o Shrek tira a orelha do burro... um clássico! 💚 Eu te amo!</p>
         <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank">▶ Abrir Shrek na Netflix</a>
       </div>
 
       <!-- Caixa de senha + instrucoes -->
       <div class="senha-box" id="senha-box" style="display:none;">
-        <h2>🌱 Shrek 01:04:20</h2>
+        <h2>🌱 Eu te amo — 01:04:20</h2>
         <p>Esta cena está no filme <strong>Shrek</strong> (2001).</p>
         <p>Assista na <span class="netflix-tag">Netflix</span> no momento
            <span class="tempo-tag">01:04:20</span>.</p>
+
+        <p style="color:#ff6b9d; font-weight:600; margin-top:10px; text-align:center;">Eu te amo 💛</p>
 
         <div class="links-streaming">
           <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank">▶ Abrir na Netflix</a>
@@ -1516,7 +1101,7 @@
     <!-- Mensagem final após vídeo terminar -->
     <div class="mensagem-final" id="mensagem-final">
       <div class="neoqeav">NEOQEAV</div>
-      <div class="amor">Nunca esqueça o quanto eu amo você <span>💗</span></div>
+      <div class="amor">Eu te amo! Nunca esqueça o quanto eu amo você <span>💗</span></div>
       <div class="coracao">♥</div>
     </div>
 
@@ -1586,17 +1171,48 @@
       const senhaBox = document.getElementById('senha-box');
       const player = document.getElementById('shrek-player');
       const video = document.getElementById('shrek-player-video');
-      
+
       if (input.toUpperCase() === SENHA_CORRETA) {
         erro.textContent = '';
         senhaBox.style.display = 'none';
         player.classList.add('ativo');
         video.play();
+        // Abrir em tela cheia (fullscreen API)
+        abrirTelaCheia(video);
       } else {
         erro.textContent = '❌ Senha incorreta! Tente novamente.';
         document.getElementById('senha-input').value = '';
         document.getElementById('senha-input').focus();
       }
+    }
+
+    // Função para abrir o video em tela cheia (cross-browser)
+    function abrirTelaCheia(elemento) {
+      if (!elemento) return;
+      try {
+        if (elemento.requestFullscreen) {
+          elemento.requestFullscreen();
+        } else if (elemento.webkitRequestFullscreen) {
+          elemento.webkitRequestFullscreen();
+        } else if (elemento.webkitEnterFullscreen) {
+          elemento.webkitEnterFullscreen(); // iOS Safari
+        } else if (elemento.msRequestFullscreen) {
+          elemento.msRequestFullscreen(); // IE/Edge antigo
+        }
+      } catch (e) {
+        // Se fullscreen for bloqueado, continua normalmente
+      }
+    }
+
+    // Sair da tela cheia (cross-browser)
+    function sairTelaCheia() {
+      try {
+        if (document.fullscreenElement) {
+          if (document.exitFullscreen) document.exitFullscreen();
+          else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+          else if (document.msExitFullscreen) document.msExitFullscreen();
+        }
+      } catch (e) {}
     }
 
     function fecharShrek() {
@@ -1612,6 +1228,7 @@
 
       video.pause();
       video.currentTime = 0;
+      sairTelaCheia();
       overlay.classList.remove('ativo');
       player.classList.remove('ativo');
       mensagemFinal.classList.remove('visivel');
@@ -1629,6 +1246,7 @@
     videoPlayer.addEventListener('ended', () => {
       const mensagemFinal = document.getElementById('mensagem-final');
       const player = document.getElementById('shrek-player');
+      sairTelaCheia();
       player.classList.remove('ativo');
       mensagemFinal.classList.add('visivel');
     });
