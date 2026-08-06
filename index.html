@@ -184,10 +184,14 @@
     .girassol {
       position: relative;
       transform-origin: bottom center;
-      animation: girassol-enter 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards, 
+      /* A cabeça (.cabeca) é absolute top:-200px e tem 240px de altura,
+         então reserva espaço no topo do container para ela não ser
+         cortada pelo overflow:hidden do body quando centralizado. */
+      padding-top: 240px;
+      margin-bottom: 0;
+      animation: girassol-enter 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards,
                  balancar 6s ease-in-out infinite alternate 1.2s,
                  respirar 4s ease-in-out infinite 1.2s;
-      margin-bottom: 0;
       z-index: 10;
       filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
     }
@@ -927,10 +931,9 @@
   .scene {
     flex-direction: column;
     gap: 24px;
-    margin-top: 20px;
     padding: 0 16px;
   }
-  .girassol { transform: scale(0.65); transform-origin: top center; }
+  .girassol { transform: scale(0.65); transform-origin: bottom center; }
   .bilhete { max-width: 80vw; font-size: 16px; padding: 16px 20px; }
 }
 
