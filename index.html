@@ -42,7 +42,8 @@
       min-height: 100dvh; /* viewport mobile dinâmico */
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-end; /* girassol apoiado na base (grama); a cabeça cresce para cima sem ser cortada */
+      padding-bottom: 40px; /* espaço para a grama que fica no fim */
       background:
         radial-gradient(ellipse at 50% 0%, #4A90D9 0%, #87CEEB 30%, #E0F4FF 60%, #90EE90 100%),
         linear-gradient(180deg, transparent 60%, rgba(34,139,34,0.15) 100%);
@@ -184,14 +185,10 @@
     .girassol {
       position: relative;
       transform-origin: bottom center;
-      /* A cabeça (.cabeca) é absolute top:-200px e tem 240px de altura,
-         então reserva espaço no topo do container para ela não ser
-         cortada pelo overflow:hidden do body quando centralizado. */
-      padding-top: 240px;
-      margin-bottom: 0;
       animation: girassol-enter 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards,
                  balancar 6s ease-in-out infinite alternate 1.2s,
                  respirar 4s ease-in-out infinite 1.2s;
+      margin-bottom: 0;
       z-index: 10;
       filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
     }
