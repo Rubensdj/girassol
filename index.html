@@ -873,6 +873,13 @@
   position: relative;
   z-index: 10;
   padding: 20px;
+  /* Escala responsiva baseada na ALTURA do viewport (não só largura).
+     Altura visual do girassol ~ 600px (caule 400 + cabeca estendendo 200 acima).
+     scale = clamp(0.5, (vh - 80) / 600, 1) — cabe em qualquer viewport
+     sem cortar a cabeca nem ficar gigante. Aplicado na .scene (sem animacao)
+     preservando as animacoes internas do .girassol. */
+  transform: scale(clamp(0.5, calc((100vh - 80px) / 600px), 1));
+  transform-origin: bottom center;
 }
 
 
@@ -1114,10 +1121,10 @@
       mostrarPerguntas();
     }
 
-    // Mostrar perguntas automaticamente após 8 segundos
+    // Mostrar perguntas automaticamente após 20 segundos
     setTimeout(() => {
       mostrarPerguntas();
-    }, 8 * 1000);
+    }, 20 * 1000);
 
     function mostrarPerguntas() {
       const overlay = document.getElementById('shrek-overlay');
