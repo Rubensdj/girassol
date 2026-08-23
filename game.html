@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Mini-jogo do Shrek - Ajude o Shrek a chegar na cena 01:04:20!">
+<title>Shrek's Journey 🧅</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: white;
+  }
+
+  #gameContainer {
+    position: relative;
+    width: 800px;
+    height: 500px;
+    background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 70%, #228B22 70%, #1a6b1a 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border: 3px solid rgba(255,255,255,0.1);
+  }
+
+  /* HUD */
+  #hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(5px);
+    z-index: 100;
+  }
+
+  .hud-item {
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  }
+
+  #timer {
+    font-family: 'Courier New', monospace;
+    font-size: 24px;
+    color: #FFD700;
+    letter-spacing: 2px;
+  }
+
+  #flowers {
+    color: #FF69B4;
+  }
+
+  #lives {
+    color: #FF4444;
+  }
+
+  /* Canvas do jogo */
+  canvas {
+    display: block;
+    border-radius: 0 0 13px 13px;
+  }
+
+  /* Tela inicial */
+  #startScreen {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    backdrop-filter: blur(10px);
+  }
+
+  #startScreen h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+    background: linear-gradient(45deg, #FFD700, #FF69B4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  #startScreen .subtitle {
+    font-size: 18px;
+    color: #aaa;
+    margin-bottom: 30px;
+  }
+
+  #startScreen .instructions {
+    background: rgba(255,255,255,0.1);
+    padding: 20px 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    text-align: left;
+    line-height: 2;
+  }
+
+  #startScreen .instructions span {
+    color: #FFD700;
+  }
+
+  .btn {
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .btn-start {
+    background: linear-gradient(135deg, #2E8B57, #006400);
+    color: white;
+    box-shadow: 0 10px 30px rgba(46, 139, 87, 0.4);
+  }
+
+  .btn-start:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(46, 139, 87, 0.6);
+  }
+
+  /* Tela de vitória */
+  #winScreen {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    backdrop-filter: blur(10px);
+  }
+
+  #winScreen.ativo {
+    display: flex;
+  }
+
+  #winScreen h1 {
+    font-size: 42px;
+    color: #FFD700;
+    margin-bottom: 15px;
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  @keyframes glow {
+    0%, 100% { text-shadow: 0 0 20px rgba(255,215,0,0.5); }
+    50% { text-shadow: 0 0 40px rgba(255,215,0,0.8), 0 0 60px rgba(255,215,0,0.4); }
+  }
+
+  #winScreen .message {
+    font-size: 20px;
+    color: #FF69B4;
+    margin-bottom: 30px;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  #winScreen .time-reached {
+    font-family: 'Courier New', monospace;
+    font-size: 36px;
+    color: #4ECDC4;
+    margin-bottom: 20px;
+    letter-spacing: 4px;
+  }
+
+  /* Tela de game over */
+  #gameOverScreen {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    backdrop-filter: blur(10px);
+  }
+
+  #gameOverScreen.ativo {
+    display: flex;
+  }
+
+  #gameOverScreen h1 {
+    font-size: 42px;
+    color: #FF4444;
+    margin-bottom: 20px;
+  }
+
+  #gameOverScreen p {
+    font-size: 18px;
+    color: #aaa;
+    margin-bottom: 30px;
+  }
+
+  .btn-retry {
+    background: linear-gradient(135deg, #c44569, #8b2d4a);
+    color: white;
+    box-shadow: 0 10px 30px rgba(196, 69, 105, 0.4);
+  }
+
+  .btn-retry:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(196, 69, 105, 0.6);
+  }
+
+  /* Botão voltar */
+  .btn-back {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    z-index: 300;
+    text-decoration: none;
+  }
+
+  .btn-back:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+  }
+
+  /* Controles mobile */
+  #mobileControls {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 15px;
+    z-index: 150;
+  }
+
+  @media (max-width: 850px) {
+    #gameContainer {
+      width: 100vw;
+      height: 60vh;
+      border-radius: 0;
+    }
+    #mobileControls {
+      display: flex;
+    }
+  }
+
+  .mobile-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .mobile-btn:active {
+    background: rgba(255,255,255,0.3);
+    transform: scale(0.95);
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="btn-back">← Voltar ao Girassol</a>
+
+<div id="gameContainer">
+  <!-- HUD -->
+  <div id="hud">
+    <div class="hud-item" id="flowers">🌸 0</div>
+    <div class="hud-item" id="timer">00:00:00</div>
+    <div class="hud-item" id="lives">❤️❤️❤️</div>
+  </div>
+
+  <!-- Canvas -->
+  <canvas id="gameCanvas" width="800" height="500"></canvas>
+
+  <!-- Tela inicial -->
+  <div id="startScreen">
+    <h1>🧅 Shrek's Journey</h1>
+    <p class="subtitle">Ajude o Shrek a chegar na cena 01:04:20!</p>
+    <div class="instructions">
+      <span>⬅️ ➡️</span> Mover esquerda/direita<br>
+      <span>⬆️ / ESPAÇO</span> Pular<br>
+      <span>🌸</span> Colete flores para ganhar pontos<br>
+      <span>🧅</span> Cogumelos dão vida extra<br>
+      <span>⚠️</span> Evite os obstáculos!
+    </div>
+    <button class="btn btn-start" onclick="startGame()">JOGAR</button>
+  </div>
+
+  <!-- Tela de vitória -->
+  <div id="winScreen">
+    <h1>🎉 CENA ALCANÇADA!</h1>
+    <div class="time-reached">01:04:20</div>
+    <p class="message">
+      O Shrek chegou na cena! 💚<br>
+      Eu te amo! 💛
+    </p>
+    <button class="btn btn-start" onclick="restartGame()">JOGAR NOVAMENTE</button>
+  </div>
+
+  <!-- Tela de game over -->
+  <div id="gameOverScreen">
+    <h1>💀 GAME OVER</h1>
+    <p>O Shrek foi derrotado! Tente novamente.</p>
+    <button class="btn btn-retry" onclick="restartGame()">TENTAR NOVAMENTE</button>
+  </div>
+</div>
+
+<!-- Controles mobile -->
+<div id="mobileControls">
+  <button class="mobile-btn" id="btnLeft">⬅️</button>
+  <button class="mobile-btn" id="btnJump">⬆️</button>
+  <button class="mobile-btn" id="btnRight">➡️</button>
+</div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Ajustar canvas para telas menores
+function resizeCanvas() {
+  const container = document.getElementById('gameContainer');
+  canvas.width = container.clientWidth;
+  canvas.height = container.clientHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// ===== ESTADO DO JOGO =====
+let gameRunning = false;
+let score = 0;
+let lives = 3;
+let gameTime = 0;
+let timerInterval = null;
+
+// ===== SHREK =====
+const shrek = {
+  x: 80,
+  y: 350,
+  width: 50,
+  height: 60,
+  vx: 0,
+  vy: 0,
+  speed: 5,
+  jumpForce: -12,
+  onGround: false,
+  facing: 1,
+  frame: 0,
+  animTimer: 0
+};
+
+// ===== PLATAFORMAS =====
+const platforms = [];
+function generatePlatforms() {
+  platforms.length = 0;
+  // Chão
+  platforms.push({ x: 0, y: 440, w: 9999, h: 60, color: '#228B22' });
+
+  // Plataformas fixas e aleatórias
+  const固定 = [
+    { x: 150, y: 350, w: 100, h: 20 },
+    { x: 300, y: 300, w: 120, h: 20 },
+    { x: 480, y: 350, w: 100, h: 20 },
+    { x: 600, y: 280, w: 130, h: 20 },
+    { x: 750, y: 340, w: 100, h: 20 },
+    { x: 900, y: 300, w: 120, h: 20 },
+    { x: 1050, y: 350, w: 100, h: 20 },
+    { x: 1200, y: 280, w: 140, h: 20 },
+    { x: 1400, y: 320, w: 110, h: 20 },
+    { x: 1550, y: 350, w: 100, h: 20 },
+    { x: 1700, y: 260, w: 130, h: 20 },
+    { x: 1900, y: 300, w: 120, h: 20 },
+    { x: 2100, y: 350, w: 100, h: 20 },
+    { x: 2300, y: 280, w: 140, h: 20 },
+    { x: 2500, y: 320, w: 110, h: 20 },
+    { x: 2700, y: 350, w: 130, h: 20 },
+    { x: 2900, y: 280, w: 100, h: 20 },
+    { x: 3100, y: 340, w: 120, h: 20 },
+  ];
+ 固定.forEach(p => platforms.push({ ...p, color: '#8B4513' }));
+}
+generatePlatforms();
+
+// ===== COLETÁVEIS =====
+let flowers = [];
+let mushrooms = [];
+let obstacles = [];
+const TARGET_X = 3200; // Posição final (01:04:20)
+
+function spawnCollectibles() {
+  flowers.length = 0;
+  mushrooms.length = 0;
+  obstacles.length = 0;
+
+  // Flores
+  for (let i = 0; i < 25; i++) {
+    flowers.push({
+      x: 200 + i * 120 + Math.random() * 60,
+      y: 300 + Math.random() * 100,
+      size: 20,
+      collected: false,
+      bobOffset: Math.random() * Math.PI * 2
+    });
+  }
+
+  // Cogumelos (vida extra)
+  for (let i = 0; i < 5; i++) {
+    mushrooms.push({
+      x: 400 + i * 650,
+      y: 400,
+      size: 25,
+      collected: false
+    });
+  }
+
+  // Obstáculos (buracos, pedras)
+  for (let i = 0; i < 12; i++) {
+    obstacles.push({
+      x: 350 + i * 260,
+      y: 410,
+      width: 40,
+      height: 30,
+      type: Math.random() > 0.5 ? 'rock' : 'stump'
+    });
+  }
+}
+spawnCollectibles();
+
+// ===== CÂMERA =====
+let cameraX = 0;
+
+// ===== INPUT =====
+const keys = {};
+window.addEventListener('keydown', (e) => {
+  keys[e.code] = true;
+  if (['Space', 'ArrowUp', 'ArrowDown'].includes(e.code)) e.preventDefault();
+});
+window.addEventListener('keyup', (e) => keys[e.code] = false);
+
+// Controles mobile
+let mobileLeft = false, mobileRight = false, mobileJump = false;
+document.getElementById('btnLeft').addEventListener('touchstart', (e) => { e.preventDefault(); mobileLeft = true; });
+document.getElementById('btnLeft').addEventListener('touchend', () => mobileLeft = false);
+document.getElementById('btnRight').addEventListener('touchstart', (e) => { e.preventDefault(); mobileRight = true; });
+document.getElementById('btnRight').addEventListener('touchend', () => mobileRight = false);
+document.getElementById('btnJump').addEventListener('touchstart', (e) => { e.preventDefault(); mobileJump = true; });
+document.getElementById('btnJump').addEventListener('touchend', () => mobileJump = false);
+
+// ===== FUNÇÕES DO JOGO =====
+function startGame() {
+  document.getElementById('startScreen').style.display = 'none';
+  gameRunning = true;
+  score = 0;
+  lives = 3;
+  gameTime = 0;
+  shrek.x = 80;
+  shrek.y = 350;
+  shrek.vx = 0;
+  shrek.vy = 0;
+  cameraX = 0;
+  generatePlatforms();
+  spawnCollectibles();
+  updateHUD();
+
+  timerInterval = setInterval(() => {
+    gameTime++;
+    updateTimer();
+  }, 1000);
+
+  requestAnimationFrame(gameLoop);
+}
+
+function restartGame() {
+  document.getElementById('winScreen').classList.remove('ativo');
+  document.getElementById('gameOverScreen').classList.remove('ativo');
+  startGame();
+}
+
+function updateHUD() {
+  document.getElementById('flowers').textContent = '🌸 ' + score;
+  const hearts = '❤️'.repeat(lives) + '🖤'.repeat(Math.max(0, 3 - lives));
+  document.getElementById('lives').textContent = hearts;
+}
+
+function updateTimer() {
+  const totalSeconds = Math.floor(gameTime);
+  // Mapear tempo do jogo para tempo da cena (00:00:00 → 01:04:20)
+  const targetSeconds = 1 * 3600 + 4 * 60 + 20; // 3860 segundos
+  const progress = Math.min(gameTime / 60, 1); // 60 segundos de jogo = cena completa
+  const displaySeconds = Math.floor(progress * targetSeconds);
+
+  const h = Math.floor(displaySeconds / 3600);
+  const m = Math.floor((displaySeconds % 3600) / 60);
+  const s = displaySeconds % 60;
+  document.getElementById('timer').textContent =
+    String(h).padStart(2, '0') + ':' +
+    String(m).padStart(2, '0') + ':' +
+    String(s).padStart(2, '0');
+}
+
+function takeDamage() {
+  lives--;
+  updateHUD();
+  if (lives <= 0) {
+    gameOver();
+  } else {
+    // Invencibilidade temporária
+    shrek.invincible = 60;
+  }
+}
+
+function gameOver() {
+  gameRunning = false;
+  clearInterval(timerInterval);
+  document.getElementById('gameOverScreen').classList.add('ativo');
+}
+
+function winGame() {
+  gameRunning = false;
+  clearInterval(timerInterval);
+  document.getElementById('timer').textContent = '01:04:20';
+  document.getElementById('winScreen').classList.add('ativo');
+}
+
+// ===== FÍSICA =====
+function update() {
+  if (!gameRunning) return;
+
+  // Input
+  const left = keys['ArrowLeft'] || keys['KeyA'] || mobileLeft;
+  const right = keys['ArrowRight'] || keys['KeyD'] || mobileRight;
+  const jump = keys['ArrowUp'] || keys['KeyW'] || keys['Space'] || mobileJump;
+
+  // Movimento horizontal
+  if (left) { shrek.vx = -shrek.speed; shrek.facing = -1; }
+  else if (right) { shrek.vx = shrek.speed; shrek.facing = 1; }
+  else { shrek.vx *= 0.8; }
+
+  // Pulo
+  if (jump && shrek.onGround) {
+    shrek.vy = shrek.jumpForce;
+    shrek.onGround = false;
+  }
+
+  // Gravidade
+  shrek.vy += 0.6;
+  if (shrek.vy > 15) shrek.vy = 15;
+
+  // Mover
+  shrek.x += shrek.vx;
+  shrek.y += shrek.vy;
+
+  // Limites
+  if (shrek.x < 0) shrek.x = 0;
+
+  // Colisão com plataformas
+  shrek.onGround = false;
+  platforms.forEach(p => {
+    if (shrek.x + shrek.width > p.x &&
+        shrek.x < p.x + p.w &&
+        shrek.y + shrek.height > p.y &&
+        shrek.y + shrek.height < p.y + p.h + 15 &&
+        shrek.vy >= 0) {
+      shrek.y = p.y - shrek.height;
+      shrek.vy = 0;
+      shrek.onGround = true;
+    }
+  });
+
+  // Queda no abismo
+  if (shrek.y > canvas.height + 50) {
+    shrek.x = 80;
+    shrek.y = 350;
+    shrek.vy = 0;
+    cameraX = 0;
+    takeDamage();
+  }
+
+  // Invencibilidade
+  if (shrek.invincible > 0) shrek.invincible--;
+
+  // Animação
+  shrek.animTimer++;
+  if (shrek.animTimer > 8) {
+    shrek.animTimer = 0;
+    shrek.frame = (shrek.frame + 1) % 4;
+  }
+
+  // Câmera segue o Shrek
+  const targetCamX = shrek.x - canvas.width * 0.35;
+  cameraX += (targetCamX - cameraX) * 0.1;
+  if (cameraX < 0) cameraX = 0;
+
+  // Colisão com flores
+  flowers.forEach(f => {
+    if (!f.collected) {
+      const dx = (shrek.x + shrek.width/2) - f.x;
+      const dy = (shrek.y + shrek.height/2) - f.y;
+      if (Math.sqrt(dx*dx + dy*dy) < 35) {
+        f.collected = true;
+        score++;
+        updateHUD();
+      }
+    }
+  });
+
+  // Colisão com cogumelos
+  mushrooms.forEach(m => {
+    if (!m.collected) {
+      const dx = (shrek.x + shrek.width/2) - m.x;
+      const dy = (shrek.y + shrek.height/2) - m.y;
+      if (Math.sqrt(dx*dx + dy*dy) < 40) {
+        m.collected = true;
+        if (lives < 3) lives++;
+        updateHUD();
+      }
+    }
+  });
+
+  // Colisão com obstáculos
+  if (shrek.invincible <= 0) {
+    obstacles.forEach(o => {
+      if (shrek.x + shrek.width > o.x &&
+          shrek.x < o.x + o.width &&
+          shrek.y + shrek.height > o.y &&
+          shrek.y < o.y + o.height) {
+        shrek.vx = shrek.facing * -8;
+        shrek.vy = -6;
+        takeDamage();
+      }
+    });
+  }
+
+  // Verificar vitória
+  if (shrek.x >= TARGET_X) {
+    winGame();
+  }
+}
+
+// ===== RENDERIZAÇÃO =====
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.save();
+  ctx.translate(-cameraX, 0);
+
+  // Fundo parallax
+  drawBackground();
+
+  // Plataformas
+  platforms.forEach(p => {
+    if (p.x + p.w > cameraX - 100 && p.x < cameraX + canvas.width + 100) {
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x, p.y, p.w, p.h);
+      // Textura
+      if (p.h < 30) {
+        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+        ctx.fillRect(p.x, p.y, p.w, 4);
+      }
+    }
+  });
+
+  // Flores
+  flowers.forEach(f => {
+    if (!f.collected && f.x > cameraX - 50 && f.x < cameraX + canvas.width + 50) {
+      const bob = Math.sin(Date.now() * 0.003 + f.bobOffset) * 5;
+      drawFlower(f.x, f.y + bob, f.size);
+    }
+  });
+
+  // Cogumelos
+  mushrooms.forEach(m => {
+    if (!m.collected && m.x > cameraX - 50 && m.x < cameraX + canvas.width + 50) {
+      drawMushroom(m.x, m.y, m.size);
+    }
+  });
+
+  // Obstáculos
+  obstacles.forEach(o => {
+    if (o.x > cameraX - 50 && o.x < cameraX + canvas.width + 50) {
+      if (o.type === 'rock') drawRock(o.x, o.y, o.width, o.height);
+      else drawStump(o.x, o.y, o.width, o.height);
+    }
+  });
+
+  // Bandeira final
+  if (TARGET_X > cameraX - 100) {
+    drawFlag(TARGET_X, 350);
+  }
+
+  // Shrek
+  drawShrek();
+
+  ctx.restore();
+}
+
+function drawBackground() {
+  // Montanhas
+  ctx.fillStyle = '#2d5a27';
+  for (let i = 0; i < 20; i++) {
+    const mx = i * 400 - cameraX * 0.3;
+    ctx.beginPath();
+    ctx.moveTo(mx, 440);
+    ctx.lineTo(mx + 150, 200 + Math.sin(i) * 50);
+    ctx.lineTo(mx + 300, 440);
+    ctx.fill();
+  }
+
+  // Árvores distantes
+  ctx.fillStyle = '#1a4a1a';
+  for (let i = 0; i < 30; i++) {
+    const tx = i * 200 - cameraX * 0.5;
+    ctx.beginPath();
+    ctx.moveTo(tx, 440);
+    ctx.lineTo(tx + 25, 350 + Math.cos(i * 2) * 30);
+    ctx.lineTo(tx + 50, 440);
+    ctx.fill();
+  }
+}
+
+function drawFlower(x, y, size) {
+  // Caule
+  ctx.fillStyle = '#228B22';
+  ctx.fillRect(x - 2, y, 4, size * 0.8);
+
+  // Pétalas
+  const petalColors = ['#FFD700', '#FF69B4', '#FF6347', '#FF1493'];
+  ctx.fillStyle = petalColors[Math.floor(x) % petalColors.length];
+  for (let i = 0; i < 6; i++) {
+    const angle = (i / 6) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.ellipse(
+      x + Math.cos(angle) * size * 0.4,
+      y + Math.sin(angle) * size * 0.4,
+      size * 0.3,
+      size * 0.15,
+      angle,
+      0,
+      Math.PI * 2
+    );
+    ctx.fill();
+  }
+
+  // Centro
+  ctx.fillStyle = '#8B4513';
+  ctx.beginPath();
+  ctx.arc(x, y, size * 0.25, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawMushroom(x, y, size) {
+  // Caule
+  ctx.fillStyle = '#F5DEB3';
+  ctx.fillRect(x - size * 0.2, y - size * 0.3, size * 0.4, size * 0.5);
+
+  // Tampa
+  ctx.fillStyle = '#FF4444';
+  ctx.beginPath();
+  ctx.ellipse(x, y - size * 0.3, size * 0.5, size * 0.35, 0, Math.PI, 0);
+  ctx.fill();
+
+  // Bolinhas
+  ctx.fillStyle = 'white';
+  ctx.beginPath();
+  ctx.arc(x - size * 0.2, y - size * 0.4, 3, 0, Math.PI * 2);
+  ctx.arc(x + size * 0.15, y - size * 0.35, 2, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawRock(x, y, w, h) {
+  ctx.fillStyle = '#666';
+  ctx.beginPath();
+  ctx.moveTo(x, y + h);
+  ctx.lineTo(x + w * 0.2, y);
+  ctx.lineTo(x + w * 0.8, y - 5);
+  ctx.lineTo(x + w, y + h);
+  ctx.fill();
+  ctx.fillStyle = '#555';
+  ctx.beginPath();
+  ctx.moveTo(x + w * 0.8, y - 5);
+  ctx.lineTo(x + w, y + h);
+  ctx.lineTo(x + w * 0.7, y + h);
+  ctx.fill();
+}
+
+function drawStump(x, y, w, h) {
+  ctx.fillStyle = '#8B4513';
+  ctx.fillRect(x, y - h, w, h);
+  ctx.fillStyle = '#A0522D';
+  ctx.fillRect(x + 3, y - h, w - 6, 5);
+  // Anéis
+  ctx.strokeStyle = '#6B3410';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.ellipse(x + w/2, y - h, w/2 - 3, 5, 0, 0, Math.PI * 2);
+  ctx.stroke();
+}
+
+function drawFlag(x, y) {
+  // Mastro
+  ctx.fillStyle = '#8B4513';
+  ctx.fillRect(x, y - 100, 6, 100);
+
+  // Bandeira
+  const wave = Math.sin(Date.now() * 0.005) * 5;
+  ctx.fillStyle = '#FF69B4';
+  ctx.beginPath();
+  ctx.moveTo(x + 6, y - 100);
+  ctx.quadraticCurveTo(x + 40, y - 95 + wave, x + 60, y - 90);
+  ctx.lineTo(x + 6, y - 70);
+  ctx.fill();
+
+  // Texto
+  ctx.fillStyle = 'white';
+  ctx.font = 'bold 10px Courier New';
+  ctx.fillText('01:04:20', x + 10, y - 82);
+}
+
+function drawShrek() {
+  const sx = shrek.x;
+  const sy = shrek.y;
+  const dir = shrek.facing;
+
+  // Efeito de invencibilidade
+  if (shrek.invincible > 0 && Math.floor(shrek.invincible / 4) % 2 === 0) return;
+
+  ctx.save();
+  ctx.translate(sx + shrek.width/2, sy + shrek.height/2);
+  ctx.scale(dir, 1);
+
+  // Corpo
+  ctx.fillStyle = '#4CAF50';
+  ctx.fillRect(-15, -10, 30, 35);
+
+  // Cabeça
+  ctx.fillStyle = '#4CAF50';
+  ctx.beginPath();
+  ctx.arc(0, -18, 16, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Orelhas (trombetas)
+  ctx.fillStyle = '#4CAF50';
+  ctx.beginPath();
+  ctx.ellipse(-14, -25, 8, 4, -0.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.ellipse(14, -25, 8, 4, 0.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Olhos
+  ctx.fillStyle = 'white';
+  ctx.beginPath();
+  ctx.arc(-5, -20, 4, 0, Math.PI * 2);
+  ctx.arc(5, -20, 4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#333';
+  ctx.beginPath();
+  ctx.arc(-5, -20, 2, 0, Math.PI * 2);
+  ctx.arc(5, -20, 2, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Sorriso
+  ctx.strokeStyle = '#2E7D32';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(0, -15, 6, 0.2, Math.PI - 0.2);
+  ctx.stroke();
+
+  // Pernas (animação)
+  ctx.fillStyle = '#3E8E41';
+  const legAnim = shrek.onGround ? Math.sin(shrek.animTimer * 0.5) * 5 : 8;
+  ctx.fillRect(-10, 25, 8, 15 + legAnim);
+  ctx.fillRect(2, 25, 8, 15 - legAnim);
+
+  // Braços
+  ctx.fillStyle = '#4CAF50';
+  ctx.fillRect(-20, 0, 8, 20);
+  ctx.fillRect(12, 0, 8, 20);
+
+  ctx.restore();
+}
+
+// ===== GAME LOOP =====
+function gameLoop() {
+  update();
+  draw();
+  if (gameRunning) {
+    requestAnimationFrame(gameLoop);
+  }
+}
+
+// Inicializar renderização
+draw();
+</script>
+
+</body>
+</html>
