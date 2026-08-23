@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Girassol animado em HTML/CSS - um presente romântico com referência à cena 01:04:20 do filme Shrek (2001).">
+<meta name="description" content="Girassol animado em HTML/CSS puro - presente romântico com cena do Shrek 01:04:20. Um girassol que floresce na tela com sol, nuvens e partículas.">
+<meta name="keywords" content="girassol, animado, romântico, shrek, presente, html, css, javascript, florianópolis, amor">
+<meta name="robots" content="index, follow">
 <meta name="theme-color" content="#87CEEB">
 <meta name="author" content="Rubens Pereira Fernandes">
 
@@ -12,10 +14,16 @@
 <meta property="og:title" content="Girassol Animado">
 <meta property="og:description" content="Um presente romântico que floresce a cada clique.">
 <meta property="og:image" content="https://Rubensdj.github.io/girassol/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Girassol Animado">
 <meta property="og:url" content="https://Rubensdj.github.io/girassol/">
 <meta name="twitter:card" content="summary_large_image">
 
 <!-- Performance: preconnect to font origins -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -1018,8 +1026,9 @@
     </div>
 
     <!-- Vídeo da cena (invisível até senha) -->
-    <video id="shrek-video" class="hidden" controls style="display:none; max-width:240px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.2); margin-left:20px;">
+    <video id="shrek-video" class="hidden" controls preload="none" loading="lazy" style="display:none; max-width:240px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.2); margin-left:20px;">
       <source src="shrek.mp4" type="video/mp4">
+      <track kind="captions" src="" srclang="pt" label="Português">
       Seu navegador não suporta vídeo.
     </video>
   </div>
@@ -1032,31 +1041,31 @@
   </div>
 
   <!-- Botão discreto para reabrir a cena do Shrek -->
-    <button class="shrek-btn" onclick="abrirShrek()" aria-label="Abrir cena do Shrek" title="Abrir cena do Shrek">🌻</button>
+    <button class="shrek-btn" onclick="abrirShrek()" aria-label="Abrir cena do Shrek" title="Abrir cena do Shrek" role="button">🌻</button>
 
     <!-- Overlay cenario do Shrek -->
     <div class="shrek-overlay" id="shrek-overlay">
 
       <!-- Caixa de perguntas -->
-      <div class="perguntas-box" id="perguntas-box" style="display:none;">
-        <h2>🌻 Eu te amo</h2>
+      <div class="perguntas-box" id="perguntas-box" style="display:none;" role="dialog" aria-labelledby="titulo-perguntas" aria-modal="true">
+        <h2 id="titulo-perguntas">🌻 Eu te amo</h2>
         <p class="pergunta">Ei... você tem <strong>Netflix</strong> ou outro jeito de assistir <strong>Shrek</strong>?</p>
-        <button class="btn-resposta" onclick="respostaNetflix(true)">Sim, tenho Netflix</button>
-        <button class="btn-resposta nao" onclick="respostaNetflix(false)">Não tenho / não consigo assistir</button>
+        <button class="btn-resposta" onclick="respostaNetflix(true)" aria-pressed="false">Sim, tenho Netflix</button>
+        <button class="btn-resposta nao" onclick="respostaNetflix(false)" aria-pressed="false">Não tenho / não consigo assistir</button>
       </div>
 
       <!-- Info de onde assistir (quando resposta = sim) -->
-      <div class="info-assistir" id="info-assistir" style="display:none;">
-        <h3>📺 Onde assistir — Eu te amo 💛</h3>
+      <div class="info-assistir" id="info-assistir" style="display:none;" role="region" aria-labelledby="titulo-info">
+        <h3 id="titulo-info">📺 Onde assistir — Eu te amo 💛</h3>
         <p>A cena está no filme <span class="destaque">Shrek (2001)</span>.</p>
         <p>Tempo exato: <span class="destaque">01:04:20</span></p>
         <p>É a cena onde o Shrek tira a orelha do burro... um clássico! 💚 Eu te amo!</p>
-        <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank">▶ Abrir Shrek na Netflix</a>
+        <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank" rel="noopener noreferrer">▶ Abrir Shrek na Netflix</a>
       </div>
 
       <!-- Caixa de senha + instrucoes -->
-      <div class="senha-box" id="senha-box" style="display:none;">
-        <h2>🌱 Eu te amo — 01:04:20</h2>
+      <div class="senha-box" id="senha-box" style="display:none;" role="dialog" aria-labelledby="titulo-senha" aria-modal="true">
+        <h2 id="titulo-senha">🌱 Eu te amo — 01:04:20</h2>
         <p>Esta cena está no filme <strong>Shrek</strong> (2001).</p>
         <p>Assista na <span class="netflix-tag">Netflix</span> no momento
            <span class="tempo-tag">01:04:20</span>.</p>
@@ -1064,8 +1073,8 @@
         <p style="color:#ff6b9d; font-weight:600; margin-top:10px; text-align:center;">Eu te amo 💛</p>
 
         <div class="links-streaming">
-          <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank">▶ Abrir na Netflix</a>
-          <a class="link-youtube" href="https://www.youtube.com/results?search_query=shrek+2001+ponto+1h04min20s" target="_blank">🔍 Procurar no YouTube</a>
+          <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank" rel="noopener noreferrer">▶ Abrir na Netflix</a>
+          <a class="link-youtube" href="https://www.youtube.com/results?search_query=shrek+2001+ponto+1h04min20s" target="_blank" rel="noopener noreferrer">🔍 Procurar no YouTube</a>
         </div>
 
         <p class="nao-netflix">
@@ -1074,25 +1083,26 @@
         </p>
 
         <input type="password" class="senha-input" id="senha-input"
-               placeholder="SENHA" onkeypress="if(event.key==='Enter')verificarSenha()">
-        <button class="senha-btn" onclick="verificarSenha()">Desbloquear cena</button>
-        <div class="senha-erro" id="senha-erro"></div>
+               placeholder="SENHA" aria-label="Digite a senha para desbloquear" onkeypress="if(event.key==='Enter')verificarSenha()">
+        <button class="senha-btn" onclick="verificarSenha()" aria-describedby="senha-erro">Desbloquear cena</button>
+        <div class="senha-erro" id="senha-erro" role="alert" aria-live="polite"></div>
       </div>
 
       <!-- Player de video -->
-      <div class="shrek-player" id="shrek-player">
-        <video controls autoplay id="shrek-player-video">
+      <div class="shrek-player" id="shrek-player" role="region" aria-label="Player de vídeo">
+        <video controls autoplay id="shrek-player-video" preload="metadata">
           <source src="shrek.mp4" type="video/mp4">
+          <track kind="captions" src="" srclang="pt" label="Português">
           Seu navegador não suporta vídeo.
         </video>
-        <button class="fechar-btn" onclick="fecharShrek()">✕ Fechar</button>
+        <button class="fechar-btn" onclick="fecharShrek()" aria-label="Fechar vídeo">✕ Fechar</button>
       </div>
 
     </div>
 
     <!-- Mensagem final após vídeo terminar -->
-    <div class="mensagem-final" id="mensagem-final">
-      <div class="neoqeav">NEOQEAV</div>
+    <div class="mensagem-final" id="mensagem-final" role="dialog" aria-labelledby="titulo-mensagem" aria-modal="true">
+      <div class="neoqeav" id="titulo-mensagem">NEOQEAV</div>
       <div class="amor">Eu te amo! Nunca esqueça o quanto eu amo você <span>💗</span></div>
       <div class="coracao">♥</div>
     </div>
@@ -1112,7 +1122,10 @@
     }
 
     // --- Sistema do Girassol Shrek ---
-    const SENHA_CORRETA = 'NEOQEAV';
+    // Senha ofuscada (simbólica - real segurança requer backend)
+    const _0x4f2a = ['TmVPUUVRVg=='];
+    const _deco = (s) => atob(s);
+    const SENHA_CORRETA = _deco(_0x4f2a[0]);
 
     // Botão discreto para reabrir a cena clicando no canto inferior esquerdo
     function abrirShrek() {
@@ -1251,6 +1264,8 @@
       sairTelaCheia();
       player.classList.remove('ativo');
       mensagemFinal.classList.add('visivel');
+      // Foco na mensagem final para acessibilidade
+      mensagemFinal.focus();
     });
 
     // Também permitir fechar mensagem final clicando nela
@@ -1259,6 +1274,21 @@
       const overlay = document.getElementById('shrek-overlay');
       mensagemFinal.classList.remove('visivel');
       overlay.classList.remove('ativo');
+    });
+
+    // Permitir fechar com tecla ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const overlay = document.getElementById('shrek-overlay');
+        const mensagemFinal = document.getElementById('mensagem-final');
+        if (overlay.classList.contains('ativo')) {
+          fecharShrek();
+        }
+        if (mensagemFinal.classList.contains('visivel')) {
+          mensagemFinal.classList.remove('visivel');
+          overlay.classList.remove('ativo');
+        }
+      }
     });
   </script>
 
