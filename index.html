@@ -1311,6 +1311,67 @@ body.noite .toggle-dia-noite {
   border-color: rgba(255,100,100,0.5);
 }
 
+/* Botão de som */
+.btn-som {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 25;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 46px;
+  text-align: center;
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.btn-som:hover {
+  transform: scale(1.1);
+  background: rgba(255,255,255,0.2);
+}
+.btn-som.mudo {
+  opacity: 0.5;
+  border-color: rgba(255,100,100,0.4);
+}
+body.noite .btn-som {
+  background: rgba(50,50,100,0.3);
+  border-color: rgba(200,200,255,0.3);
+}
+
+/* Indicador de ondas sonoras */
+.ondas-som {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px; height: 50px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.btn-som.tocando .ondas-som {
+  opacity: 1;
+}
+.onda {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: 2px solid rgba(255,215,0,0.4);
+  border-radius: 50%;
+  animation: onda-pulsar 2s ease-out infinite;
+}
+.onda:nth-child(2) { animation-delay: 0.6s; }
+.onda:nth-child(3) { animation-delay: 1.2s; }
+
+@keyframes onda-pulsar {
+  0%   { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
 /* Utility hidden class */
 .hidden { display: none !important; }
 
@@ -1441,6 +1502,16 @@ body.noite .toggle-dia-noite {
 
   <!-- Botão chuva de pétalas -->
   <button class="btn-chuva" id="btnChuva" onclick="toggleChuvaPetalas()" aria-label="Chuva de pétalas" title="Ativar chuva de pétalas">🌸</button>
+
+  <!-- Botão de som -->
+  <button class="btn-som" id="btnSom" onclick="toggleSom()" aria-label="Ativar sons de natureza" title="Ativar sons de natureza">
+    🔇
+    <div class="ondas-som">
+      <div class="onda"></div>
+      <div class="onda"></div>
+      <div class="onda"></div>
+    </div>
+  </button>
 
   <!-- Créditos discretos -->
   <div style="position:fixed; bottom:8px; right:10px; z-index:20; font-family:'Inter',sans-serif; font-size:11px; color:rgba(27,94,32,0.45); pointer-events:none; user-select:none;">
@@ -1678,6 +1749,194 @@ body.noite .toggle-dia-noite {
         chuvaInterval = null;
       }
     }
+
+    // 7. Sistema de Sons de Natureza (Web Audio API)
+    let audioCtx = null;
+    let somAtivo = false;
+    let sonsIntervalos = [];
+    const btnSom = document.getElementById('btnSom');
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // Som de pássaro (sintetizado)
+    function tocarPassaro() {
+      if (!somAtivo || !audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      const baseFreq = 2000 + Math.random() * 2000;
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, audioCtx.currentTime + 0.1);
+      osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.8, audioCtx.currentTime + 0.2);
+      osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.2, audioCtx.currentTime + 0.3);
+
+      gain.gain.setValueAtTime(0, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.03, audioCtx.currentTime + 0.02);
+      gain.gain.linearRampToValueAtTime(0.02, audioCtx.currentTime + 0.15);
+      gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.35);
+
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.4);
+    }
+
+    // Som de grilo (sintetizado)
+    function tocarGrilo() {
+      if (!somAtivo || !audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(4500 + Math.random() * 1000, audioCtx.currentTime);
+
+      // Padrão de trilo
+      gain.gain.setValueAtTime(0, audioCtx.currentTime);
+      for (let i = 0; i < 6; i++) {
+        const t = audioCtx.currentTime + i * 0.05;
+        gain.gain.linearRampToValueAtTime(0.015, t);
+        gain.gain.linearRampToValueAtTime(0, t + 0.025);
+      }
+
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.35);
+    }
+
+    // Som de vento suave
+    function criarRuidoVento() {
+      if (!somAtivo || !audioCtx) return;
+      const bufferSize = audioCtx.sampleRate * 2;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.5;
+      }
+
+      const source = audioCtx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(400, audioCtx.currentTime);
+
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 3);
+
+      // Modular o filtro para simular rajadas
+      filter.frequency.linearRampToValueAtTime(600, audioCtx.currentTime + 4);
+      filter.frequency.linearRampToValueAtTime(300, audioCtx.currentTime + 8);
+      filter.frequency.linearRampToValueAtTime(500, audioCtx.currentTime + 12);
+
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      source.start();
+      source.stop(audioCtx.currentTime + 15);
+
+      return { source, gain };
+    }
+
+    // Som de gota d'água
+    function tocarGotaAgua() {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1800, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.15);
+
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.25);
+    }
+
+    function iniciarSonsAmbiente() {
+      initAudio();
+      // Pássaros: 2-5 por intervalo
+      const intervaloPassaros = setInterval(() => {
+        if (!somAtivo) return;
+        const qtd = 1 + Math.floor(Math.random() * 3);
+        for (let i = 0; i < qtd; i++) {
+          setTimeout(tocarPassaro, Math.random() * 800);
+        }
+      }, 3000 + Math.random() * 4000);
+      sonsIntervalos.push(intervaloPassaros);
+
+      // Grilos: mais frequentes à noite
+      const intervaloGrilos = setInterval(() => {
+        if (!somAtivo) return;
+        const isNoiteNow = document.body.classList.contains('noite');
+        const chance = isNoiteNow ? 0.8 : 0.3;
+        if (Math.random() < chance) {
+          const qtd = isNoiteNow ? (2 + Math.floor(Math.random() * 4)) : 1;
+          for (let i = 0; i < qtd; i++) {
+            setTimeout(tocarGrilo, Math.random() * 600);
+          }
+        }
+      }, 2000 + Math.random() * 3000);
+      sonsIntervalos.push(intervaloGrilos);
+
+      // Vento: a cada 10-15 segundos
+      const intervaloVento = setInterval(() => {
+        if (!somAtivo) return;
+        criarRuidoVento();
+      }, 10000 + Math.random() * 5000);
+      sonsIntervalos.push(intervaloVento);
+    }
+
+    function pararSons() {
+      sonsIntervalos.forEach(id => clearInterval(id));
+      sonsIntervalos = [];
+    }
+
+    function toggleSom() {
+      somAtivo = !somAtivo;
+      btnSom.classList.toggle('mudo', !somAtivo);
+      btnSom.classList.toggle('tocando', somAtivo);
+      btnSom.textContent = somAtivo ? '🔊' : '🔇';
+      btnSom.title = somAtivo ? 'Desativar sons' : 'Ativar sons de natureza';
+
+      // Re-adicionar as ondas sonoras
+      if (somAtivo) {
+        const ondas = document.createElement('div');
+        ondas.className = 'ondas-som';
+        ondas.innerHTML = '<div class="onda"></div><div class="onda"></div><div class="onda"></div>';
+        btnSom.appendChild(ondas);
+        iniciarSonsAmbiente();
+        // Primeiro pássaro após 1s
+        setTimeout(tocarPassaro, 1000);
+      } else {
+        pararSons();
+      }
+    }
+
+    // Conectar gotas d'água ao som
+    document.querySelector('.girassol').addEventListener('click', function() {
+      if (somAtivo) {
+        for (let i = 0; i < 3; i++) {
+          setTimeout(tocarGotaAgua, i * 150);
+        }
+      }
+    });
 
     // --- Sistema do Girassol Shrek ---
     // Senha ofuscada (simbólica - real segurança requer backend)
