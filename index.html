@@ -193,33 +193,37 @@
     .girassol {
       position: relative;
       transform-origin: bottom center;
-      animation: girassol-enter 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards,
-                 balancar 6s ease-in-out infinite alternate 1.2s,
-                 respirar 4s ease-in-out infinite 1.2s;
+      animation: girassol-enter 2s cubic-bezier(0.23, 1, 0.32, 1) forwards,
+                 balancar 6s ease-in-out infinite alternate 2s,
+                 respirar 4s ease-in-out infinite 2s;
       margin-bottom: 0;
       z-index: 10;
       filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
     }
 
     @keyframes girassol-enter {
-      0%   { opacity: 0; transform: translateY(150px) scale(0.15) rotate(-20deg); filter: blur(10px); }
-      20%  { opacity: 0.3; transform: translateY(100px) scale(0.3) rotate(-10deg); filter: blur(5px); }
-      50%  { opacity: 0.7; transform: translateY(40px) scale(0.65) rotate(-3deg); filter: blur(1px); }
-      80%  { opacity: 0.95; transform: translateY(5px) scale(1.02) rotate(1deg); }
+      0%   { opacity: 0; transform: translateY(200px) scale(0.05) rotate(-30deg); filter: blur(15px); }
+      15%  { opacity: 0.2; transform: translateY(150px) scale(0.15) rotate(-20deg); filter: blur(10px); }
+      30%  { opacity: 0.5; transform: translateY(100px) scale(0.35) rotate(-12deg); filter: blur(6px); }
+      50%  { opacity: 0.8; transform: translateY(50px) scale(0.6) rotate(-5deg); filter: blur(2px); }
+      70%  { opacity: 0.95; transform: translateY(15px) scale(1.05) rotate(2deg); filter: blur(0px); }
+      85%  { opacity: 1; transform: translateY(-5px) scale(0.98) rotate(-1deg); }
+      92%  { transform: translateY(3px) scale(1.02) rotate(0.5deg); }
       100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
     }
 
     @keyframes balancar {
-      0%   { transform: rotate(-3deg) translateX(-2px); }
-      25%  { transform: rotate(-1deg) translateX(1px); }
-      50%  { transform: rotate(2deg) translateX(3px); }
-      75%  { transform: rotate(0deg) translateX(1px); }
-      100% { transform: rotate(-3deg) translateX(-2px); }
+      0%   { transform: rotate(-2.5deg) translateX(-2px); }
+      20%  { transform: rotate(-1deg) translateX(0px); }
+      40%  { transform: rotate(1.5deg) translateX(2px); }
+      60%  { transform: rotate(2.5deg) translateX(3px); }
+      80%  { transform: rotate(0.5deg) translateX(1px); }
+      100% { transform: rotate(-2.5deg) translateX(-2px); }
     }
 
     @keyframes respirar {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.008); }
+      50% { transform: scale(1.012); }
     }
 
     /* Fade-in animation */
@@ -230,26 +234,29 @@
 
     /* Caule - realistic with texture */
     .caule {
-      width: 16px;
-      height: 400px;
+      width: 18px;
+      height: 420px;
       background: 
         linear-gradient(90deg, 
-          #1B5E20 0%, 
-          #2E7D32 15%, 
-          #388E3C 30%, 
-          #4CAF50 45%, 
-          #66BB6A 55%, 
-          #4CAF50 70%, 
-          #388E3C 85%, 
-          #2E7D32 100%
+          #14421C 0%,
+          #1B5E20 10%, 
+          #2E7D32 22%, 
+          #388E3C 35%, 
+          #4CAF50 48%, 
+          #5CB860 55%, 
+          #4CAF50 65%, 
+          #388E3C 78%, 
+          #2E7D32 90%, 
+          #1B5E20 100%
         );
       margin: 0 auto;
-      border-radius: 10px;
+      border-radius: 12px;
       position: relative;
       box-shadow: 
-        inset 2px 0 8px rgba(255,255,255,0.15),
-        inset -2px 0 8px rgba(0,0,0,0.2),
-        2px 0 6px rgba(0,0,0,0.1);
+        inset 3px 0 10px rgba(255,255,255,0.12),
+        inset -3px 0 10px rgba(0,0,0,0.25),
+        3px 0 8px rgba(0,0,0,0.15),
+        -1px 0 4px rgba(0,0,0,0.1);
     }
 
     /* Caule texture lines */
@@ -260,10 +267,10 @@
       background: 
         repeating-linear-gradient(90deg,
           transparent 0px,
-          rgba(255,255,255,0.03) 1px,
-          transparent 3px
+          rgba(255,255,255,0.04) 1px,
+          transparent 2.5px
         );
-      border-radius: 10px;
+      border-radius: 12px;
       pointer-events: none;
     }
 
@@ -271,22 +278,23 @@
     .caule::after {
       content: '';
       position: absolute;
-      left: -6px; right: -6px;
-      height: 8px;
-      background: linear-gradient(90deg, #1B5E20, #388E3C, #1B5E20);
-      border-radius: 12px;
-      box-shadow: inset 0 -2px 4px rgba(0,0,0,0.3);
+      left: -7px; right: -7px;
+      height: 10px;
+      background: linear-gradient(90deg, #14421C, #1B5E20, #388E3C, #1B5E20, #14421C);
+      border-radius: 14px;
+      box-shadow: inset 0 -3px 5px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.15);
     }
 
     /* Folhas do caule - realistic */
     .folha {
       position: absolute;
-      width: 100px;
-      height: 50px;
+      width: 110px;
+      height: 55px;
       background: 
         linear-gradient(135deg, 
-          #1B5E20 0%, 
-          #2E7D32 30%, 
+          #14421C 0%,
+          #1B5E20 15%, 
+          #2E7D32 35%, 
           #388E3C 50%, 
           #4CAF50 70%, 
           #66BB6A 100%
@@ -345,7 +353,7 @@
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      animation: girar-petalas 60s linear infinite;
+      animation: girar-petalas 45s linear infinite;
     }
 
     @keyframes girar-petalas {
@@ -356,26 +364,29 @@
     .petala {
       position: absolute;
       top: 50%; left: 50%;
-      width: 28px;
-      height: 110px;
+      width: 30px;
+      height: 115px;
       background: 
         linear-gradient(180deg, 
-          #FFF8DC 0%, 
-          #FFEB9C 15%, 
-          #FFD700 30%, 
+          #FFFEF0 0%,
+          #FFF8DC 8%,
+          #FFEB9C 18%,
+          #FFD700 35%,
           #FFC800 50%, 
-          #FFB300 70%, 
-          #E6A000 85%, 
+          #FFB300 65%, 
+          #E6A000 80%, 
           #CC8800 100%
         );
       border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-      transform-origin: center 120px;
-      margin: -120px 0 0 -14px;
+      transform-origin: center 125px;
+      margin: -125px 0 0 -15px;
       box-shadow: 
-        0 2px 8px rgba(0,0,0,0.15),
-        inset 0 -20px 30px rgba(255,200,0,0.2),
-        inset 0 20px 30px rgba(255,255,255,0.1);
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        0 3px 12px rgba(0,0,0,0.18),
+        inset 0 -25px 35px rgba(255,200,0,0.25),
+        inset 0 25px 35px rgba(255,255,255,0.15),
+        0 0 20px rgba(255,215,0,0.15);
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));
+      transition: filter 0.3s ease, transform 0.3s ease;
     }
     .petala::before {
       content: '';
@@ -383,10 +394,11 @@
       inset: 2px;
       background: 
         linear-gradient(180deg,
-          rgba(255,255,255,0.3) 0%,
-          transparent 20%,
-          transparent 80%,
-          rgba(0,0,0,0.1) 100%
+          rgba(255,255,255,0.4) 0%,
+          rgba(255,255,255,0.1) 15%,
+          transparent 25%,
+          transparent 75%,
+          rgba(0,0,0,0.08) 100%
         );
       border-radius: inherit;
       pointer-events: none;
@@ -394,8 +406,8 @@
     .petala::after {
       content: '';
       position: absolute;
-      left: 30%; top: 10%; width: 40%; height: 60%;
-      background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+      left: 25%; top: 8%; width: 50%; height: 65%;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.25) 0%, transparent 70%);
       border-radius: 50%;
       pointer-events: none;
     }
@@ -459,36 +471,46 @@
     .nucleo {
       position: absolute;
       top: 50%; left: 50%;
-      width: 84px; height: 84px;
-      margin: -42px 0 0 -42px;
+      width: 88px; height: 88px;
+      margin: -44px 0 0 -44px;
       background: 
-        radial-gradient(ellipse at 40% 35%, #4A3000 0%, #3D2500 25%, #2D1B00 50%, #1A1000 75%, #0D0800 100%);
+        radial-gradient(ellipse at 38% 32%, #5A4000 0%, #4A3000 15%, #3D2500 30%, #2D1B00 50%, #1A1000 70%, #0D0800 100%);
       border-radius: 50%;
       box-shadow: 
-        0 8px 24px rgba(0,0,0,0.4),
-        inset 0 -6px 20px rgba(0,0,0,0.5),
-        inset 0 4px 10px rgba(139,90,0,0.2),
-        0 0 0 2px rgba(139,90,0,0.1);
+        0 10px 30px rgba(0,0,0,0.5),
+        inset 0 -8px 25px rgba(0,0,0,0.6),
+        inset 0 6px 15px rgba(139,90,0,0.25),
+        0 0 0 3px rgba(139,90,0,0.15),
+        0 0 40px rgba(255,215,0,0.1);
       z-index: 5;
       overflow: hidden;
+      animation: nucleo-pulsar 4s ease-in-out infinite alternate;
     }
+
+    @keyframes nucleo-pulsar {
+      0%   { box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 -8px 25px rgba(0,0,0,0.6), inset 0 6px 15px rgba(139,90,0,0.25), 0 0 0 3px rgba(139,90,0,0.15), 0 0 30px rgba(255,215,0,0.1); }
+      100% { box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 -8px 25px rgba(0,0,0,0.6), inset 0 6px 15px rgba(139,90,0,0.25), 0 0 0 3px rgba(139,90,0,0.15), 0 0 50px rgba(255,215,0,0.2); }
+    }
+
     .nucleo::before {
       content: '';
       position: absolute;
-      inset: 4px;
+      inset: 5px;
       border-radius: 50%;
       background: 
-        radial-gradient(circle at 35% 30%, #5D4000 2px, transparent 3px),
-        radial-gradient(circle at 60% 25%, #5D4000 2px, transparent 3px),
-        radial-gradient(circle at 40% 55%, #5D4000 2px, transparent 3px),
-        radial-gradient(circle at 70% 50%, #5D4000 2px, transparent 3px),
-        radial-gradient(circle at 25% 70%, #5D4000 2px, transparent 3px),
-        radial-gradient(circle at 55% 75%, #5D4000 2px, transparent 3px),
-        radial-gradient(circle at 80% 75%, #5D4000 2px, transparent 3px),
-        radial-gradient(circle at 50% 35%, #5D4000 2px, transparent 3px),
-        radial-gradient(circle at 30% 60%, #5D4000 2px, transparent 3px),
-        radial-gradient(circle at 75% 30%, #5D4000 2px, transparent 3px);
-      opacity: 0.6;
+        radial-gradient(circle at 35% 28%, #6D5000 2.5px, transparent 3.5px),
+        radial-gradient(circle at 58% 22%, #6D5000 2px, transparent 3px),
+        radial-gradient(circle at 42% 52%, #6D5000 2.5px, transparent 3.5px),
+        radial-gradient(circle at 68% 48%, #6D5000 2px, transparent 3px),
+        radial-gradient(circle at 22% 68%, #6D5000 2.5px, transparent 3.5px),
+        radial-gradient(circle at 52% 72%, #6D5000 2px, transparent 3px),
+        radial-gradient(circle at 78% 72%, #6D5000 2.5px, transparent 3.5px),
+        radial-gradient(circle at 48% 32%, #6D5000 2px, transparent 3px),
+        radial-gradient(circle at 28% 58%, #6D5000 2.5px, transparent 3.5px),
+        radial-gradient(circle at 72% 28%, #6D5000 2px, transparent 3px),
+        radial-gradient(circle at 15% 42%, #5D4000 1.5px, transparent 2.5px),
+        radial-gradient(circle at 85% 55%, #5D4000 1.5px, transparent 2.5px);
+      opacity: 0.7;
     }
     .nucleo::after {
       content: '';
@@ -496,9 +518,16 @@
       inset: 0;
       border-radius: 50%;
       background: 
-        radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 70% 70%, rgba(0,0,0,0.3) 0%, transparent 40%);
+        radial-gradient(ellipse at 28% 25%, rgba(255,255,255,0.2) 0%, transparent 45%),
+        radial-gradient(ellipse at 72% 72%, rgba(0,0,0,0.35) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 50%, rgba(255,215,0,0.08) 0%, transparent 60%);
       pointer-events: none;
+      animation: nucleo-brilho 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes nucleo-brilho {
+      0%   { opacity: 0.8; }
+      100% { opacity: 1; }
     }
 
     /* Seeds on the face (sementes individuais) */
