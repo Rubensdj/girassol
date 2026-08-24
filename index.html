@@ -2358,6 +2358,318 @@ body.noite .cigarras {
   60%           { opacity: 0.2; }
 }
 
+/* ===== SHREK ===== */
+.shrek-char {
+  position: absolute;
+  bottom: 40px;
+  left: calc(50% - 160px);
+  z-index: 11;
+  animation: shrek-idle 3s ease-in-out infinite;
+}
+
+.shrek-body {
+  position: relative;
+  width: 70px;
+  height: 100px;
+}
+
+/* Corpo do Shrek */
+.shrek-torso {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 65px;
+  background: linear-gradient(180deg, #5D8A3C 0%, #4A7A2E 40%, #3D6B24 100%);
+  border-radius: 20px 20px 15px 15px;
+  box-shadow: inset -5px 0 10px rgba(0,0,0,0.15), inset 3px 0 8px rgba(255,255,255,0.1);
+}
+
+/* Faixa marrom (cinto) */
+.shrek-torso::after {
+  content: '';
+  position: absolute;
+  top: 30px;
+  left: 5px; right: 5px;
+  height: 8px;
+  background: linear-gradient(90deg, #5D4037, #795548, #5D4037);
+  border-radius: 4px;
+}
+
+/* Cabeça */
+.shrek-cabeca {
+  position: absolute;
+  bottom: 55px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 45px;
+  background: radial-gradient(ellipse at 40% 35%, #7CB342 0%, #5D8A3C 50%, #4A7A2E 100%);
+  border-radius: 50% 50% 45% 45%;
+  box-shadow: inset -3px -3px 8px rgba(0,0,0,0.15), inset 2px 2px 5px rgba(255,255,255,0.1);
+}
+
+/* Olhos */
+.shrek-olho-e, .shrek-olho-d {
+  position: absolute;
+  top: 14px;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, #FFF 60%, #E0E0E0 100%);
+  border-radius: 50%;
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.1);
+}
+.shrek-olho-e { left: 10px; }
+.shrek-olho-d { right: 10px; }
+
+.shrek-olho-e::after, .shrek-olho-d::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 4px;
+  width: 5px; height: 5px;
+  background: #2E1B00;
+  border-radius: 50%;
+}
+
+/* Sorriso */
+.shrek-sorriso {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 8px;
+  border-bottom: 3px solid #2E5D1A;
+  border-radius: 0 0 50% 50%;
+}
+
+/* Orelhas de ogro (chifres) */
+.shrek-orelha-e, .shrek-orelha-d {
+  position: absolute;
+  top: -5px;
+  width: 8px;
+  height: 14px;
+  background: linear-gradient(180deg, #7CB342, #5D8A3C);
+  border-radius: 50% 50% 30% 30%;
+}
+.shrek-orelha-e { left: 5px; transform: rotate(-15deg); }
+.shrek-orelha-d { right: 5px; transform: rotate(15deg); }
+
+/* Pernas */
+.shrek-perna-e, .shrek-perna-d {
+  position: absolute;
+  bottom: -18px;
+  width: 16px;
+  height: 22px;
+  background: linear-gradient(180deg, #5D8A3C, #4A7A2E);
+  border-radius: 5px 5px 8px 8px;
+}
+.shrek-perna-e { left: 14px; }
+.shrek-perna-d { right: 14px; }
+
+/* Botas marrons */
+.shrek-perna-e::after, .shrek-perna-d::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 18px;
+  height: 8px;
+  background: linear-gradient(180deg, #5D4037, #4E342E);
+  border-radius: 4px 4px 6px 6px;
+}
+
+/* Braços */
+.shrek-braco-e, .shrek-braco-d {
+  position: absolute;
+  top: 10px;
+  width: 14px;
+  height: 40px;
+  background: linear-gradient(180deg, #5D8A3C, #4A7A2E);
+  border-radius: 8px;
+}
+.shrek-braco-e { left: -8px; transform: rotate(10deg); }
+.shrek-braco-d { right: -8px; transform: rotate(-10deg); }
+
+@keyframes shrek-idle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* ===== FIONA ===== */
+.fiona-char {
+  position: absolute;
+  bottom: 40px;
+  left: calc(50% + 90px);
+  z-index: 11;
+  animation: fiona-idle 3.5s ease-in-out infinite;
+}
+
+.fiona-body {
+  position: relative;
+  width: 55px;
+  height: 100px;
+}
+
+/* Vestido verde da Fiona */
+.fiona-torso {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 60px;
+  background: linear-gradient(180deg, #E57373 0%, #EF5350 100%);
+  border-radius: 15px 15px 25px 25px;
+  box-shadow: inset -4px 0 8px rgba(0,0,0,0.12), inset 2px 0 6px rgba(255,255,255,0.1);
+}
+
+/* Vestido verde (parte de baixo) */
+.fiona-torso::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: -5px; right: -5px;
+  height: 30px;
+  background: linear-gradient(180deg, #43A047, #2E7D32);
+  border-radius: 10px 10px 20px 20px;
+}
+
+/* Cabeça da Fiona */
+.fiona-cabeca {
+  position: absolute;
+  bottom: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 38px;
+  background: radial-gradient(ellipse at 40% 35%, #FFCC80 0%, #FFB74D 50%, #FFA726 100%);
+  border-radius: 50% 50% 45% 45%;
+  box-shadow: inset -2px -2px 6px rgba(0,0,0,0.1), inset 2px 2px 4px rgba(255,255,255,0.15);
+}
+
+/* Cabelo ruivo */
+.fiona-cabelo {
+  position: absolute;
+  top: -3px;
+  left: -5px; right: -5px;
+  height: 22px;
+  background: linear-gradient(180deg, #D84315, #BF360C);
+  border-radius: 50% 50% 30% 30%;
+  z-index: -1;
+}
+
+.fiona-cabelo::before {
+  content: '';
+  position: absolute;
+  top: 12px; left: -3px;
+  width: 10px;
+  height: 30px;
+  background: linear-gradient(180deg, #BF360C, #D84315);
+  border-radius: 0 0 50% 50%;
+}
+
+.fiona-cabelo::after {
+  content: '';
+  position: absolute;
+  top: 12px; right: -3px;
+  width: 10px;
+  height: 30px;
+  background: linear-gradient(180deg, #BF360C, #D84315);
+  border-radius: 0 0 50% 50%;
+}
+
+/* Olhos da Fiona */
+.fiona-olho-e, .fiona-olho-d {
+  position: absolute;
+  top: 13px;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, #FFF 60%, #E0E0E0 100%);
+  border-radius: 50%;
+}
+.fiona-olho-e { left: 8px; }
+.fiona-olho-d { right: 8px; }
+
+.fiona-olho-e::after, .fiona-olho-d::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 3px;
+  width: 4px; height: 4px;
+  background: #1B5E20;
+  border-radius: 50%;
+}
+
+/* Cílios */
+.fiona-olho-e::before, .fiona-olho-d::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: 1px;
+  width: 8px; height: 2px;
+  border-top: 2px solid #3E2723;
+  border-radius: 50%;
+}
+
+/* Sorriso da Fiona */
+.fiona-sorriso {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 6px;
+  border-bottom: 2px solid #BF360C;
+  border-radius: 0 0 50% 50%;
+}
+
+/* Bracos da Fiona */
+.fiona-braco-e, .fiona-braco-d {
+  position: absolute;
+  top: 8px;
+  width: 12px;
+  height: 35px;
+  background: linear-gradient(180deg, #FFCC80, #FFB74D);
+  border-radius: 6px;
+}
+.fiona-braco-e { left: -6px; transform: rotate(8deg); }
+.fiona-braco-d { right: -6px; transform: rotate(-8deg); }
+
+/* Pernas da Fiona */
+.fiona-perna-e, .fiona-perna-d {
+  position: absolute;
+  bottom: -15px;
+  width: 14px;
+  height: 18px;
+  background: linear-gradient(180deg, #43A047, #2E7D32);
+  border-radius: 4px 4px 6px 6px;
+}
+.fiona-perna-e { left: 12px; }
+.fiona-perna-d { right: 12px; }
+
+/* Sapatos */
+.fiona-perna-e::after, .fiona-perna-d::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 16px;
+  height: 6px;
+  background: linear-gradient(180deg, #3E2723, #2C1A12);
+  border-radius: 3px 3px 5px 5px;
+}
+
+@keyframes fiona-idle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+/* Shrek e Fiona na noite */
+body.noite .shrek-torso { background: linear-gradient(180deg, #3a5a25 0%, #2d4a1a 40%, #1f3a12 100%) !important; }
+body.noite .shrek-cabeca { background: radial-gradient(ellipse at 40% 35%, #4a7a2e 0%, #3a5a25 50%, #2d4a1a 100%) !important; }
+body.noite .fiona-torso { background: linear-gradient(180deg, #8b4040 0%, #7a3535 100%) !important; }
+body.noite .fiona-cabeca { background: radial-gradient(ellipse at 40% 35%, #c9a070 0%, #b89060 50%, #a88050 100%) !important; }
+body.noite .fiona-cabelo { background: linear-gradient(180deg, #7a2010, #8b3018) !important; }
+body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: linear-gradient(180deg, #7a2010, #8b3018) !important; }
+
 /* Utility hidden class */
 .hidden { display: none !important; }
 
@@ -2550,6 +2862,43 @@ body.noite .cigarras {
   <div class="flores-chao" id="floresChao"></div>
 
   <div class="grama"></div>
+
+  <!-- Shrek -->
+  <div class="shrek-char" id="shrekChar">
+    <div class="shrek-body">
+      <div class="shrek-cabeca">
+        <div class="shrek-orelha-e"></div>
+        <div class="shrek-orelha-d"></div>
+        <div class="shrek-olho-e"></div>
+        <div class="shrek-olho-d"></div>
+        <div class="shrek-sorriso"></div>
+      </div>
+      <div class="shrek-torso">
+        <div class="shrek-braco-e"></div>
+        <div class="shrek-braco-d"></div>
+      </div>
+      <div class="shrek-perna-e"></div>
+      <div class="shrek-perna-d"></div>
+    </div>
+  </div>
+
+  <!-- Fiona -->
+  <div class="fiona-char" id="fionaChar">
+    <div class="fiona-body">
+      <div class="fiona-cabeca">
+        <div class="fiona-cabelo"></div>
+        <div class="fiona-olho-e"></div>
+        <div class="fiona-olho-d"></div>
+        <div class="fiona-sorriso"></div>
+      </div>
+      <div class="fiona-torso">
+        <div class="fiona-braco-e"></div>
+        <div class="fiona-braco-d"></div>
+      </div>
+      <div class="fiona-perna-e"></div>
+      <div class="fiona-perna-d"></div>
+    </div>
+  </div>
 
   <!-- Borboleta -->
   <div class="borboleta" id="borboleta">
