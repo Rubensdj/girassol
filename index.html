@@ -193,12 +193,29 @@
     .girassol {
       position: relative;
       transform-origin: bottom center;
-      animation: girassol-enter 2s cubic-bezier(0.23, 1, 0.32, 1) forwards,
-                 balancar 6s ease-in-out infinite alternate 2s,
-                 respirar 4s ease-in-out infinite 2s;
+      animation: girassol-enter 2.5s cubic-bezier(0.23, 1, 0.32, 1) forwards,
+                 balancar 6s ease-in-out infinite alternate 2.5s,
+                 respirar 4s ease-in-out infinite 2.5s;
       margin-bottom: 0;
       z-index: 10;
       filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Estado de clique/arraste */
+    .girassol.balancando {
+      animation: girassol-bater 0.6s ease-in-out !important;
+    }
+
+    @keyframes girassol-bater {
+      0%   { transform: rotate(0deg); }
+      15%  { transform: rotate(-8deg) translateX(-5px); }
+      30%  { transform: rotate(6deg) translateX(4px); }
+      45%  { transform: rotate(-4deg) translateX(-3px); }
+      60%  { transform: rotate(3deg) translateX(2px); }
+      75%  { transform: rotate(-1.5deg) translateX(-1px); }
+      100% { transform: rotate(0deg); }
     }
 
     @keyframes girassol-enter {
@@ -236,10 +253,23 @@
       to { opacity: 1; }
     }
 
-    /* Caule - realistic with texture */
+    /* Caule - crescimento animado */
     .caule {
       width: 18px;
       height: 420px;
+      transform-origin: bottom center;
+      animation: caule-crecer 2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes caule-crecer {
+      0%   { transform: scaleY(0); opacity: 0; }
+      20%  { transform: scaleY(0.1); opacity: 0.3; }
+      40%  { transform: scaleY(0.3); opacity: 0.6; }
+      60%  { transform: scaleY(0.6); opacity: 0.8; }
+      80%  { transform: scaleY(0.9); opacity: 0.95; }
+      90%  { transform: scaleY(1.03); opacity: 1; }
+      100% { transform: scaleY(1); opacity: 1; }
+    }
       background: 
         linear-gradient(90deg, 
           #14421C 0%,
@@ -343,14 +373,24 @@
       100% { transform: rotate(-40deg) translateY(0) scale(1); }
     }
 
-    /* Cabeça do girassol */
+    /* Cabeça do girassol - aparece depois do caule */
     .cabeca {
       position: absolute;
       top: -200px;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) scale(0);
       width: 240px;
       height: 240px;
+      animation: cabeca-florcer 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.8s forwards;
+    }
+
+    @keyframes cabeca-florcer {
+      0%   { transform: translateX(-50%) scale(0) rotate(-15deg); opacity: 0; }
+      30%  { transform: translateX(-50%) scale(0.3) rotate(-8deg); opacity: 0.5; }
+      60%  { transform: translateX(-50%) scale(0.8) rotate(3deg); opacity: 0.8; }
+      80%  { transform: translateX(-50%) scale(1.05) rotate(-2deg); opacity: 1; }
+      90%  { transform: translateX(-50%) scale(0.98) rotate(1deg); }
+      100% { transform: translateX(-50%) scale(1) rotate(0deg); opacity: 1; }
     }
 
     .petalas {
@@ -2831,6 +2871,128 @@ body.noite .cigarras {
       }
     }
     criarCigarras();
+
+    // === ANIMAÇÕES EXTRAS DO GIRASSOL ===
+
+    // 2j. Girassol cresce de tamanho ao longo do tempo
+    let escalaAtual = 1;
+    const escalaMax = 1.15;
+    const passoCrescimento = 0.003;
+
+    function crescerGirassol() {
+      if (escalaAtual < escalaMax) {
+        escalaAtual += passoCrescimento;
+        document.querySelector('.girassol').style.transform = `scale(${escalaAtual})`;
+      }
+    }
+    // Cresce a cada 500ms durante 50 segundos
+    const intervaloCrescimento = setInterval(crescerGirassol, 500);
+    setTimeout(() => clearInterval(intervaloCrescimento), 50000);
+
+    // 2k. Interação: clicar no girassol causa reação
+    const girassol = document.querySelector('.girassol');
+    let podeReagir = true;
+
+    girassol.addEventListener('click', function(e) {
+      if (!podeReagir) return;
+      podeReagir = false;
+
+      // Balanço dramático
+      this.classList.add('balancando');
+      setTimeout(() => this.classList.remove('balancando'), 600);
+
+      // Soltar pétalas ao clicar
+      for (let i = 0; i < 6; i++) {
+        setTimeout(() => {
+          const petala = document.createElement('div');
+          petala.className = 'petalas-caindo';
+          petala.style.left = (40 + Math.random() * 20) + '%';
+          petala.style.top = '20%';
+          petala.style.animationDuration = (3 + Math.random() * 2) + 's';
+          petala.style.width = (12 + Math.random() * 8) + 'px';
+          petala.style.height = (18 + Math.random() * 10) + 'px';
+          petala.style.background = `linear-gradient(180deg, #FFD700, #FFA500)`;
+          petala.style.boxShadow = '0 2px 8px rgba(255,165,0,0.6)';
+          document.body.appendChild(petala);
+          setTimeout(() => petala.remove(), 6000);
+        }, i * 100);
+      }
+
+      // Flash de brilho
+      const aura = document.querySelector('.aura-girassol');
+      if (aura) {
+        aura.style.transition = 'opacity 0.3s, transform 0.3s';
+        aura.style.opacity = '1';
+        aura.style.transform = 'translateX(-50%) scale(1.3)';
+        setTimeout(() => {
+          aura.style.opacity = '';
+          aura.style.transform = '';
+        }, 500);
+      }
+
+      // Som de pétala caindo (se som ativo)
+      if (somAtivo && audioCtx) {
+        tocarGotaAgua();
+      }
+
+      setTimeout(() => podeReagir = true, 800);
+    });
+
+    // 2l. Arrastar o girassol causa balanço
+    let isDragging = false;
+    let startX = 0;
+
+    girassol.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      girassol.style.transition = 'none';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const deltaX = (e.clientX - startX) * 0.15;
+      const rotation = Math.max(-15, Math.min(15, deltaX));
+      girassol.style.transform = `scale(${escalaAtual}) rotate(${rotation}deg)`;
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      girassol.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      girassol.style.transform = `scale(${escalaAtual}) rotate(0deg)`;
+      // Soltar pétalas ao soltar
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          const petala = document.createElement('div');
+          petala.className = 'petalas-caindo';
+          petala.style.left = (35 + Math.random() * 30) + '%';
+          petala.style.animationDuration = (3 + Math.random() * 3) + 's';
+          document.body.appendChild(petala);
+          setTimeout(() => petala.remove(), 7000);
+        }, i * 150);
+      }
+    });
+
+    // Touch support para mobile
+    girassol.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      girassol.style.transition = 'none';
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      const deltaX = (e.touches[0].clientX - startX) * 0.15;
+      const rotation = Math.max(-15, Math.min(15, deltaX));
+      girassol.style.transform = `scale(${escalaAtual}) rotate(${rotation}deg)`;
+    }, { passive: true });
+
+    document.addEventListener('touchend', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      girassol.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      girassol.style.transform = `scale(${escalaAtual}) rotate(0deg)`;
+    });
 
     // 3. Sparkles no miolo do girassol
     function criarSparkles() {
