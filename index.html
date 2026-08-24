@@ -2069,6 +2069,193 @@ body.noite .libelula .corpo { filter: brightness(0.4); }
 body.noite .libelula .asa-l,
 body.noite .libelula .asa-r { background: rgba(100, 100, 150, 0.3); }
 
+/* ===== ABELHAS ZUMBINDO ===== */
+.abelhas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 13;
+  overflow: hidden;
+}
+
+.abelha {
+  position: absolute;
+  width: 14px;
+  height: 10px;
+  animation: zumbir-abelha 10s ease-in-out infinite;
+}
+
+.abelha .corpo-abelha {
+  position: absolute;
+  top: 2px; left: 3px;
+  width: 8px; height: 6px;
+  background: repeating-linear-gradient(90deg, #FFD700 0px, #FFD700 2px, #222 2px, #222 4px);
+  border-radius: 50%;
+}
+
+.abelha .asa-abelha {
+  position: absolute;
+  top: 0; left: 2px;
+  width: 8px; height: 5px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: bater-asa-abelha 0.15s ease-in-out infinite alternate;
+}
+
+@keyframes bater-asa-abelha {
+  0%   { transform: scaleY(1); }
+  100% { transform: scaleY(0.3); }
+}
+
+@keyframes zumbir-abelha {
+  0%   { top: 70%; left: 20%; transform: scale(0.9); }
+  10%  { top: 55%; left: 30%; transform: scale(1) rotate(5deg); }
+  20%  { top: 60%; left: 45%; transform: scale(0.85) rotate(-8deg); }
+  30%  { top: 50%; left: 55%; transform: scale(1.1) rotate(3deg); }
+  40%  { top: 65%; left: 40%; transform: scale(0.9) rotate(-5deg); }
+  50%  { top: 55%; left: 25%; transform: scale(1) rotate(7deg); }
+  60%  { top: 48%; left: 35%; transform: scale(0.95) rotate(-3deg); }
+  70%  { top: 62%; left: 50%; transform: scale(1.05) rotate(4deg); }
+  80%  { top: 58%; left: 38%; transform: scale(0.88) rotate(-6deg); }
+  90%  { top: 68%; left: 28%; transform: scale(0.92) rotate(2deg); }
+  100% { top: 70%; left: 20%; transform: scale(0.9); }
+}
+
+/* Abelhas na noite somem */
+body.noite .abelha { opacity: 0.2; }
+
+/* ===== NUVEM DE CHUVA ===== */
+.nuvem-chuva {
+  position: absolute;
+  top: 100px;
+  left: -180px;
+  width: 160px;
+  height: 50px;
+  background: linear-gradient(180deg, #78909C 0%, #546E7A 50%, #455A64 100%);
+  border-radius: 50px;
+  opacity: 0.85;
+  animation: mover-nuvem-chuva 50s linear infinite;
+  z-index: 2;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+}
+
+.nuvem-chuva::before {
+  content: '';
+  position: absolute;
+  width: 70px; height: 70px;
+  background: radial-gradient(circle at 30% 30%, #78909C 0%, #546E7A 100%);
+  border-radius: 50%;
+  top: -35px; left: 30px;
+}
+
+.nuvem-chuva::after {
+  content: '';
+  position: absolute;
+  width: 50px; height: 50px;
+  background: radial-gradient(circle at 30% 30%, #90A4AE 0%, #607D8B 100%);
+  border-radius: 50%;
+  top: -25px; left: 80px;
+}
+
+@keyframes mover-nuvem-chuva {
+  from { left: -200px; }
+  to   { left: calc(100vw + 200px); }
+}
+
+/* Gotas de chuva da nuvem */
+.gota-chuva {
+  position: absolute;
+  bottom: -5px;
+  width: 3px;
+  height: 10px;
+  background: linear-gradient(180deg, rgba(100, 180, 255, 0.8), rgba(60, 130, 220, 0.4));
+  border-radius: 0 0 50% 50%;
+  animation: cair-gota-chuva 0.8s linear infinite;
+}
+
+@keyframes cair-gota-chuva {
+  0%   { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(80px); }
+}
+
+/* Nuvem de chuva na noite fica mais escura */
+body.noite .nuvem-chuva {
+  background: linear-gradient(180deg, #37474F 0%, #263238 50%, #1a2530 100%) !important;
+}
+body.noite .nuvem-chuva::before {
+  background: radial-gradient(circle at 30% 30%, #37474F 0%, #263238 100%) !important;
+}
+body.noite .nuvem-chuva::after {
+  background: radial-gradient(circle at 30% 30%, #455A64 0%, #37474F 100%) !important;
+}
+
+/* ===== CIGARRAS / BICHOS NOTURNOS ===== */
+.cigarras {
+  position: fixed;
+  bottom: 50px;
+  left: 0; right: 0;
+  height: 60px;
+  pointer-events: none;
+  z-index: 6;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 3s ease;
+}
+
+body.noite .cigarras {
+  opacity: 1;
+}
+
+.cigarra {
+  position: absolute;
+  bottom: 0;
+  width: 6px;
+  height: 4px;
+  background: #2E7D32;
+  border-radius: 50%;
+  animation: pulso-cigarra 1.5s ease-in-out infinite;
+}
+
+.cigarra::before {
+  content: '';
+  position: absolute;
+  top: -3px; left: -2px;
+  width: 10px; height: 6px;
+  border: 1px solid rgba(46, 125, 50, 0.4);
+  border-radius: 50%;
+  animation: asas-cigarra 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes pulso-cigarra {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.3); }
+}
+
+@keyframes asas-cigarra {
+  0%   { transform: scaleY(1); }
+  100% { transform: scaleY(0.5); }
+}
+
+/* Grilos extras no chão */
+.grilo {
+  position: absolute;
+  bottom: 5px;
+  width: 5px;
+  height: 3px;
+  background: #1B5E20;
+  border-radius: 50%;
+  animation: pulso-grilo 2s ease-in-out infinite;
+}
+
+@keyframes pulso-grilo {
+  0%, 80%, 100% { opacity: 0; }
+  10%, 30%      { opacity: 0.8; }
+  20%           { opacity: 0.3; }
+  40%, 70%      { opacity: 0; }
+  50%           { opacity: 0.7; }
+  60%           { opacity: 0.2; }
+}
+
 /* Utility hidden class */
 .hidden { display: none !important; }
 
@@ -2247,6 +2434,15 @@ body.noite .libelula .asa-r { background: rgba(100, 100, 150, 0.3); }
 
   <!-- Libélulas -->
   <div id="libelulas"></div>
+
+  <!-- Abelhas zumbindo -->
+  <div class="abelhas" id="abelhas"></div>
+
+  <!-- Nuvem de chuva -->
+  <div class="nuvem-chuva" id="nuvemChuva"></div>
+
+  <!-- Cigarras / bichos noturnos -->
+  <div class="cigarras" id="cigarras"></div>
 
   <!-- Flores no chão -->
   <div class="flores-chao" id="floresChao"></div>
@@ -2509,6 +2705,70 @@ body.noite .libelula .asa-r { background: rgba(100, 100, 150, 0.3); }
       }
     }
     criarLibelulas();
+
+    // 2g. Abelhas zumbindo perto das flores
+    function criarAbelhas() {
+      const container = document.getElementById('abelhas');
+      if (!container) return;
+      for (let i = 0; i < 4; i++) {
+        const abelha = document.createElement('div');
+        abelha.className = 'abelha';
+        abelha.style.animationDuration = (8 + Math.random() * 6) + 's';
+        abelha.style.animationDelay = (Math.random() * 8) + 's';
+        abelha.style.animationTimingFunction = 'ease-in-out';
+        const corpo = document.createElement('div');
+        corpo.className = 'corpo-abelha';
+        const asa = document.createElement('div');
+        asa.className = 'asa-abelha';
+        abelha.appendChild(corpo);
+        abelha.appendChild(asa);
+        container.appendChild(abelha);
+      }
+    }
+    criarAbelhas();
+
+    // 2h. Gotas de chuva na nuvem
+    function criarGotasChuva() {
+      const nuvem = document.getElementById('nuvemChuva');
+      if (!nuvem) return;
+      setInterval(() => {
+        for (let i = 0; i < 3; i++) {
+          const gota = document.createElement('div');
+          gota.className = 'gota-chuva';
+          gota.style.left = (20 + Math.random() * 120) + 'px';
+          gota.style.animationDuration = (0.6 + Math.random() * 0.4) + 's';
+          gota.style.animationDelay = (Math.random() * 0.3) + 's';
+          nuvem.appendChild(gota);
+          setTimeout(() => gota.remove(), 1500);
+        }
+      }, 400);
+    }
+    criarGotasChuva();
+
+    // 2i. Cigarras e grilos noturnos
+    function criarCigarras() {
+      const container = document.getElementById('cigarras');
+      if (!container) return;
+      // Cigarras (insetos que pulsam)
+      for (let i = 0; i < 6; i++) {
+        const cigarra = document.createElement('div');
+        cigarra.className = 'cigarra';
+        cigarra.style.left = (5 + Math.random() * 90) + '%';
+        cigarra.style.animationDuration = (1 + Math.random() * 2) + 's';
+        cigarra.style.animationDelay = (Math.random() * 3) + 's';
+        container.appendChild(cigarra);
+      }
+      // Grilos no chão
+      for (let i = 0; i < 8; i++) {
+        const grilo = document.createElement('div');
+        grilo.className = 'grilo';
+        grilo.style.left = (3 + Math.random() * 94) + '%';
+        grilo.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+        grilo.style.animationDelay = (Math.random() * 4) + 's';
+        container.appendChild(grilo);
+      }
+    }
+    criarCigarras();
 
     // 3. Sparkles no miolo do girassol
     function criarSparkles() {
