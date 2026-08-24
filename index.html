@@ -879,6 +879,129 @@
   }
   .fechar-btn:hover { background: rgba(255, 60, 60, 1); }
 
+  /* ===== MONTANHAS/SERRAS AO FUNDO ===== */
+  .montanhas {
+    position: absolute;
+    bottom: 30px;
+    left: 0; right: 0;
+    height: 350px;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  /* Camada 3 — montanhas mais distantes (claras) */
+  .montanha-3 {
+    position: absolute;
+    bottom: 0; left: -5%; right: -5%;
+    height: 220px;
+    background: linear-gradient(180deg, #7CB342 0%, #558B2F 50%, #33691E 100%);
+    clip-path: polygon(
+      0% 100%,
+      0% 65%, 5% 55%, 12% 42%, 18% 48%, 25% 30%,
+      32% 40%, 38% 22%, 42% 28%, 48% 15%, 55% 25%,
+      60% 18%, 65% 32%, 72% 20%, 78% 35%, 85% 25%,
+      92% 45%, 96% 38%, 100% 50%, 100% 100%
+    );
+    opacity: 0.6;
+    filter: blur(2px);
+    animation: montanha-sway-slow 20s ease-in-out infinite alternate;
+  }
+
+  /* Camada 2 — serras do meio */
+  .montanha-2 {
+    position: absolute;
+    bottom: 0; left: -3%; right: -3%;
+    height: 180px;
+    background: linear-gradient(180deg, #43A047 0%, #2E7D32 40%, #1B5E20 100%);
+    clip-path: polygon(
+      0% 100%,
+      0% 70%, 8% 58%, 15% 45%, 22% 52%, 28% 35%,
+      35% 42%, 40% 30%, 48% 38%, 52% 25%, 58% 32%,
+      65% 20%, 70% 35%, 75% 28%, 82% 40%, 88% 30%,
+      94% 48%, 100% 42%, 100% 100%
+    );
+    opacity: 0.75;
+    animation: montanha-sway 15s ease-in-out infinite alternate-reverse;
+  }
+
+  /* Camada 1 — colinas próximas (escuras) */
+  .montanha-1 {
+    position: absolute;
+    bottom: 0; left: -2%; right: -2%;
+    height: 130px;
+    background: linear-gradient(180deg, #2E7D32 0%, #1B5E20 50%, #0D3B0D 100%);
+    clip-path: polygon(
+      0% 100%,
+      0% 60%, 10% 50%, 18% 55%, 25% 40%, 35% 48%,
+      42% 35%, 50% 42%, 58% 30%, 65% 45%, 72% 38%,
+      80% 50%, 88% 42%, 95% 55%, 100% 48%, 100% 100%
+    );
+    opacity: 0.9;
+  }
+
+  /* Neve nos toques mais altos (camada 3) */
+  .montanha-3::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 15%);
+    clip-path: inherit;
+    pointer-events: none;
+  }
+
+  /* Nebulosa entre as montanhas */
+  .nevoa {
+    position: absolute;
+    bottom: 60px; left: -10%; right: -10%;
+    height: 60px;
+    background: linear-gradient(180deg, 
+      transparent 0%, 
+      rgba(200, 230, 200, 0.15) 40%, 
+      rgba(180, 220, 180, 0.2) 60%, 
+      transparent 100%
+    );
+    border-radius: 50%;
+    animation: nevoa-drift 12s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  @keyframes montanha-sway-slow {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(8px); }
+  }
+  @keyframes montanha-sway {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-5px); }
+  }
+  @keyframes nevoa-drift {
+    0%   { transform: translateX(0) scaleY(1); opacity: 0.6; }
+    50%  { transform: translateX(15px) scaleY(1.2); opacity: 0.9; }
+    100% { transform: translateX(-10px) scaleY(1); opacity: 0.7; }
+  }
+
+  /* Montanhas na noite */
+  body.noite .montanha-3 {
+    background: linear-gradient(180deg, #1a3a1a 0%, #0d2a0d 50%, #061506 100%) !important;
+    opacity: 0.5;
+  }
+  body.noite .montanha-2 {
+    background: linear-gradient(180deg, #143214 0%, #0a240a 40%, #051505 100%) !important;
+    opacity: 0.6;
+  }
+  body.noite .montanha-1 {
+    background: linear-gradient(180deg, #0a1f0a 0%, #051505 50%, #020a02 100%) !important;
+  }
+  body.noite .nevoa {
+    background: linear-gradient(180deg, 
+      transparent 0%, 
+      rgba(50, 80, 50, 0.15) 40%, 
+      rgba(40, 70, 40, 0.2) 60%, 
+      transparent 100%
+    ) !important;
+  }
+
   /* Grama */
   .grama {
     position: absolute;
@@ -1401,6 +1524,301 @@ body.noite .btn-som {
   100% { transform: scale(2); opacity: 0; }
 }
 
+/* ===== ÁRVORES AO FUNDO ===== */
+.arvores {
+  position: absolute;
+  bottom: 50px;
+  left: 0; right: 0;
+  height: 280px;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;
+}
+
+/* Pinheiro */
+.arvore-pinheiro {
+  position: absolute;
+  bottom: 0;
+}
+
+/* Tronco */
+.arvore-pinheiro .tronco {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 40px;
+  background: linear-gradient(90deg, #4E342E, #6D4C41, #5D4037);
+  border-radius: 3px;
+}
+
+/* Copa do pinheiro (3 triângulos empilhados) */
+.arvore-pinheiro .copa {
+  position: absolute;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.arvore-pinheiro .copa div {
+  width: 0;
+  height: 0;
+  border-left: solid transparent;
+  border-right: solid transparent;
+  border-bottom: solid;
+  margin: 0 auto;
+  position: relative;
+}
+.arvore-pinheiro .copa .copa1 {
+  border-left-width: 30px;
+  border-right-width: 30px;
+  border-bottom-width: 45px;
+  border-bottom-color: #1B5E20;
+  top: 0;
+}
+.arvore-pinheiro .copa .copa2 {
+  border-left-width: 38px;
+  border-right-width: 38px;
+  border-bottom-width: 50px;
+  border-bottom-color: #2E7D32;
+  top: -15px;
+}
+.arvore-pinheiro .copa .copa3 {
+  border-left-width: 45px;
+  border-right-width: 45px;
+  border-bottom-width: 55px;
+  border-bottom-color: #388E3C;
+  top: -30px;
+}
+
+/* Árvore redonda */
+.arvore-redonda {
+  position: absolute;
+  bottom: 0;
+}
+
+.arvore-redonda .tronco {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 50px;
+  background: linear-gradient(90deg, #5D4037, #795548, #6D4C41);
+  border-radius: 3px;
+}
+
+.arvore-redonda .copa-redonda {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 70px;
+  background: radial-gradient(circle at 35% 35%, #4CAF50, #388E3C, #2E7D32);
+  border-radius: 50%;
+  box-shadow: inset -8px -8px 15px rgba(0,0,0,0.2), 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.arvore-redonda .copa-redonda::after {
+  content: '';
+  position: absolute;
+  top: 8px; left: 10px;
+  width: 25px; height: 20px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+/* Posições das árvores */
+.arvore-pinheiro.arv1 { left: 3%; }
+.arvore-redonda.arv2 { left: 12%; }
+.arvore-pinheiro.arv3 { left: 20%; transform: scale(0.7); }
+.arvore-redonda.arv4 { left: 75%; }
+.arvore-pinheiro.arv5 { left: 85%; transform: scale(0.8); }
+.arvore-redonda.arv6 { left: 92%; transform: scale(0.6); }
+
+/* Árvores na noite */
+body.noite .arvore-pinheiro .copa .copa1 { border-bottom-color: #0d3b0d !important; }
+body.noite .arvore-pinheiro .copa .copa2 { border-bottom-color: #1a4a1a !important; }
+body.noite .arvore-pinheiro .copa .copa3 { border-bottom-color: #1a3a1a !important; }
+body.noite .arvore-redonda .copa-redonda {
+  background: radial-gradient(circle at 35% 35%, #1a4a1a, #0d3b0d, #0a2a0a) !important;
+}
+
+/* ===== PÁSSAROS VOANDO ===== */
+.passaros {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 40vh;
+  pointer-events: none;
+  z-index: 4;
+  overflow: hidden;
+}
+
+.passaro {
+  position: absolute;
+  width: 20px;
+  height: 8px;
+  animation: voar-passaro linear infinite;
+}
+
+.passaro::before,
+.passaro::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 12px;
+  height: 3px;
+  background: #333;
+  border-radius: 50% 50% 0 0;
+}
+
+.passaro::before {
+  left: 0;
+  transform-origin: right center;
+  animation: bater-asa-esq-passaro 0.6s ease-in-out infinite alternate;
+}
+
+.passaro::after {
+  right: 0;
+  transform-origin: left center;
+  animation: bater-asa-dir-passaro 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes bater-asa-esq-passaro {
+  0%   { transform: rotate(-15deg); }
+  100% { transform: rotate(15deg); }
+}
+@keyframes bater-asa-dir-passaro {
+  0%   { transform: rotate(15deg); }
+  100% { transform: rotate(-15deg); }
+}
+
+@keyframes voar-passaro {
+  0%   { left: -30px; transform: translateY(0); }
+  25%  { transform: translateY(-15px); }
+  50%  { transform: translateY(5px); }
+  75%  { transform: translateY(-10px); }
+  100% { left: calc(100vw + 30px); transform: translateY(0); }
+}
+
+/* Pássaros na noite ficam mais escuros */
+body.noite .passaro::before,
+body.noite .passaro::after {
+  background: #1a1a2e;
+}
+
+/* ===== FLORES NO CHÃO ===== */
+.flores-chao {
+  position: absolute;
+  bottom: 30px;
+  left: 0; right: 0;
+  height: 40px;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.flor {
+  position: absolute;
+  bottom: 0;
+}
+
+.flor .haste {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 18px;
+  background: linear-gradient(180deg, #4CAF50, #2E7D32);
+}
+
+.flor .coroa {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255,255,255,0.3);
+  animation: flor-pulsar 3s ease-in-out infinite alternate;
+}
+
+/* Centro da flor */
+.flor .coroa::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  background: #FFD700;
+  border-radius: 50%;
+}
+
+.flor-rosa .coroa   { background: radial-gradient(circle, #FF69B4, #FF1493); }
+.flor-amarela .coroa { background: radial-gradient(circle, #FFEB3B, #FFC107); }
+.flor-azul .coroa    { background: radial-gradient(circle, #64B5F6, #2196F3); }
+.flor-roxa .coroa    { background: radial-gradient(circle, #CE93D8, #9C27B0); }
+.flor-vermelha .coroa { background: radial-gradient(circle, #EF5350, #E53935); }
+
+@keyframes flor-pulsar {
+  0%   { transform: translateX(-50%) scale(1); }
+  100% { transform: translateX(-50%) scale(1.1); }
+}
+
+/* Flores na noite */
+body.noite .flor .coroa {
+  opacity: 0.5;
+  filter: brightness(0.5);
+}
+body.noite .flor .haste {
+  background: linear-gradient(180deg, #1a4a1a, #0d3b0d);
+}
+
+/* ===== ARCO-ÍRIS ===== */
+.arco-iris {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 250px;
+  border-radius: 250px 250px 0 0;
+  background: conic-gradient(
+    from 180deg at 50% 100%,
+    transparent 0deg,
+    rgba(255, 0, 0, 0.15) 10deg,
+    rgba(255, 127, 0, 0.15) 25deg,
+    rgba(255, 255, 0, 0.15) 40deg,
+    rgba(0, 200, 0, 0.15) 55deg,
+    rgba(0, 100, 255, 0.15) 70deg,
+    rgba(75, 0, 130, 0.15) 85deg,
+    rgba(148, 0, 211, 0.15) 100deg,
+    transparent 110deg
+  );
+  mask: radial-gradient(ellipse at 50% 100%, transparent 60%, black 61%, black 100%);
+  -webkit-mask: radial-gradient(ellipse at 50% 100%, transparent 60%, black 61%, black 100%);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  animation: arco-iris-appear 3s ease-in-out 5s forwards;
+}
+
+@keyframes arco-iris-appear {
+  0%   { opacity: 0; transform: translateX(-50%) scale(0.9); }
+  50%  { opacity: 0.8; transform: translateX(-50%) scale(1.02); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+/* Arco-íris na noite some */
+body.noite .arco-iris {
+  opacity: 0 !important;
+  transition: opacity 4s ease;
+}
+
 /* Utility hidden class */
 .hidden { display: none !important; }
 
@@ -1511,6 +1929,63 @@ body.noite .btn-som {
       Seu navegador não suporta vídeo.
     </video>
   </div>
+
+  <!-- Montanhas/Serras ao fundo -->
+  <div class="montanhas">
+    <div class="montanha-3"></div>
+    <div class="montanha-2"></div>
+    <div class="montanha-1"></div>
+    <div class="nevoa"></div>
+  </div>
+
+  <!-- Árvores ao fundo -->
+  <div class="arvores">
+    <div class="arvore-pinheiro arv1">
+      <div class="tronco"></div>
+      <div class="copa">
+        <div class="copa1"></div>
+        <div class="copa2"></div>
+        <div class="copa3"></div>
+      </div>
+    </div>
+    <div class="arvore-redonda arv2">
+      <div class="tronco"></div>
+      <div class="copa-redonda"></div>
+    </div>
+    <div class="arvore-pinheiro arv3">
+      <div class="tronco"></div>
+      <div class="copa">
+        <div class="copa1"></div>
+        <div class="copa2"></div>
+        <div class="copa3"></div>
+      </div>
+    </div>
+    <div class="arvore-redonda arv4">
+      <div class="tronco"></div>
+      <div class="copa-redonda"></div>
+    </div>
+    <div class="arvore-pinheiro arv5">
+      <div class="tronco"></div>
+      <div class="copa">
+        <div class="copa1"></div>
+        <div class="copa2"></div>
+        <div class="copa3"></div>
+      </div>
+    </div>
+    <div class="arvore-redonda arv6">
+      <div class="tronco"></div>
+      <div class="copa-redonda"></div>
+    </div>
+  </div>
+
+  <!-- Pássaros voando -->
+  <div class="passaros" id="passaros"></div>
+
+  <!-- Arco-íris -->
+  <div class="arco-iris"></div>
+
+  <!-- Flores no chão -->
+  <div class="flores-chao" id="floresChao"></div>
 
   <div class="grama"></div>
 
@@ -1664,6 +2139,49 @@ body.noite .btn-som {
       }
     }
     criarVagalumes();
+
+    // 2b. Pássaros voando no céu
+    function criarPassaros() {
+      const container = document.getElementById('passaros');
+      if (!container) return;
+      const totalPassaros = 5;
+      for (let i = 0; i < totalPassaros; i++) {
+        const passaro = document.createElement('div');
+        passaro.className = 'passaro';
+        passaro.style.top = (5 + Math.random() * 30) + '%';
+        passaro.style.animationDuration = (12 + Math.random() * 10) + 's';
+        passaro.style.animationDelay = (Math.random() * 15) + 's';
+        container.appendChild(passaro);
+      }
+    }
+    criarPassaros();
+
+    // 2c. Flores no chão
+    function criarFlores() {
+      const container = document.getElementById('floresChao');
+      if (!container) return;
+      const tipos = ['flor-rosa', 'flor-amarela', 'flor-azul', 'flor-roxa', 'flor-vermelha'];
+      for (let i = 0; i < 18; i++) {
+        const flor = document.createElement('div');
+        const tipo = tipos[Math.floor(Math.random() * tipos.length)];
+        flor.className = 'flor ' + tipo;
+        flor.style.left = (3 + Math.random() * 94) + '%';
+        flor.style.bottom = (Math.random() * 10) + 'px';
+        flor.style.animationDelay = (Math.random() * 3) + 's';
+        // Haste
+        const haste = document.createElement('div');
+        haste.className = 'haste';
+        haste.style.height = (12 + Math.random() * 12) + 'px';
+        flor.appendChild(haste);
+        // Coroa
+        const coroa = document.createElement('div');
+        coroa.className = 'coroa';
+        coroa.style.animationDuration = (2 + Math.random() * 2) + 's';
+        flor.appendChild(coroa);
+        container.appendChild(flor);
+      }
+    }
+    criarFlores();
 
     // 3. Sparkles no miolo do girassol
     function criarSparkles() {
