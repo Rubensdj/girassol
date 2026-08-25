@@ -3109,29 +3109,36 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
 .btn-iniciar-jogo {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 25;
-  padding: 10px 18px;
+  padding: 12px 28px;
   background: linear-gradient(135deg, #43A047, #2E7D32);
   color: #fff;
   border: none;
-  border-radius: 25px;
+  border-radius: 30px;
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4);
+  box-shadow: 0 4px 20px rgba(46, 125, 50, 0.5), 0 0 40px rgba(46, 125, 50, 0.2);
   transition: all 0.3s ease;
   animation: pulse-btn 2s ease-in-out infinite;
+  white-space: nowrap;
 }
 
 .btn-iniciar-jogo:hover {
-  transform: translateY(-2px) scale(1.05);
+  transform: translateX(-50%) translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 30px rgba(46, 125, 50, 0.6), 0 0 50px rgba(46, 125, 50, 0.3);
+}
+
+.btn-iniciar-jogo:active {
+  transform: translateX(-50%) translateY(-1px) scale(0.98);
 }
 
 @keyframes pulse-btn {
-  0%, 100% { box-shadow: 0 4px 15px rgba(46, 125, 50, 0.4); }
-  50% { box-shadow: 0 4px 25px rgba(46, 125, 50, 0.6); }
+  0%, 100% { box-shadow: 0 4px 20px rgba(46, 125, 50, 0.5), 0 0 40px rgba(46, 125, 50, 0.2); }
+  50% { box-shadow: 0 4px 30px rgba(46, 125, 50, 0.7), 0 0 60px rgba(46, 125, 50, 0.3); }
 }
 
 /* Utility hidden class */
@@ -3204,7 +3211,7 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
 
   /* Jogo overlay */
   .jogo-box { width: 95vw; padding: 20px; }
-  .btn-iniciar-jogo { font-size: 14px; padding: 10px 20px; bottom: 90px; }
+  .btn-iniciar-jogo { font-size: 14px; padding: 10px 22px; bottom: 15px; }
   .mini-girassol { transform: scale(0.8); }
 
   /* Botão Shrek */
@@ -3255,7 +3262,7 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
   .jogo-box { width: 98vw; padding: 16px; border-radius: 12px; }
   .jogo-titulo { font-size: 16px; }
   .jogo-subtitulo { font-size: 11px; }
-  .btn-iniciar-jogo { font-size: 12px; padding: 8px 16px; bottom: 80px; }
+  .btn-iniciar-jogo { font-size: 13px; padding: 10px 20px; bottom: 12px; }
   .mini-girassol { transform: scale(0.65); }
   .btn-regar { padding: 10px 24px; font-size: 14px; }
 
@@ -3287,7 +3294,7 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
   .fiona-char { transform: scale(0.5); bottom: 30px; }
   .sol { width: 50px; height: 50px; top: 10px; right: 10px; }
   .montanhas { height: 80px; bottom: 10px; }
-  .btn-iniciar-jogo { bottom: 50px; }
+  .btn-iniciar-jogo { bottom: 10px; font-size: 12px; padding: 8px 16px; }
   .toggle-dia-noite, .btn-chuva, .btn-som { bottom: 30px; }
 }
 </style>
@@ -3582,8 +3589,8 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
     </div>
 
   <!-- Botão iniciar jogo -->
-  <button class="btn-iniciar-jogo" id="btnIniciarJogo" onclick="iniciarJogo()">
-    🌻 Regar o Girassol
+  <button class="btn-iniciar-jogo" id="btnIniciarJogo" onclick="iniciarJogo()" aria-label="Iniciar jogo Regar o Girassol" title="Iniciar jogo: regue o girassol para ele crescer!">
+    🌱 Regar o Girassol 🌻
   </button>
 
   <!-- Jogo: Regar o Girassol -->
