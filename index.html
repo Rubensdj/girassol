@@ -807,21 +807,114 @@
     80% { transform: scale(1); }
   }
 
-  /* Overlay cenario do Shrek */
-  .shrek-overlay {
-    display: none;
+  /* Card flutuante do Shrek (substitui overlay) */
+  .shrek-card {
     position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.9);
+    bottom: 80px;
+    right: 20px;
     z-index: 100;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    backdrop-filter: blur(10px);
-    min-height: 300px;
-    transition: none;
+    width: 320px;
+    max-width: 85vw;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    transform: translateX(120%);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity: 0;
+    pointer-events: none;
   }
-  .shrek-overlay.ativo { display: flex; }
+  .shrek-card.ativo {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+  .shrek-card.fechar {
+    transform: translateX(120%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .shrek-card-titulo {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 18px;
+    color: #81C784;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .shrek-card-texto {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #B0BEC5;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .shrek-card-texto strong {
+    color: #FF8A80;
+  }
+
+  .shrek-card-botoes {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .shrek-card-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .shrek-card-btn.sim {
+    background: linear-gradient(135deg, #43A047, #2E7D32);
+    color: #fff;
+  }
+  .shrek-card-btn.sim:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+  }
+
+  .shrek-card-btn.nao {
+    background: linear-gradient(135deg, #546E7A, #37474F);
+    color: #fff;
+  }
+  .shrek-card-btn.nao:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(55, 71, 79, 0.4);
+  }
+
+  .shrek-card-fechar {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.3);
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  .shrek-card-fechar:hover {
+    color: rgba(255,255,255,0.8);
+  }
+
+  /* Card na noite */
+  body.noite .shrek-card {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    border-color: rgba(76, 175, 80, 0.2);
+  }
 
   /* Caixa de senha */
   .senha-box {
@@ -3304,62 +3397,51 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
     DESENVOLVIDO POR Rubens
   </div>
 
-  <!-- Botão discreto para reabrir a cena do Shrek -->
+  <!-- Botão discreto para reabrir o card -->
     <button class="shrek-btn" onclick="abrirShrek()" aria-label="Abrir cena do Shrek" title="Abrir cena do Shrek" role="button">🌻</button>
 
-    <!-- Overlay cenario do Shrek -->
-    <div class="shrek-overlay" id="shrek-overlay">
-
-      <!-- Caixa de perguntas -->
-      <div class="perguntas-box" id="perguntas-box" style="display:none;" role="dialog" aria-labelledby="titulo-perguntas" aria-modal="true">
-        <h2 id="titulo-perguntas">🌻 Eu te amo</h2>
-        <p class="pergunta">Ei... você tem <strong>Netflix</strong> ou outro jeito de assistir <strong>Shrek</strong>?</p>
-        <button class="btn-resposta" onclick="respostaNetflix(true)" aria-pressed="false">Sim, tenho Netflix</button>
-        <button class="btn-resposta nao" onclick="respostaNetflix(false)" aria-pressed="false">Não tenho / não consigo assistir</button>
-      </div>
-
-      <!-- Info de onde assistir (quando resposta = sim) -->
-      <div class="info-assistir" id="info-assistir" style="display:none;" role="region" aria-labelledby="titulo-info">
-        <h3 id="titulo-info">📺 Onde assistir — Eu te amo 💛</h3>
-        <p>A cena está no filme <span class="destaque">Shrek (2001)</span>.</p>
-        <p>Tempo exato: <span class="destaque">01:04:20</span></p>
-        <p>É a cena onde o Shrek tira a orelha do burro... um clássico! 💚 Eu te amo!</p>
-        <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank" rel="noopener noreferrer">▶ Abrir Shrek na Netflix</a>
-      </div>
-
-      <!-- Caixa de senha + instrucoes -->
-      <div class="senha-box" id="senha-box" style="display:none;" role="dialog" aria-labelledby="titulo-senha" aria-modal="true">
-        <h2 id="titulo-senha">🌱 Eu te amo — 01:04:20</h2>
-        <p>Esta cena está no filme <strong>Shrek</strong> (2001).</p>
-        <p>Assista na <span class="netflix-tag">Netflix</span> no momento
-           <span class="tempo-tag">01:04:20</span>.</p>
-
-        <p style="color:#ff6b9d; font-weight:600; margin-top:10px; text-align:center;">Eu te amo 💛</p>
-
-        <div class="links-streaming">
-          <a class="link-netflix" href="https://www.netflix.com/title/60000733" target="_blank" rel="noopener noreferrer">▶ Abrir na Netflix</a>
-          <a class="link-youtube" href="https://www.youtube.com/results?search_query=shrek+2001+ponto+1h04min20s" target="_blank" rel="noopener noreferrer">🔍 Procurar no YouTube</a>
+    <!-- Card flutuante do Shrek (substitui overlay) -->
+    <div class="shrek-card" id="shrek-card">
+      <button class="shrek-card-fechar" onclick="fecharCardShrek()" aria-label="Fechar">✕</button>
+      
+      <!-- Pergunta inicial -->
+      <div id="card-pergunta">
+        <div class="shrek-card-titulo">🎬 Eu te amo 💛</div>
+        <div class="shrek-card-texto">
+          Ei... você tem <strong>Netflix</strong> ou outro jeito de assistir <strong>Shrek</strong>?
         </div>
-
-        <p class="nao-netflix">
-          Não conseguiu acessar a Netflix ou assistir por outros meios?<br>
-          Digite a senha abaixo e a cena aparece aqui para você 👇
-        </p>
-
-        <input type="password" class="senha-input" id="senha-input"
-               placeholder="SENHA" aria-label="Digite a senha para desbloquear" onkeypress="if(event.key==='Enter')verificarSenha()">
-        <button class="senha-btn" onclick="verificarSenha()" aria-describedby="senha-erro">Desbloquear cena</button>
-        <div class="senha-erro" id="senha-erro" role="alert" aria-live="polite"></div>
+        <div class="shrek-card-botoes">
+          <button class="shrek-card-btn sim" onclick="respostaNetflix(true)">📺 Sim, tenho</button>
+          <button class="shrek-card-btn nao" onclick="respostaNetflix(false)">🤔 Não tenho</button>
+        </div>
       </div>
 
-      <!-- Player de video -->
-      <div class="shrek-player" id="shrek-player" role="region" aria-label="Player de vídeo">
-        <video controls autoplay id="shrek-player-video" preload="metadata">
-          <source src="shrek.mp4" type="video/mp4">
-          <track kind="captions" src="" srclang="pt" label="Português">
-          Seu navegador não suporta vídeo.
-        </video>
-        <button class="fechar-btn" onclick="fecharShrek()" aria-label="Fechar vídeo">✕ Fechar</button>
+      <!-- Info Netflix (quando resposta = sim) -->
+      <div id="card-info-netflix" style="display:none;">
+        <div class="shrek-card-titulo">📺 Onde assistir</div>
+        <div class="shrek-card-texto">
+          A cena está no <strong>Shrek (2001)</strong>.<br>
+          Tempo exato: <strong style="color:#81C784;">01:04:20</strong><br>
+          <em style="color:#B0BEC5;">É a cena do Shrek com o burro! 💚</em>
+        </div>
+        <div class="shrek-card-botoes">
+          <a class="shrek-card-btn sim" href="https://www.netflix.com/title/60000733" target="_blank" rel="noopener noreferrer" style="text-decoration:none;text-align:center;">▶ Netflix</a>
+          <a class="shrek-card-btn nao" href="https://www.youtube.com/results?search_query=shrek+2001+ponto+1h04min20s" target="_blank" rel="noopener noreferrer" style="text-decoration:none;text-align:center;">🔍 YouTube</a>
+        </div>
+      </div>
+
+      <!-- Senha (quando resposta = não) -->
+      <div id="card-senha" style="display:none;">
+        <div class="shrek-card-titulo">🔑 Desbloquear cena</div>
+        <div class="shrek-card-texto">
+          Senha do amor para ver a cena 👇<br>
+          <strong style="color:#FF8A80;">Eu te amo 💛</strong>
+        </div>
+        <input type="password" class="senha-input" id="senha-input-card"
+               placeholder="SENHA" style="margin-bottom:8px;"
+               onkeypress="if(event.key==='Enter')verificarSenhaCard()">
+        <button class="shrek-card-btn sim" style="width:100%;" onclick="verificarSenhaCard()">Desbloquear</button>
+        <div class="senha-erro" id="senha-erro-card" style="margin-top:6px;min-height:16px;font-size:12px;"></div>
       </div>
 
     </div>
@@ -4193,172 +4275,67 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
       }
     });
 
-    // --- Sistema do Girassol Shrek ---
-    // Senha ofuscada (simbólica - real segurança requer backend)
+    // --- Sistema do Girassol Shrek (Card Flutuante) ---
     const _0x4f2a = ['TmVPUUVRVg=='];
     const _deco = (s) => atob(s);
     const SENHA_CORRETA = _deco(_0x4f2a[0]);
 
-    // Botão discreto para reabrir a cena clicando no canto inferior esquerdo
+    // Abrir card
     function abrirShrek() {
-      mostrarPerguntas();
+      mostrarCardShrek();
     }
 
-    // Mostrar perguntas automaticamente após 20 segundos
+    // Mostrar card automaticamente após 10 segundos (mais rápido que antes)
     setTimeout(() => {
-      mostrarPerguntas();
-    }, 20 * 1000);
+      mostrarCardShrek();
+    }, 10 * 1000);
 
-    function mostrarPerguntas() {
-      const overlay = document.getElementById('shrek-overlay');
-      const perguntasBox = document.getElementById('perguntas-box');
-      const senhaBox = document.getElementById('senha-box');
-      const infoAssistir = document.getElementById('info-assistir');
-      const player = document.getElementById('shrek-player');
-      
-      overlay.classList.add('ativo');
-      perguntasBox.style.display = 'block';
-      senhaBox.style.display = 'none';
-      infoAssistir.style.display = 'none';
-      player.classList.remove('ativo');
+    function mostrarCardShrek() {
+      const card = document.getElementById('shrek-card');
+      card.classList.remove('fechar');
+      card.classList.add('ativo');
+      // Resetar para pergunta inicial
+      document.getElementById('card-pergunta').style.display = 'block';
+      document.getElementById('card-info-netflix').style.display = 'none';
+      document.getElementById('card-senha').style.display = 'none';
+    }
+
+    function fecharCardShrek() {
+      const card = document.getElementById('shrek-card');
+      card.classList.remove('ativo');
+      card.classList.add('fechar');
     }
 
     function respostaNetflix(temNetflix) {
-      const perguntasBox = document.getElementById('perguntas-box');
-      const infoAssistir = document.getElementById('info-assistir');
-      const senhaBox = document.getElementById('senha-box');
-      const player = document.getElementById('shrek-player');
-      const video = document.getElementById('shrek-player-video');
-      
-      perguntasBox.style.display = 'none';
-      
+      document.getElementById('card-pergunta').style.display = 'none';
       if (temNetflix) {
-        // Mostrar onde assistir
-        infoAssistir.style.display = 'block';
+        document.getElementById('card-info-netflix').style.display = 'block';
       } else {
-        // Mostrar caixa de senha para vídeo fallback
-        senhaBox.style.display = 'block';
-        document.getElementById('senha-input').focus();
+        document.getElementById('card-senha').style.display = 'block';
+        document.getElementById('senha-input-card').focus();
       }
     }
 
-    function verificarSenha() {
-      const input = document.getElementById('senha-input').value;
-      const erro = document.getElementById('senha-erro');
-      const senhaBox = document.getElementById('senha-box');
-      const player = document.getElementById('shrek-player');
-      const video = document.getElementById('shrek-player-video');
-
+    function verificarSenhaCard() {
+      const input = document.getElementById('senha-input-card').value;
+      const erro = document.getElementById('senha-erro-card');
       if (input.toUpperCase() === SENHA_CORRETA) {
         erro.textContent = '';
-        senhaBox.style.display = 'none';
-        player.classList.add('ativo');
-        video.play();
-        // Abrir em tela cheia (fullscreen API)
-        abrirTelaCheia(video);
+        fecharCardShrek();
+        // Abrir vídeo em nova aba
+        window.open('video.html', '_blank');
       } else {
-        erro.textContent = '❌ Senha incorreta! Tente novamente.';
-        document.getElementById('senha-input').value = '';
-        document.getElementById('senha-input').focus();
+        erro.textContent = '❌ Senha incorreta!';
+        document.getElementById('senha-input-card').value = '';
       }
     }
 
-    // Função para abrir o video em tela cheia (cross-browser)
-    function abrirTelaCheia(elemento) {
-      if (!elemento) return;
-      try {
-        if (elemento.requestFullscreen) {
-          elemento.requestFullscreen();
-        } else if (elemento.webkitRequestFullscreen) {
-          elemento.webkitRequestFullscreen();
-        } else if (elemento.webkitEnterFullscreen) {
-          elemento.webkitEnterFullscreen(); // iOS Safari
-        } else if (elemento.msRequestFullscreen) {
-          elemento.msRequestFullscreen(); // IE/Edge antigo
-        }
-      } catch (e) {
-        // Se fullscreen for bloqueado, continua normalmente
-      }
-    }
-
-    // Sair da tela cheia (cross-browser)
-    function sairTelaCheia() {
-      try {
-        if (document.fullscreenElement) {
-          if (document.exitFullscreen) document.exitFullscreen();
-          else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-          else if (document.msExitFullscreen) document.msExitFullscreen();
-        }
-      } catch (e) {}
-    }
-
-    function fecharShrek() {
-      const overlay = document.getElementById('shrek-overlay');
-      const player = document.getElementById('shrek-player');
-      const video = document.getElementById('shrek-player-video');
-      const mensagemFinal = document.getElementById('mensagem-final');
-      const senhaBox = document.getElementById('senha-box');
-      const perguntasBox = document.getElementById('perguntas-box');
-      const infoAssistir = document.getElementById('info-assistir');
-      const senhaInput = document.getElementById('senha-input');
-      const senhaErro = document.getElementById('senha-erro');
-
-      video.pause();
-      video.currentTime = 0;
-      sairTelaCheia();
-      overlay.classList.remove('ativo');
-      player.classList.remove('ativo');
-      mensagemFinal.classList.remove('visivel');
-      // Resetar para o estado inicial: tudo oculto.
-      // As perguntas reaparecem 20s após cada fechamento via setTimeout em fecharShrek().
-      senhaBox.style.display = 'none';
-      perguntasBox.style.display = 'none';
-      infoAssistir.style.display = 'none';
-      // Limpar campos de senha
-      if (senhaInput) senhaInput.value = '';
-      if (senhaErro) senhaErro.textContent = '';
-
-      // Reaparecer as perguntas 20s após fechar, igual à carga inicial
-      setTimeout(() => {
-        // Só reabre se o overlay não estiver ativo (evita reabrir algo que o usuário já abriu manualmente)
-        const overlayState = document.getElementById('shrek-overlay');
-        if (!overlayState.classList.contains('ativo')) {
-          mostrarPerguntas();
-        }
-      }, 20 * 1000);
-    }
-
-    // Detectar fim do vídeo para mostrar mensagem final
-    const videoPlayer = document.getElementById('shrek-player-video');
-    videoPlayer.addEventListener('ended', () => {
-      const mensagemFinal = document.getElementById('mensagem-final');
-      const player = document.getElementById('shrek-player');
-      sairTelaCheia();
-      player.classList.remove('ativo');
-      mensagemFinal.classList.add('visivel');
-      // Foco na mensagem final para acessibilidade
-      mensagemFinal.focus();
-    });
-
-    // Também permitir fechar mensagem final clicando nela
-    document.getElementById('mensagem-final').addEventListener('click', () => {
-      const mensagemFinal = document.getElementById('mensagem-final');
-      const overlay = document.getElementById('shrek-overlay');
-      mensagemFinal.classList.remove('visivel');
-      overlay.classList.remove('ativo');
-    });
-
-    // Permitir fechar com tecla ESC
+    // ESC fecha o card
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        const overlay = document.getElementById('shrek-overlay');
-        const mensagemFinal = document.getElementById('mensagem-final');
-        if (overlay.classList.contains('ativo')) {
-          fecharShrek();
-        }
-        if (mensagemFinal.classList.contains('visivel')) {
-          mensagemFinal.classList.remove('visivel');
-          overlay.classList.remove('ativo');
+        const card = document.getElementById('shrek-card');
+        if (card.classList.contains('ativo')) {
+          fecharCardShrek();
         }
       }
     });
