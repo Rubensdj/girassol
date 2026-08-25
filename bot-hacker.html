@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🤖 Bot Hacker — Desafio 💀</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh;
+    background: #000;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+<link rel="stylesheet" href="bot-hacker.css">
+</head>
+<body>
+
+<canvas id="matrixCanvas"></canvas>
+<div class="glitch-overlay" id="glitchOverlay"></div>
+
+<!-- Overlay principal -->
+<div class="bot-overlay ativo" id="botOverlay">
+  <div class="bot-container">
+
+    <!-- Chat do bot -->
+    <div class="bot-chat">
+      <div class="bot-chat-header">
+        <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        🤖 TERMINAL DO BOT
+      </div>
+      <div class="bot-chat-msgs" id="botChat"></div>
+      <div class="bot-status">
+        <div class="bot-status-item">🏆<strong id="botWins">0</strong>Vitórias</div>
+        <div class="bot-status-item">💀<strong id="botSteals">0</strong>Roubos</div>
+        <div class="bot-status-item">⚡<strong id="botHacks">0</strong>Hacks</div>
+      </div>
+    </div>
+
+    <!-- Área do jogo -->
+    <div class="bot-board-area">
+      <div class="bot-titulo">🤖 BOT HACKER vs 💛 VOCÊ</div>
+      <div class="bot-turno seu" id="botTurno">Sua vez — clique em uma célula!</div>
+      <div class="bot-grid" id="botGrid"></div>
+      <div class="bot-acao">
+        <button class="bot-acao-btn reiniciar" onclick="reiniciarBot()">🔄 Reiniciar</button>
+        <button class="bot-acao-btn fechar" onclick="fecharBot()">✕ Fechar</button>
+      </div>
+
+      <!-- Tela de resultado -->
+      <div class="bot-resultado" id="botResultado">
+        <div class="bot-resultado-emoji" id="botResEmoji">🤖</div>
+        <div class="bot-resultado-titulo" id="botResTitulo"></div>
+        <div class="bot-resultado-msg" id="botResMsg"></div>
+        <button class="bot-acao-btn reiniciar" onclick="reiniciarBot()">🔄 Jogar de novo</button>
+        <button class="bot-acao-btn fechar" onclick="fecharBot()" style="margin-top:8px;">✕ Fechar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Popup de habilidade -->
+<div class="bot-habilidade" id="botHabilidade">
+  <div class="bot-habilidade-emoji" id="habEmoji"></div>
+  <div class="bot-habilidade-nome" id="habNome"></div>
+  <div class="bot-habilidade-desc" id="habDesc"></div>
+</div>
+
+<script>
+// ============ MATRIX RAIN ============
+const matrixCanvas = document.getElementById('matrixCanvas');
+const mCtx = matrixCanvas.getContext('2d');
+let matrixCols, matrixDrops;
+
+function initMatrix() {
+  matrixCanvas.width = window.innerWidth;
+  matrixCanvas.height = window.innerHeight;
+  const fontSize = 14;
+  matrixCols = Math.floor(matrixCanvas.width / fontSize);
+  matrixDrops = Array(matrixCols).fill(1);
+}
+
+function drawMatrix() {
+  mCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+  mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+  mCtx.fillStyle = '#00E676';
+  mCtx.font = '14px Courier New';
+  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF';
+  for (let i = 0; i < matrixCols; i++) {
+    const ch = chars[Math.floor(Math.random() * chars.length)];
+    mCtx.fillText(ch, i * 14, matrixDrops[i] * 14);
+    if (matrixDrops[i] * 14 > matrixCanvas.height && Math.random() > 0.975) matrixDrops[i] = 0;
+    matrixDrops[i]++;
+  }
+}
+
+initMatrix();
+setInterval(drawMatrix, 50);
+window.addEventListener('resize', initMatrix);
+
+// ============ JOGO BOT HACKER ============
+const TAM = 5;
+const LIMITE_VITORIA = 4;
+let tabuleiro = [];
+let vezJogador = true;
+let jogoAcabou = false;
+let vitoriasBot = 0;
+let totalRoubos = 0;
+let totalHacks = 0;
+let historico = [];
+
+const CEL_JOGADOR = 'J';
+const CEL_BOT = 'B';
+const CEL_VAZIA = '';
+
+// Frases do bot
+const FRASES = {
+  inicio: [
+    '> Iniciando conexão...',
+    '> Carregando módulos de hack... [OK]',
+    '> Bypass de firewall... [OK]',
+    '> Bot ONLINE. Preparado para dominar. 😈',
+    '> Dica: não perca tempo, eu já sei onde você vai clicar.',
+  ],
+  vezJogador: [
+    '> Pense bem... mas vai ser em vão. 🤔',
+    '> Tô vendo você hesitando... kkkk',
+    '> Não adianta, eu já calculsei todas as jogadas.',
+    '> Seu melhor move não vai me parar.',
+    '> Eu já hackeei seu cérebro. 😎',
+  ],
+  vezBot: [
+    '> Minha vez. Segura peão. 💀',
+    '> Processando melhor jogada... [ENCONTRADA]',
+    '> Hora de mostrar quem manda aqui. 🤖',
+    '> Executando algoritmo de vitória...',
+    '> Ativando modo destruidor. 💥',
+  ],
+  roubo: [
+    '> 🔓 RODOU! Essa célula é minha agora!',
+    '> KKKKK roubada! Obrigado pela jogada! 🤝',
+    '> Hackeado! Sua célula foi comprometida! 💀',
+    '> Seus dados foram... digamos, "redirecionados". 😈',
+    '> Roubei sua célula e nem pedi licença. 🤖',
+  ],
+  glitch: [
+    '> ⚡ GLITCH! Tô jogando DUAS vezes! 🤯',
+    '> Dois turnos de uma vez? É assim que se joga!',
+    '> Modo turbo ativado. Prepara-se. 💥',
+    '> Isso não é justo? Eu sei. E daí? 😎',
+  ],
+  undo: [
+    '> ↩️ UNDO! Sua jogada foi desfeita!',
+    '> Ctrl+Z na sua jogada! Kkkkkk 😂',
+    '> Deletei sua jogada do sistema. Tchau! 🗑️',
+    '> Sua jogada foi... "corrigida" pelo sistema.',
+  ],
+  proximoJogador: [
+    '> Sua vez de novo. Não vai ajudar muito. 😏',
+    '> Tenta a sorte. Ou melhor, nem tenta.',
+    '> Vai lá, eu espero. 😴',
+  ],
+  vitoriaBot: [
+    '> GG! Vitória do bot! Como previsto. 🏆',
+    '> Não conseguiu? Não me surpreende. 🤖',
+    '> Bot wins! Eu nem precisei me esforçar. 💀',
+    '> Era inevitável. Eu sou superior. 😈',
+    '> Fim de jogo. Melhor sorte na próxima... se houver.',
+  ],
+  vitoriaJogador: [
+    '> ...impossível. Você TRIPLOU?! 🤯',
+    '> Não... não pode ser... MEU CÓDIGO! 💔',
+    '> OK, você ganhou. Mas foi sorte. SORTESUJA! 😤',
+    '> Vou precisar de um update depois dessa...',
+    '> Isso nunca mais vai acontecer. ANOTA AI!',
+  ],
+  empate: [
+    '> Empate? Eu aceito. Você não. 😏',
+    '> Tabuleiro cheio, ninguém venceu. Covarde. 🤝',
+    '> Empate é meio que vitória pra você, né? Kkkk',
+  ],
+};
+
+function falar(tipo) {
+  const frases = FRASES[tipo];
+  return frases[Math.floor(Math.random() * frases.length)];
+}
+
+function adicionarMsg(texto, tipo = 'sistema') {
+  const chat = document.getElementById('botChat');
+  const div = document.createElement('div');
+  div.className = 'bot-msg ' + tipo;
+  div.textContent = texto;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function mostrarHabilidade(emoji, nome, desc) {
+  const el = document.getElementById('botHabilidade');
+  document.getElementById('habEmoji').textContent = emoji;
+  document.getElementById('habNome').textContent = nome;
+  document.getElementById('habDesc').textContent = desc;
+  el.classList.add('visivel');
+  // Glitch overlay
+  document.getElementById('glitchOverlay').classList.add('ativo');
+  setTimeout(() => {
+    el.classList.remove('visivel');
+    document.getElementById('glitchOverlay').classList.remove('ativo');
+  }, 1500);
+}
+
+function atualizarStats() {
+  document.getElementById('botWins').textContent = vitoriasBot;
+  document.getElementById('botSteals').textContent = totalRoubos;
+  document.getElementById('botHacks').textContent = totalHacks;
+}
+
+// ============ LÓGICA DO TABULEIRO ============
+function initTabuleiro() {
+  tabuleiro = Array(TAM * TAM).fill(CEL_VAZIA);
+  vezJogador = true;
+  jogoAcabou = false;
+  historico = [];
+  document.getElementById('botResultado').classList.remove('visivel');
+}
+
+function renderizarGrid() {
+  const grid = document.getElementById('botGrid');
+  grid.innerHTML = '';
+  tabuleiro.forEach((cel, i) => {
+    const div = document.createElement('div');
+    div.className = 'bot-cell';
+    if (cel === CEL_JOGADOR) {
+      div.classList.add('jogador');
+      div.textContent = '💛';
+    } else if (cel === CEL_BOT) {
+      div.classList.add('bot');
+      div.textContent = '🤖';
+    }
+    if (!jogoAcabou && cel === CEL_VAZIA && vezJogador) {
+      div.onclick = () => jogarJogador(i);
+    } else if (jogoAcabou || !vezJogador) {
+      div.classList.add('desabilitada');
+    }
+    grid.appendChild(div);
+  });
+}
+
+function jogarJogador(idx) {
+  if (!vezJogador || jogoAcabou || tabuleiro[idx] !== CEL_VAZIA) return;
+
+  tabuleiro[idx] = CEL_JOGADOR;
+  historico.push({ tipo: 'jogador', idx });
+  renderizarGrid();
+
+  if (checarVitoria(CEL_JOGADOR)) {
+    terminarJogo('jogador');
+    return;
+  }
+  if (checarEmpate()) {
+    terminarJogo('empate');
+    return;
+  }
+
+  vezJogador = false;
+  document.getElementById('botTurno').className = 'bot-turno dele';
+  document.getElementById('botTurno').textContent = '🤖 Bot pensando...';
+
+  adicionarMsg(falar('vezBot'), 'sistema');
+
+  // Bot "pensa" por 1-2s
+  setTimeout(() => {
+    jogarBot();
+  }, 800 + Math.random() * 1200);
+}
+
+function jogarBot() {
+  if (jogoAcabou) return;
+
+  // Chance de usar habilidade especial
+  const rand = Math.random();
+  if (rand < 0.12 && historico.some(h => h.tipo === 'jogador')) {
+    habilidadeRoubo();
+    return;
+  } else if (rand < 0.20) {
+    habilidadeGlitch();
+    return;
+  } else if (rand < 0.26 && historico.some(h => h.tipo === 'jogador')) {
+    habilidadeUndo();
+    return;
+  }
+
+  // Jogada normal (IA simples)
+  const melhorIdx = encontrarMelhorJogada(CEL_BOT);
+  if (melhorIdx !== -1) {
+    tabuleiro[melhorIdx] = CEL_BOT;
+    historico.push({ tipo: 'bot', idx: melhorIdx });
+    adicionarMsg('> Cel [' + melhorIdx + '] comprometida. ✅', 'hack');
+  }
+
+  renderizarGrid();
+
+  if (checarVitoria(CEL_BOT)) {
+    terminarJogo('bot');
+    return;
+  }
+  if (checarEmpate()) {
+    terminarJogo('empate');
+    return;
+  }
+
+  vezJogador = true;
+  document.getElementById('botTurno').className = 'bot-turno seu';
+  document.getElementById('botTurno').textContent = 'Sua vez — clique em uma célula!';
+  adicionarMsg(falar('proximoJogador'), 'debocha');
+}
+
+// ============ HABILIDADES ESPECIAIS ============
+function habilidadeRoubo() {
+  const celulasJogador = [];
+  tabuleiro.forEach((c, i) => { if (c === CEL_JOGADOR) celulasJogador.push(i); });
+  if (celulasJogador.length === 0) { jogarBot(); return; }
+
+  const alvo = celulasJogador[Math.floor(Math.random() * celulasJogador.length)];
+  tabuleiro[alvo] = CEL_BOT;
+  historico.push({ tipo: 'bot', idx: alvo, roubou: true });
+  totalRoubos++;
+  atualizarStats();
+
+  mostrarHabilidade('🔓', 'ROUBO DE DADOS', 'Célula do jogador comprometida!');
+  adicionarMsg(falar('roubo'), 'ataque');
+
+  setTimeout(() => {
+    renderizarGrid();
+    // Destacar célula roubada
+    const cells = document.querySelectorAll('.bot-cell');
+    if (cells[alvo]) cells[alvo].classList.add('roubada');
+
+    if (checarVitoria(CEL_BOT)) {
+      setTimeout(() => terminarJogo('bot'), 800);
+      return;
+    }
+    if (checarEmpate()) {
+      setTimeout(() => terminarJogo('empate'), 800);
+      return;
+    }
+
+    vezJogador = true;
+    document.getElementById('botTurno').className = 'bot-turno seu';
+    document.getElementById('botTurno').textContent = 'Sua vez — clique em uma célula!';
+    adicionarMsg(falar('proximoJogador'), 'debocha');
+  }, 1600);
+}
+
+function habilidadeGlitch() {
+  totalHacks++;
+  atualizarStats();
+  mostrarHabilidade('⚡', 'GLITCH MODE', 'Duas jogadas de uma vez!');
+
+  // Primeira jogada
+  const idx1 = encontrarMelhorJogada(CEL_BOT);
+  if (idx1 !== -1) {
+    tabuleiro[idx1] = CEL_BOT;
+    historico.push({ tipo: 'bot', idx: idx1 });
+  }
+
+  adicionarMsg(falar('glitch'), 'hack');
+
+  setTimeout(() => {
+    renderizarGrid();
+    // Glitch visual
+    document.querySelectorAll('.bot-cell.bot').forEach(c => c.classList.add('glitch-cell'));
+    setTimeout(() => {
+      document.querySelectorAll('.glitch-cell').forEach(c => c.classList.remove('glitch-cell'));
+    }, 500);
+
+    if (checarVitoria(CEL_BOT)) {
+      setTimeout(() => terminarJogo('bot'), 800);
+      return;
+    }
+
+    // Segunda jogada
+    setTimeout(() => {
+      const idx2 = encontrarMelhorJogada(CEL_BOT);
+      if (idx2 !== -1) {
+        tabuleiro[idx2] = CEL_BOT;
+        historico.push({ tipo: 'bot', idx: idx2 });
+        adicionarMsg('> Segundo golpe! Cel [' + idx2 + '] também caiu! 💥', 'hack');
+      }
+      renderizarGrid();
+
+      if (checarVitoria(CEL_BOT)) {
+        setTimeout(() => terminarJogo('bot'), 800);
+        return;
+      }
+      if (checarEmpate()) {
+        setTimeout(() => terminarJogo('empate'), 800);
+        return;
+      }
+
+      vezJogador = true;
+      document.getElementById('botTurno').className = 'bot-turno seu';
+      document.getElementById('botTurno').textContent = 'Sua vez — clique em uma célula!';
+      adicionarMsg(falar('proximoJogador'), 'debocha');
+    }, 1200);
+  }, 1600);
+}
+
+function habilidadeUndo() {
+  const ultimaJogada = historico.findLast(h => h.tipo === 'jogador');
+  if (!ultimaJogada) { jogarBot(); return; }
+
+  tabuleiro[ultimaJogada.idx] = CEL_VAZIA;
+  totalHacks++;
+  atualizarStats();
+
+  mostrarHabilidade('↩️', 'CTRL+Z', 'Jogada do jogador desfeita!');
+  adicionarMsg(falar('undo'), 'ataque');
+
+  setTimeout(() => {
+    renderizarGrid();
+
+    // Agora faz jogada normal
+    setTimeout(() => {
+      const melhorIdx = encontrarMelhorJogada(CEL_BOT);
+      if (melhorIdx !== -1) {
+        tabuleiro[melhorIdx] = CEL_BOT;
+        historico.push({ tipo: 'bot', idx: melhorIdx });
+        adicionarMsg('> E ainda joguei no lugar! Duplo golpe! 😈', 'hack');
+      }
+      renderizarGrid();
+
+      if (checarVitoria(CEL_BOT)) {
+        setTimeout(() => terminarJogo('bot'), 800);
+        return;
+      }
+      if (checarEmpate()) {
+        setTimeout(() => terminarJogo('empate'), 800);
+        return;
+      }
+
+      vezJogador = true;
+      document.getElementById('botTurno').className = 'bot-turno seu';
+      document.getElementById('botTurno').textContent = 'Sua vez — clique em uma célula!';
+      adicionarMsg(falar('proximoJogador'), 'debocha');
+    }, 1000);
+  }, 1600);
+}
+
+// ============ IA DO BOT ============
+function encontrarMelhorJogada(jogador) {
+  const adversario = jogador === CEL_BOT ? CEL_JOGADOR : CEL_BOT;
+
+  // 1. Verificar se pode ganhar
+  for (let i = 0; i < TAM * TAM; i++) {
+    if (tabuleiro[i] === CEL_VAZIA) {
+      tabuleiro[i] = jogador;
+      if (checarVitoria(jogador)) { tabuleiro[i] = CEL_VAZIA; return i; }
+      tabuleiro[i] = CEL_VAZIA;
+    }
+  }
+
+  // 2. Bloquear adversário
+  for (let i = 0; i < TAM * TAM; i++) {
+    if (tabuleiro[i] === CEL_VAZIA) {
+      tabuleiro[i] = adversario;
+      if (checarVitoria(adversario)) { tabuleiro[i] = CEL_VAZIA; return i; }
+      tabuleiro[i] = CEL_VAZIA;
+    }
+  }
+
+  // 3. Centro
+  const centro = Math.floor(TAM / 2) * TAM + Math.floor(TAM / 2);
+  if (tabuleiro[centro] === CEL_VAZIA) return centro;
+
+  // 4. Adjacente a peça existente
+  const candidatos = [];
+  tabuleiro.forEach((c, i) => {
+    if (c !== CEL_VAZIA) {
+      obterVizinhos(i).forEach(v => {
+        if (tabuleiro[v] === CEL_VAZIA && !candidatos.includes(v)) candidatos.push(v);
+      });
+    }
+  });
+  if (candidatos.length > 0) return candidatos[Math.floor(Math.random() * candidatos.length)];
+
+  // 5. Aleatório
+  const vazios = [];
+  tabuleiro.forEach((c, i) => { if (c === CEL_VAZIA) vazios.push(i); });
+  if (vacios.length > 0) return vazios[Math.floor(Math.random() * vazios.length)];
+  return -1;
+}
+
+function obterVizinhos(idx) {
+  const viz = [];
+  const row = Math.floor(idx / TAM);
+  const col = idx % TAM;
+  if (row > 0) viz.push(idx - TAM);
+  if (row < TAM - 1) viz.push(idx + TAM);
+  if (col > 0) viz.push(idx - 1);
+  if (col < TAM - 1) viz.push(idx + 1);
+  // Diagonais
+  if (row > 0 && col > 0) viz.push(idx - TAM - 1);
+  if (row > 0 && col < TAM - 1) viz.push(idx - TAM + 1);
+  if (row < TAM - 1 && col > 0) viz.push(idx + TAM - 1);
+  if (row < TAM - 1 && col < TAM - 1) viz.push(idx + TAM + 1);
+  return viz;
+}
+
+function checarVitoria(jogador) {
+  // Linhas
+  for (let r = 0; r < TAM; r++) {
+    let cnt = 0;
+    for (let c = 0; c < TAM; c++) {
+      if (tabuleiro[r * TAM + c] === jogador) cnt++;
+      else cnt = 0;
+      if (cnt >= LIMITE_VITORIA) return true;
+    }
+  }
+  // Colunas
+  for (let c = 0; c < TAM; c++) {
+    let cnt = 0;
+    for (let r = 0; r < TAM; r++) {
+      if (tabuleiro[r * TAM + c] === jogador) cnt++;
+      else cnt = 0;
+      if (cnt >= LIMITE_VITORIA) return true;
+    }
+  }
+  // Diagonais
+  for (let r = 0; r <= TAM - LIMITE_VITORIA; r++) {
+    for (let c = 0; c <= TAM - LIMITE_VITORIA; c++) {
+      // Diagonal principal
+      let ok1 = true;
+      for (let k = 0; k < LIMITE_VITORIA; k++) {
+        if (tabuleiro[(r + k) * TAM + (c + k)] !== jogador) { ok1 = false; break; }
+      }
+      if (ok1) return true;
+      // Diagonal secundária
+      let ok2 = true;
+      for (let k = 0; k < LIMITE_VITORIA; k++) {
+        if (tabuleiro[(r + k) * TAM + (c + LIMITE_VITORIA - 1 - k)] !== jogador) { ok2 = false; break; }
+      }
+      if (ok2) return true;
+    }
+  }
+  return false;
+}
+
+function checarEmpate() {
+  return tabuleiro.every(c => c !== CEL_VAZIA);
+}
+
+function terminarJogo(resultado) {
+  jogoAcabou = true;
+  vezJogador = false;
+  const res = document.getElementById('botResultado');
+  document.getElementById('botResEmoji').textContent = resultado === 'bot' ? '🤖💀' : resultado === 'jogador' ? '💛🏆' : '🤝';
+
+  if (resultado === 'bot') {
+    vitoriasBot++;
+    atualizarStats();
+    document.getElementById('botResTitulo').textContent = '💀 BOT VENCEU!';
+    document.getElementById('botResTitulo').style.color = '#FF5252';
+    document.getElementById('botResMsg').textContent = 'O bot hackeou o jogo. Tente de novo... se tiver coragem.';
+    adicionarMsg(falar('vitoriaBot'), 'ataque');
+  } else if (resultado === 'jogador') {
+    document.getElementById('botResTitulo').textContent = '💛 VOCÊ VENCEU!';
+    document.getElementById('botResTitulo').style.color = '#FFD740';
+    document.getElementById('botResMsg').textContent = 'Parabéns! Você derrotou o bot! Mas ele não vai aceitar assim tão fácil...';
+    adicionarMsg(falar('vitoriaJogador'), 'derrota');
+  } else {
+    document.getElementById('botResTitulo').textContent = '🤝 EMPATE!';
+    document.getElementById('botResTitulo').style.color = '#B0BEC5';
+    document.getElementById('botResMsg').textContent = 'Ninguém venceu. O bot considera isso uma vitória dele.';
+    adicionarMsg(falar('empate'), 'sistema');
+  }
+
+  document.getElementById('botTurno').textContent = 'Jogo acabou!';
+  document.getElementById('botTurno').className = 'bot-turno';
+  setTimeout(() => res.classList.add('visivel'), 600);
+  renderizarGrid();
+}
+
+// ============ CONTROLES ============
+function reiniciarBot() {
+  initTabuleiro();
+  renderizarGrid();
+  document.getElementById('botTurno').className = 'bot-turno seu';
+  document.getElementById('botTurno').textContent = 'Sua vez — clique em uma célula!';
+  // Limpar chat menos as msgs iniciais
+  const chat = document.getElementById('botChat');
+  chat.innerHTML = '';
+  FRASES.inicio.forEach((f, i) => {
+    setTimeout(() => adicionarMsg(f, 'sistema'), i * 200);
+  });
+}
+
+function fecharBot() {
+  document.getElementById('botOverlay').classList.remove('ativo');
+  if (window.history.length > 1) window.history.back();
+  else window.location.href = 'index.html';
+}
+
+// Iniciar
+initTabuleiro();
+renderizarGrid();
+FRASES.inicio.forEach((f, i) => {
+  setTimeout(() => adicionarMsg(f, 'sistema'), i * 300);
+});
+
+// ESC fecha
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') fecharBot();
+});
+</script>
+</body>
+</html>
