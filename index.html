@@ -626,32 +626,102 @@
     }
 
   /* Botão discreto para reabrir a cena do Shrek */
-  .shrek-btn {
+  /* Flor secreta no chão — abre o card do Shrek */
+  .flor-secreta {
     position: fixed;
-    bottom: 10px;
-    left: 10px;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 20;
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    background: transparent;
-    color: rgba(27, 94, 32, 0.35);
-    border: none;
-    border-radius: 50%;
-    font-size: 16px;
-    line-height: 28px;
-    text-align: center;
     cursor: pointer;
-    opacity: 0.4;
-    transition: opacity 0.3s, transform 0.3s;
     user-select: none;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: flor-sway 3s ease-in-out infinite alternate;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
   }
-  .shrek-btn:hover,
-  .shrek-btn:focus-visible {
+  .flor-secreta:hover {
+    transform: translateX(-50%) scale(1.25) rotate(-5deg);
+    filter: drop-shadow(0 4px 12px rgba(255,215,0,0.5));
+  }
+  .flor-secreta:active {
+    transform: translateX(-50%) scale(1.1);
+  }
+  .flor-secreta-haste {
+    width: 3px;
+    height: 18px;
+    background: linear-gradient(180deg, #4CAF50, #2E7D32);
+    margin: 0 auto;
+    border-radius: 2px;
+  }
+  .flor-secreta-cabeca {
+    width: 16px;
+    height: 16px;
+    position: relative;
+    margin: 0 auto -2px;
+  }
+  .flor-secreta-petala {
+    position: absolute;
+    width: 6px;
+    height: 9px;
+    background: linear-gradient(180deg, #FFD700, #FFA000);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform-origin: center 11px;
+    margin: -11px 0 0 -3px;
+  }
+  .flor-secreta-petala:nth-child(1) { transform: rotate(0deg); }
+  .flor-secreta-petala:nth-child(2) { transform: rotate(45deg); }
+  .flor-secreta-petala:nth-child(3) { transform: rotate(90deg); }
+  .flor-secreta-petala:nth-child(4) { transform: rotate(135deg); }
+  .flor-secreta-petala:nth-child(5) { transform: rotate(180deg); }
+  .flor-secreta-petala:nth-child(6) { transform: rotate(225deg); }
+  .flor-secreta-petala:nth-child(7) { transform: rotate(270deg); }
+  .flor-secreta-petala:nth-child(8) { transform: rotate(315deg); }
+  .flor-secreta-miolo {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: radial-gradient(circle, #5D4037, #3E2723);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+  .flor-secreta-brilho {
+    position: absolute;
+    width: 24px; height: 24px;
+    top: -4px; left: -4px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,215,0,0.25) 0%, transparent 70%);
+    animation: flor-brilho 2s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes flor-sway {
+    0% { transform: translateX(-50%) rotate(-2deg); }
+    100% { transform: translateX(-50%) rotate(2deg); }
+  }
+  @keyframes flor-brilho {
+    0% { opacity: 0.4; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.3); }
+  }
+  .flor-secreta-dica {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: #FFD740;
+    font-family: 'MedievalSharp', cursive;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    margin-bottom: 6px;
+  }
+  .flor-secreta:hover .flor-secreta-dica {
     opacity: 1;
-    transform: scale(1.15);
-    color: #1B5E20;
-    outline: none;
   }
 
   /* Caixa de perguntas */
@@ -3215,7 +3285,7 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
   .mini-girassol { transform: scale(0.8); }
 
   /* Botão Shrek */
-  .shrek-btn { bottom: 8px; left: 8px; width: 24px; height: 24px; font-size: 14px; }
+  .flor-secreta { bottom: 22px; }
 
   /* Arco-íris menor */
   .arco-iris { width: 200px; height: 100px; }
@@ -3267,7 +3337,7 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
   .btn-regar { padding: 10px 24px; font-size: 14px; }
 
   /* Botão shrek */
-  .shrek-btn { width: 22px; height: 22px; font-size: 12px; bottom: 6px; left: 6px; }
+  .flor-secreta { bottom: 18px; transform: translateX(-50%) scale(0.8); }
 
   /* Arco-íris pequeno */
   .arco-iris { width: 140px; height: 70px; opacity: 0.5; }
@@ -3820,7 +3890,23 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
   </div>
 
   <!-- Botão discreto para reabrir o card -->
-    <button class="shrek-btn" onclick="abrirShrek()" aria-label="Abrir cena do Shrek" title="Abrir cena do Shrek" role="button">🌻</button>
+    <!-- Flor secreta que abre o card do Shrek -->
+    <div class="flor-secreta" onclick="abrirShrek()" role="button" tabindex="0" aria-label="Flor secreta — clique para ver a cena do Shrek" title="Uma flor especial...">
+      <div class="flor-secreta-dica">Uma flor especial... 🤫</div>
+      <div class="flor-secreta-brilho"></div>
+      <div class="flor-secreta-cabeca">
+        <div class="flor-secreta-petala"></div>
+        <div class="flor-secreta-petala"></div>
+        <div class="flor-secreta-petala"></div>
+        <div class="flor-secreta-petala"></div>
+        <div class="flor-secreta-petala"></div>
+        <div class="flor-secreta-petala"></div>
+        <div class="flor-secreta-petala"></div>
+        <div class="flor-secreta-petala"></div>
+        <div class="flor-secreta-miolo"></div>
+      </div>
+      <div class="flor-secreta-haste"></div>
+    </div>
 
     <!-- Card flutuante do Shrek (substitui overlay) -->
     <div class="shrek-card" id="shrek-card">
@@ -4761,10 +4847,7 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
       mostrarCardShrek();
     }
 
-    // Mostrar card automaticamente após 10 segundos (mais rápido que antes)
-    setTimeout(() => {
-      mostrarCardShrek();
-    }, 10 * 1000);
+    // Card não aparece mais automaticamente — só ao clicar na flor secreta
 
     function mostrarCardShrek() {
       const card = document.getElementById('shrek-card');
