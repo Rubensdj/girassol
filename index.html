@@ -3137,47 +3137,175 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
 /* Utility hidden class */
 .hidden { display: none !important; }
 
-/* Reduce motion: respeitar preferência do utilizador */
+/* ===== PERFORMANCE: GPU layers para animações pesadas ===== */
+.girassol, .sol, .nuvem, .passaro, .borboleta, .borboleta-extra,
+.vagalume, .libelula, .abelha, .petalas-caindo, .chuva-petala,
+.montanha-1, .montanha-2, .montanha-3, .shrek-char, .fiona-char,
+.shrek-card, .arco-iris, .raios-sol, .nuvem-chuva {
+  will-change: transform;
+}
+
+/* ===== REDUCE MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
   }
+  .girassol { animation: none !important; transform: none !important; }
+  .sol { animation: none !important; }
+  .nuvem { animation: none !important; }
+  .caule { animation: none !important; transform: scaleY(1) !important; }
+  .cabeca { animation: none !important; transform: translateX(-50%) scale(1) !important; opacity: 1 !important; }
 }
 
-/* Responsividade mobile */
+/* ===== TABLET (768px) ===== */
 @media (max-width: 768px) {
   .scene {
     flex-direction: column;
     gap: 24px;
     padding: 0 16px;
-    /* girassol + bilhete empilhados somam ~704px; ajusta denominador */
-    transform: scale(clamp(0.4, calc((100vh - 80px) / 704px), 1));
+    transform: scale(clamp(0.35, calc((100vh - 80px) / 704px), 1));
   }
   .bilhete { max-width: 80vw; font-size: 16px; padding: 16px 20px; }
+
+  /* Sol menor */
+  .sol { width: 70px; height: 70px; top: 30px; right: 30px; }
+  .sol::before { width: 140px; height: 140px; margin: -70px 0 0 -70px; }
+  .sol::after { width: 200px; height: 200px; margin: -100px 0 0 -100px; }
+
+  /* Shrek e Fiona menores */
+  .shrek-char { transform: scale(0.7); left: 10px; bottom: 50px; }
+  .fiona-char { transform: scale(0.7); right: 10px; bottom: 50px; }
+
+  /* Montanhas menores */
+  .montanhas { height: 140px; bottom: 20px; }
+  .montanha-3 { height: 85px; }
+  .montanha-2 { height: 70px; }
+  .montanha-1 { height: 55px; }
+
+  /* Árvores menores */
+  .arvore-pinheiro, .arvore-redonda { transform: scale(0.6); }
+
+  /* Nuvem de chuva */
+  .nuvem-chuva { top: 60px; }
+
+  /* Card flutuante menor */
+  .shrek-card { width: 280px; padding: 16px; bottom: 60px; right: 10px; }
+  .shrek-card-titulo { font-size: 15px; }
+  .shrek-card-texto { font-size: 12px; }
+  .shrek-card-btn { font-size: 11px; padding: 8px 10px; min-width: 80px; }
+
+  /* Botões de ação */
+  .toggle-dia-noite { bottom: 50px; right: 15px; width: 36px; height: 36px; font-size: 16px; }
+  .btn-chuva { bottom: 50px; right: 55px; width: 36px; height: 36px; font-size: 16px; }
+  .btn-som { bottom: 50px; right: 95px; width: 36px; height: 36px; font-size: 16px; }
+
+  /* Jogo overlay */
+  .jogo-box { width: 95vw; padding: 20px; }
+  .btn-iniciar-jogo { font-size: 14px; padding: 10px 20px; bottom: 90px; }
+  .mini-girassol { transform: scale(0.8); }
+
+  /* Botão Shrek */
+  .shrek-btn { bottom: 8px; left: 8px; width: 24px; height: 24px; font-size: 14px; }
+
+  /* Arco-íris menor */
+  .arco-iris { width: 200px; height: 100px; }
 }
 
+/* ===== MOBILE (480px) ===== */
 @media (max-width: 480px) {
-  .bilhete strong { font-size: 18px; }
-  .bilhete { font-size: 14px; }
+  .scene {
+    transform: scale(clamp(0.3, calc((100vh - 60px) / 704px), 0.85));
+  }
+  .bilhete strong { font-size: 16px; }
+  .bilhete { font-size: 13px; padding: 12px 16px; max-width: 90vw; }
+
+  /* Sol ainda menor */
+  .sol { width: 50px; height: 50px; top: 20px; right: 15px; }
+  .sol::before { width: 100px; height: 100px; margin: -50px 0 0 -50px; }
+  .sol::after { width: 140px; height: 140px; margin: -70px 0 0 -70px; }
+
+  /* Personagens ainda menores */
+  .shrek-char { transform: scale(0.55); left: 5px; bottom: 40px; }
+  .fiona-char { transform: scale(0.55); right: 5px; bottom: 40px; }
+
+  /* Montanhas compactas */
+  .montanhas { height: 100px; bottom: 15px; }
+  .montanha-3 { height: 60px; }
+  .montanha-2 { height: 50px; }
+  .montanha-1 { height: 40px; }
+
+  /* Árvores ainda menores */
+  .arvore-pinheiro, .arvore-redonda { transform: scale(0.45); }
+
+  /* Card flutuante compacto */
+  .shrek-card { width: 250px; padding: 14px; bottom: 50px; right: 8px; font-size: 11px; }
+  .shrek-card-titulo { font-size: 14px; }
+  .shrek-card-texto { font-size: 11px; }
+  .shrek-card-btn { font-size: 10px; padding: 7px 8px; min-width: 70px; }
+
+  /* Botões de ação menores */
+  .toggle-dia-noite { bottom: 45px; right: 10px; width: 32px; height: 32px; font-size: 14px; }
+  .btn-chuva { bottom: 45px; right: 48px; width: 32px; height: 32px; font-size: 14px; }
+  .btn-som { bottom: 45px; right: 86px; width: 32px; height: 32px; font-size: 14px; }
+
+  /* Jogo compacto */
+  .jogo-box { width: 98vw; padding: 16px; border-radius: 12px; }
+  .jogo-titulo { font-size: 16px; }
+  .jogo-subtitulo { font-size: 11px; }
+  .btn-iniciar-jogo { font-size: 12px; padding: 8px 16px; bottom: 80px; }
+  .mini-girassol { transform: scale(0.65); }
+  .btn-regar { padding: 10px 24px; font-size: 14px; }
+
+  /* Botão shrek */
+  .shrek-btn { width: 22px; height: 22px; font-size: 12px; bottom: 6px; left: 6px; }
+
+  /* Arco-íris pequeno */
+  .arco-iris { width: 140px; height: 70px; opacity: 0.5; }
+
+  /* Flores menores */
+  .flor .coroa { width: 7px; height: 7px; }
+  .flor .haste { height: 10px !important; }
+
+  /* Libélulas e abelhas */
+  .libelula, .abelha { transform: scale(0.7); }
+
+  /* Mensagem final */
+  .mensagem-final .neoqeav { font-size: 20px; letter-spacing: 2px; }
+  .mensagem-final .amor { font-size: 16px; }
+}
+
+/* ===== LANDSCAPE MOBILE ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .scene {
+    transform: scale(0.35);
+    transform-origin: bottom center;
+  }
+  .shrek-char { transform: scale(0.5); bottom: 30px; }
+  .fiona-char { transform: scale(0.5); bottom: 30px; }
+  .sol { width: 50px; height: 50px; top: 10px; right: 10px; }
+  .montanhas { height: 80px; bottom: 10px; }
+  .btn-iniciar-jogo { bottom: 50px; }
+  .toggle-dia-noite, .btn-chuva, .btn-som { bottom: 30px; }
 }
 </style>
 </head>
 <body>
   <!-- Sky atmosphere -->
-  <div class="sky-atmosphere"></div>
+  <div class="sky-atmosphere" role="presentation" aria-hidden="true"></div>
 
   <!-- Floating pollen/dust particles -->
-  <div class="particulas" id="particulas"></div>
+  <div class="particulas" id="particulas" role="presentation" aria-hidden="true"></div>
 
   <!-- Sol -->
-  <div class="sol"></div>
+  <div class="sol" role="img" aria-label="Sol brilhante com raios dourados"></div>
 
   <!-- Nuvens -->
-  <div class="nuvem nuvem1"></div>
-  <div class="nuvem nuvem2"></div>
-  <div class="nuvem nuvem3"></div>
+  <div class="nuvem nuvem1" role="presentation" aria-hidden="true"></div>
+  <div class="nuvem nuvem2" role="presentation" aria-hidden="true"></div>
+  <div class="nuvem nuvem3" role="presentation" aria-hidden="true"></div>
 
   <!-- Scene wrapper (girassol + card) -->
   <div class="scene">
@@ -3246,7 +3374,7 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
   </div>
 
   <!-- Montanhas/Serras ao fundo -->
-  <div class="montanhas">
+  <div class="montanhas" role="presentation" aria-hidden="true">
     <div class="montanha-3"></div>
     <div class="montanha-2"></div>
     <div class="montanha-1"></div>
@@ -3294,7 +3422,7 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
   </div>
 
   <!-- Pássaros voando -->
-  <div class="passaros" id="passaros"></div>
+  <div class="passaros" id="passaros" role="presentation" aria-hidden="true"></div>
 
   <!-- Nuvens extras -->
   <div class="nuvem-extra ne1" style="animation-delay: -8s;"></div>
@@ -3302,30 +3430,30 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
   <div class="nuvem-extra ne3"></div>
 
   <!-- Arco-íris -->
-  <div class="arco-iris"></div>
+  <div class="arco-iris" role="img" aria-label="Arco-íris colorido no céu"></div>
 
   <!-- Raios de sol verticais -->
-  <div class="raios-sol" id="raiosSol"></div>
+  <div class="raios-sol" id="raiosSol" role="presentation" aria-hidden="true"></div>
 
   <!-- Borboletas extras -->
-  <div class="borboletas-extra" id="borboletasExtra"></div>
+  <div class="borboletas-extra" id="borboletasExtra" role="presentation" aria-hidden="true"></div>
 
   <!-- Libélulas -->
-  <div id="libelulas"></div>
+  <div id="libelulas" role="presentation" aria-hidden="true"></div>
 
   <!-- Abelhas zumbindo -->
-  <div class="abelhas" id="abelhas"></div>
+  <div class="abelhas" id="abelhas" role="presentation" aria-hidden="true"></div>
 
   <!-- Nuvem de chuva -->
-  <div class="nuvem-chuva" id="nuvemChuva"></div>
+  <div class="nuvem-chuva" id="nuvemChuva" role="img" aria-label="Nuvem de chuva com gotas caindo"></div>
 
   <!-- Cigarras / bichos noturnos -->
-  <div class="cigarras" id="cigarras"></div>
+  <div class="cigarras" id="cigarras" role="presentation" aria-hidden="true"></div>
 
   <!-- Flores no chão -->
-  <div class="flores-chao" id="floresChao"></div>
+  <div class="flores-chao" id="floresChao" role="presentation" aria-hidden="true"></div>
 
-  <div class="grama"></div>
+  <div class="grama" role="presentation" aria-hidden="true"></div>
 
   <!-- Shrek -->
   <div class="shrek-char" id="shrekChar">
@@ -3365,16 +3493,16 @@ body.noite .fiona-cabelo::before, body.noite .fiona-cabelo::after { background: 
   </div>
 
   <!-- Borboleta -->
-  <div class="borboleta" id="borboleta">
+  <div class="borboleta" id="borboleta" role="img" aria-label="Borboleta colorida voando">
     <div class="borboleta-asa-esq"></div>
     <div class="borboleta-asa-dir"></div>
   </div>
 
   <!-- Lua (aparece à noite) -->
-  <div class="lua"></div>
+  <div class="lua" role="img" aria-label="Lua do céu noturno"></div>
 
   <!-- Estrelas do céu noturno -->
-  <div class="estrelas-céu" id="estrelasceu"></div>
+  <div class="estrelas-céu" id="estrelasceu" role="presentation" aria-hidden="true"></div>
 
   <!-- Botão toggle dia/noite -->
   <button class="toggle-dia-noite" id="toggleDiaNoite" onclick="toggleDiaNoite()" aria-label="Alternar dia e noite" title="Alternar dia e noite">☀️</button>
